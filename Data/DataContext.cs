@@ -4,7 +4,7 @@ namespace repair_management_backend.Data
 {
     public class DataContext : IdentityDbContext
     {
-        public DataContext(DbContextOptions options):base(options)
+        public DataContext(DbContextOptions<DataContext> options):base(options)
         {
             
         }

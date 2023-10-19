@@ -64,7 +64,7 @@ namespace repair_management_backend.Repositories.Auth
             } else
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = "Lỗi không thể tạo user";
+                serviceResponse.Message = isCreated.ToString();
                 return serviceResponse;
             }
 

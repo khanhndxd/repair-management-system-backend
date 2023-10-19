@@ -8,7 +8,7 @@ using repair_management_backend.Models;
 namespace repair_management_backend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
