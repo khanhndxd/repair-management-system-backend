@@ -20,5 +20,15 @@ namespace repair_management_backend.Controllers
         {
             return Ok(await _repairOrderRepository.GetAll());
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceResponse<RepairOrder>>> GetSingle(int id)
+        {
+            var result = await _repairOrderRepository.GetRepairOrderById(id);
+            if(result.Data is null)
+            {
+                return NotFound(result);
+            }
+            return Ok(result);
+        }
     }
 }
