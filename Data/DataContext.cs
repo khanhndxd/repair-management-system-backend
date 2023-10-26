@@ -26,6 +26,10 @@ namespace repair_management_backend.Data
                 .HasForeignKey(ro => ro.RepairedById)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // lấy dữ liệu seeding
+            var customers = Seeder.GetCustomerSeedingData();
+
+            modelBuilder.Entity<Customer>().HasData(customers);
         }
 
         public DbSet<Customer> Customers { get; set; }
