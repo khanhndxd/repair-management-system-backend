@@ -9,6 +9,9 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using repair_management_backend.Repositories.RepairOrderRepo;
+using repair_management_backend.Repositories.StatusRepo;
+using repair_management_backend.Repositories.RepairTypeRepo;
+using repair_management_backend.Repositories.RepairReasonRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,9 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(build
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IRepairOrderRepository, RepairOrderRepository>();
+builder.Services.AddScoped<IStatusRepository, StatusRepository>();
+builder.Services.AddScoped<IRepairTypeRepository, RepairTypeRepository>();
+builder.Services.AddScoped<IRepairReasonRepository, RepairReasonRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
