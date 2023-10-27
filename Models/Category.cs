@@ -7,6 +7,6 @@ namespace repair_management_backend.Models
         public int Id { get; set; }
         [MaxLength(50)]
         public string Name { get; set; }
-        public List<PurchaseOrder>? PurchaseOrders { get; set; }
+        public List<PurchasedProduct>? PurchasedProducts { get; set; }
     }
 }
