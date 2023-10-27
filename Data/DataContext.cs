@@ -28,8 +28,17 @@ namespace repair_management_backend.Data
 
             // lấy dữ liệu seeding
             var customers = Seeder.GetCustomerSeedingData();
+            var purchaseOrders = Seeder.GetPurchaseOrderSeedingData();
+            var statuses = Seeder.GetStatusSeedingData();
+            var repairTypes = Seeder.GetRepairTypeSeedingData();
+            var repairReasons = Seeder.GetRepairReasonSeedingData();
 
+            // đồ dữ liệu seeding vào bảng
             modelBuilder.Entity<Customer>().HasData(customers);
+            modelBuilder.Entity<PurchaseOrder>().HasData(purchaseOrders);
+            modelBuilder.Entity<Status>().HasData(statuses);
+            modelBuilder.Entity<RepairType>().HasData(repairTypes);
+            modelBuilder.Entity<RepairReason>().HasData(repairReasons);
         }
 
         public DbSet<Customer> Customers { get; set; }
