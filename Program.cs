@@ -14,6 +14,7 @@ using repair_management_backend.Repositories.RepairTypeRepo;
 using repair_management_backend.Repositories.RepairReasonRepo;
 using repair_management_backend.Repositories.TaskRepo;
 using repair_management_backend.Repositories.AccessoryRepo;
+using repair_management_backend.Repositories.CustomerRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IRepairTypeRepository, RepairTypeRepository>();
 builder.Services.AddScoped<IRepairReasonRepository, RepairReasonRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IAccessoryRepository, AccessoryRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
