@@ -32,6 +32,8 @@ namespace repair_management_backend.Data
             var statuses = Seeder.GetStatusSeedingData();
             var repairTypes = Seeder.GetRepairTypeSeedingData();
             var repairReasons = Seeder.GetRepairReasonSeedingData();
+            var tasks = Seeder.GetTaskSeedingData();
+            var accessories = Seeder.GetAccessorySeedingData();
 
             // đồ dữ liệu seeding vào bảng
             modelBuilder.Entity<Customer>().HasData(customers);
@@ -39,6 +41,8 @@ namespace repair_management_backend.Data
             modelBuilder.Entity<Status>().HasData(statuses);
             modelBuilder.Entity<RepairType>().HasData(repairTypes);
             modelBuilder.Entity<RepairReason>().HasData(repairReasons);
+            modelBuilder.Entity<Models.Task>().HasData(tasks);
+            modelBuilder.Entity<Accessory>().HasData(accessories);
         }
 
         public DbSet<Customer> Customers { get; set; }

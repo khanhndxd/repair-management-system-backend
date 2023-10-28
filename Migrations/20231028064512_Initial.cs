@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace repair_management_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialtables : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -276,17 +278,11 @@ namespace repair_management_backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     Total = table.Column<double>(type: "float", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PurchaseOrders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PurchaseOrders_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PurchaseOrders_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -448,6 +444,104 @@ namespace repair_management_backend.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Accessories",
+                columns: new[] { "Id", "Name", "Price", "Unit" },
+                values: new object[,]
+                {
+                    { 1, "RAM DDR4 8GB", 1000000.0, "Thanh" },
+                    { 2, "RAM DDR4 16GB", 3000000.0, "Thanh" },
+                    { 3, "RAM DDR4 32GB", 5000000.0, "Thanh" },
+                    { 4, "Ổ cứng HDD 250GB", 1500000.0, "Chiếc" },
+                    { 5, "Ổ cứng HDD 500GB", 3000000.0, "Chiếc" },
+                    { 6, "Ổ cứng HDD 1TB", 6000000.0, "Chiếc" },
+                    { 7, "Ổ cứng SSD 120GB", 3000000.0, "Chiếc" },
+                    { 8, "Ổ cứng SSD 240GB", 6000000.0, "Chiếc" },
+                    { 9, "Ổ cứng SSD 500GB", 12000000.0, "Chiếc" },
+                    { 10, "Nguồn Corsair CX450M", 1500000.0, "Chiếc" },
+                    { 11, "Nguồn Antec VP550", 2000000.0, "Chiếc" },
+                    { 12, "Nguồn Seasonic Focus GX-550", 2500000.0, "Chiếc" },
+                    { 13, "Nguồn Gigabyte P650B", 3000000.0, "Chiếc" },
+                    { 14, "Nguồn EVGA SuperNOVA GA650", 3500000.0, "Chiếc" },
+                    { 15, "Màn hình Acer Nitro VG240Y", 4000000.0, "Chiếc" },
+                    { 16, "Màn hình ASUS TUF Gaming VG24VQ", 5000000.0, "Chiếc" },
+                    { 17, "Màn hình Dell S2722DGM", 6000000.0, "Chiếc" },
+                    { 18, "Màn hình Samsung Odyssey G32T550", 7000000.0, "Chiếc" },
+                    { 19, "Màn hình LG UltraGear 27GN600-B", 8000000.0, "Chiếc" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "Id", "Address", "Email", "Name", "Note", "Phone" },
+                values: new object[,]
+                {
+                    { 1, "97 HAO NAM, P.O CHO DUA, DONG DA, HA NOI", "nguyenvana@gmail.com", "Nguyễn Văn A", "", "0123456789" },
+                    { 2, "30 HANG BONG, HANG GAI, HOAN KIEM, HA NOI", "daovanb@gmail.com", "Đào Văn B", "", "9485769278" },
+                    { 3, "6 NGACH 371/9 KIM MA, BA DINH, HA NOI", "nguyenmanhc@gmail.com", "Nguyễn Mạnh C", "", "0293847562" },
+                    { 4, "SO 48 LE DAI HANH, HA BA TRUNG, HA NOI", "buivand@gmail.com", "Bùi Văn D", "", "0192845924" },
+                    { 5, "110 NGUYEN NGOC NAI, KHUONG MAI, T.XUAN, HN", "phamvane@gmail.com", "Phạm Văn E", "", "0495867284" },
+                    { 6, "65B HAI BA TRUNG, HOAN KIEM, HA NOI", "nguyenhuyg@gmail.com", "Nguyễn Huy G", "", "0394857624" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RepairReasons",
+                columns: new[] { "Id", "Reason" },
+                values: new object[,]
+                {
+                    { 1, "Sản phẩm lỗi" },
+                    { 2, "Đổi mới" },
+                    { 3, "Giao nhầm sản phẩm cho khách" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RepairTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Bảo hành" },
+                    { 2, "Sửa chữa" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Statuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Chờ xử lý" },
+                    { 2, "Đã tiếp nhận" },
+                    { 3, "Đang sửa chữa" },
+                    { 4, "Đã chuyển sản phẩm về hãng" },
+                    { 5, "Đã nhận sản phẩm từ hãng" },
+                    { 6, "Đã sửa xong" },
+                    { 7, "Đã hủy" },
+                    { 8, "Đã hoàn thành" },
+                    { 9, "Đã trả hàng" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tasks",
+                columns: new[] { "Id", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "Vệ sinh máy tính", 100000.0 },
+                    { 2, "Cài lại win", 200000.0 },
+                    { 3, "Cài đặt phần mềm", 50000.0 },
+                    { 4, "Sửa chữa phần mềm", 100000.0 },
+                    { 5, "Bảo dưỡng định kỳ", 100000.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PurchaseOrders",
+                columns: new[] { "Id", "CreatedAt", "CustomerId", "Total" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6668), 1, 1200000.0 },
+                    { 2, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6685), 2, 1600000.0 },
+                    { 3, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6685), 3, 2400000.0 },
+                    { 4, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6689), 4, 3500000.0 },
+                    { 5, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6689), 5, 1900000.0 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -501,11 +595,6 @@ namespace repair_management_backend.Migrations
                 name: "IX_PurchasedProducts_PurchaseOrderId",
                 table: "PurchasedProducts",
                 column: "PurchaseOrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrders_CategoryId",
-                table: "PurchaseOrders",
-                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PurchaseOrders_CustomerId",
@@ -605,6 +694,9 @@ namespace repair_management_backend.Migrations
                 name: "RepairOrders");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "Manufacturers");
 
             migrationBuilder.DropTable(
@@ -624,9 +716,6 @@ namespace repair_management_backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tasks");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Customers");

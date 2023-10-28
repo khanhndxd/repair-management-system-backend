@@ -107,32 +107,32 @@
                 new Models.Task { Id = 2, Name = "Cài lại win", Price = 200000.0 },
                 new Models.Task { Id = 3, Name = "Cài đặt phần mềm", Price = 50000.0 },
                 new Models.Task { Id = 4, Name = "Sửa chữa phần mềm", Price = 100000.0 },
-                new Models.Task { Id = 1, Name = "Bảo dưỡng định kỳ", Price = 100000.0 },
+                new Models.Task { Id = 5, Name = "Bảo dưỡng định kỳ", Price = 100000.0 },
             };
         }
         public static List<Accessory> GetAccessorySeedingData()
         {
             return new List<Accessory>()
             {
-                new Accessory { Id = 1, Name = "RAM DDR4 8GB", Price = 1000000 },
-                new Accessory { Id = 2, Name = "RAM DDR4 16GB", Price = 3000000 },
-                new Accessory { Id = 3, Name = "RAM DDR4 32GB", Price = 5000000 },
-                new Accessory { Id = 4, Name = "Ổ cứng HDD 250GB", Price = 1500000 },
-                new Accessory { Id = 5, Name = "Ổ cứng HDD 500GB", Price = 3000000 },
-                new Accessory { Id = 6, Name = "Ổ cứng HDD 1TB", Price = 6000000 },
-                new Accessory { Id = 7, Name = "Ổ cứng SSD 120GB", Price = 3000000 },
-                new Accessory { Id = 8, Name = "Ổ cứng SSD 240GB", Price = 6000000 },
-                new Accessory { Id = 9, Name = "Ổ cứng SSD 500GB", Price = 12000000 },
-                new Accessory { Id = 10, Name = "Nguồn Corsair CX450M", Price = 1500000 },
-                new Accessory { Id = 11, Name = "Nguồn Antec VP550", Price = 2000000 },
-                new Accessory { Id = 12, Name = "Nguồn Seasonic Focus GX-550", Price = 2500000 },
-                new Accessory { Id = 13, Name = "Nguồn Gigabyte P650B", Price = 3000000 },
-                new Accessory { Id = 14, Name = "Nguồn EVGA SuperNOVA GA650", Price = 3500000 },
-                new Accessory { Id = 15, Name = "Màn hình Acer Nitro VG240Y", Price = 4000000 },
-                new Accessory { Id = 16, Name = "Màn hình ASUS TUF Gaming VG24VQ", Price = 5000000 },
-                new Accessory { Id = 17, Name = "Màn hình Dell S2722DGM", Price = 6000000 },
-                new Accessory { Id = 18, Name = "Màn hình Samsung Odyssey G32T550", Price = 7000000 },
-                new Accessory { Id = 19, Name = "Màn hình LG UltraGear 27GN600-B", Price = 8000000 },
+                new Accessory { Id = 1, Name = "RAM DDR4 8GB", Price = 1000000, Unit = "Thanh" },
+                new Accessory { Id = 2, Name = "RAM DDR4 16GB", Price = 3000000, Unit = "Thanh"},
+                new Accessory { Id = 3, Name = "RAM DDR4 32GB", Price = 5000000, Unit = "Thanh" },
+                new Accessory { Id = 4, Name = "Ổ cứng HDD 250GB", Price = 1500000, Unit = "Chiếc" },
+                new Accessory { Id = 5, Name = "Ổ cứng HDD 500GB", Price = 3000000, Unit = "Chiếc" },
+                new Accessory { Id = 6, Name = "Ổ cứng HDD 1TB", Price = 6000000, Unit = "Chiếc" },
+                new Accessory { Id = 7, Name = "Ổ cứng SSD 120GB", Price = 3000000, Unit = "Chiếc" },
+                new Accessory { Id = 8, Name = "Ổ cứng SSD 240GB", Price = 6000000, Unit = "Chiếc" },
+                new Accessory { Id = 9, Name = "Ổ cứng SSD 500GB", Price = 12000000, Unit = "Chiếc" },
+                new Accessory { Id = 10, Name = "Nguồn Corsair CX450M", Price = 1500000, Unit = "Chiếc" },
+                new Accessory { Id = 11, Name = "Nguồn Antec VP550", Price = 2000000, Unit = "Chiếc" },
+                new Accessory { Id = 12, Name = "Nguồn Seasonic Focus GX-550", Price = 2500000, Unit = "Chiếc" },
+                new Accessory { Id = 13, Name = "Nguồn Gigabyte P650B", Price = 3000000, Unit = "Chiếc" },
+                new Accessory { Id = 14, Name = "Nguồn EVGA SuperNOVA GA650", Price = 3500000, Unit = "Chiếc" },
+                new Accessory { Id = 15, Name = "Màn hình Acer Nitro VG240Y", Price = 4000000, Unit = "Chiếc" },
+                new Accessory { Id = 16, Name = "Màn hình ASUS TUF Gaming VG24VQ", Price = 5000000, Unit = "Chiếc" },
+                new Accessory { Id = 17, Name = "Màn hình Dell S2722DGM", Price = 6000000, Unit = "Chiếc" },
+                new Accessory { Id = 18, Name = "Màn hình Samsung Odyssey G32T550", Price = 7000000, Unit = "Chiếc" },
+                new Accessory { Id = 19, Name = "Màn hình LG UltraGear 27GN600-B", Price = 8000000, Unit = "Chiếc" },
             };
         }
     }

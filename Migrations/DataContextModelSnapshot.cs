@@ -256,6 +256,141 @@ namespace repair_management_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Accessories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "RAM DDR4 8GB",
+                            Price = 1000000.0,
+                            Unit = "Thanh"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "RAM DDR4 16GB",
+                            Price = 3000000.0,
+                            Unit = "Thanh"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "RAM DDR4 32GB",
+                            Price = 5000000.0,
+                            Unit = "Thanh"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Ổ cứng HDD 250GB",
+                            Price = 1500000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Ổ cứng HDD 500GB",
+                            Price = 3000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Ổ cứng HDD 1TB",
+                            Price = 6000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Ổ cứng SSD 120GB",
+                            Price = 3000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Ổ cứng SSD 240GB",
+                            Price = 6000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Ổ cứng SSD 500GB",
+                            Price = 12000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Nguồn Corsair CX450M",
+                            Price = 1500000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Nguồn Antec VP550",
+                            Price = 2000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Nguồn Seasonic Focus GX-550",
+                            Price = 2500000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Nguồn Gigabyte P650B",
+                            Price = 3000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Nguồn EVGA SuperNOVA GA650",
+                            Price = 3500000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Màn hình Acer Nitro VG240Y",
+                            Price = 4000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Màn hình ASUS TUF Gaming VG24VQ",
+                            Price = 5000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Màn hình Dell S2722DGM",
+                            Price = 6000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Màn hình Samsung Odyssey G32T550",
+                            Price = 7000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Màn hình LG UltraGear 27GN600-B",
+                            Price = 8000000.0,
+                            Unit = "Chiếc"
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.Category", b =>
@@ -312,6 +447,62 @@ namespace repair_management_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "97 HAO NAM, P.O CHO DUA, DONG DA, HA NOI",
+                            Email = "nguyenvana@gmail.com",
+                            Name = "Nguyễn Văn A",
+                            Note = "",
+                            Phone = "0123456789"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "30 HANG BONG, HANG GAI, HOAN KIEM, HA NOI",
+                            Email = "daovanb@gmail.com",
+                            Name = "Đào Văn B",
+                            Note = "",
+                            Phone = "9485769278"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "6 NGACH 371/9 KIM MA, BA DINH, HA NOI",
+                            Email = "nguyenmanhc@gmail.com",
+                            Name = "Nguyễn Mạnh C",
+                            Note = "",
+                            Phone = "0293847562"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "SO 48 LE DAI HANH, HA BA TRUNG, HA NOI",
+                            Email = "buivand@gmail.com",
+                            Name = "Bùi Văn D",
+                            Note = "",
+                            Phone = "0192845924"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "110 NGUYEN NGOC NAI, KHUONG MAI, T.XUAN, HN",
+                            Email = "phamvane@gmail.com",
+                            Name = "Phạm Văn E",
+                            Note = "",
+                            Phone = "0495867284"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = "65B HAI BA TRUNG, HOAN KIEM, HA NOI",
+                            Email = "nguyenhuyg@gmail.com",
+                            Name = "Nguyễn Huy G",
+                            Note = "",
+                            Phone = "0394857624"
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.Manufacturer", b =>
@@ -340,9 +531,6 @@ namespace repair_management_backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -354,11 +542,46 @@ namespace repair_management_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("CustomerId");
 
                     b.ToTable("PurchaseOrders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6668),
+                            CustomerId = 1,
+                            Total = 1200000.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6685),
+                            CustomerId = 2,
+                            Total = 1600000.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6685),
+                            CustomerId = 3,
+                            Total = 2400000.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6689),
+                            CustomerId = 4,
+                            Total = 3500000.0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6689),
+                            CustomerId = 5,
+                            Total = 1900000.0
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.PurchasedProduct", b =>
@@ -544,6 +767,23 @@ namespace repair_management_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RepairReasons");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Reason = "Sản phẩm lỗi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Reason = "Đổi mới"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Reason = "Giao nhầm sản phẩm cho khách"
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.RepairType", b =>
@@ -562,6 +802,18 @@ namespace repair_management_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RepairTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Bảo hành"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Sửa chữa"
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.Status", b =>
@@ -580,6 +832,53 @@ namespace repair_management_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Chờ xử lý"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Đã tiếp nhận"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Đang sửa chữa"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Đã chuyển sản phẩm về hãng"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Đã nhận sản phẩm từ hãng"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Đã sửa xong"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Đã hủy"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Đã hoàn thành"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Đã trả hàng"
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.Task", b =>
@@ -601,6 +900,38 @@ namespace repair_management_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tasks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Vệ sinh máy tính",
+                            Price = 100000.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Cài lại win",
+                            Price = 200000.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Cài đặt phần mềm",
+                            Price = 50000.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Sửa chữa phần mềm",
+                            Price = 100000.0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Bảo dưỡng định kỳ",
+                            Price = 100000.0
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.User", b =>
@@ -663,10 +994,6 @@ namespace repair_management_backend.Migrations
 
             modelBuilder.Entity("repair_management_backend.Models.PurchaseOrder", b =>
                 {
-                    b.HasOne("repair_management_backend.Models.Category", null)
-                        .WithMany("PurchaseOrders")
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("repair_management_backend.Models.Customer", "Customer")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("CustomerId")
@@ -679,7 +1006,7 @@ namespace repair_management_backend.Migrations
             modelBuilder.Entity("repair_management_backend.Models.PurchasedProduct", b =>
                 {
                     b.HasOne("repair_management_backend.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("PurchasedProducts")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -807,7 +1134,7 @@ namespace repair_management_backend.Migrations
 
             modelBuilder.Entity("repair_management_backend.Models.Category", b =>
                 {
-                    b.Navigation("PurchaseOrders");
+                    b.Navigation("PurchasedProducts");
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.Customer", b =>
