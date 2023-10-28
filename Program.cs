@@ -13,6 +13,7 @@ using repair_management_backend.Repositories.StatusRepo;
 using repair_management_backend.Repositories.RepairTypeRepo;
 using repair_management_backend.Repositories.RepairReasonRepo;
 using repair_management_backend.Repositories.TaskRepo;
+using repair_management_backend.Repositories.AccessoryRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<IRepairTypeRepository, RepairTypeRepository>();
 builder.Services.AddScoped<IRepairReasonRepository, RepairReasonRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IAccessoryRepository, AccessoryRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
