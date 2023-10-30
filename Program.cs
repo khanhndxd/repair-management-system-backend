@@ -15,6 +15,8 @@ using repair_management_backend.Repositories.RepairReasonRepo;
 using repair_management_backend.Repositories.TaskRepo;
 using repair_management_backend.Repositories.AccessoryRepo;
 using repair_management_backend.Repositories.CustomerRepo;
+using repair_management_backend.Repositories.PurchaseOrderRepo;
+using repair_management_backend.Repositories.PurchasedProductRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,8 @@ builder.Services.AddScoped<IRepairReasonRepository, RepairReasonRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IAccessoryRepository, AccessoryRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
+builder.Services.AddScoped<IPurchasedProductRepository, PurchasedProductRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -67,6 +71,7 @@ builder.Services.AddCors(c =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 
