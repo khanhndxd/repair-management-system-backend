@@ -63,8 +63,50 @@
                 new PurchaseOrder { Id = 1, CustomerId = 1, Total = 1200000.0, CreatedAt = DateTime.Now },
                 new PurchaseOrder { Id = 2, CustomerId = 2, Total = 1600000.0, CreatedAt = DateTime.Now },
                 new PurchaseOrder { Id = 3, CustomerId = 3, Total = 2400000.0, CreatedAt = DateTime.Now },
-                new PurchaseOrder { Id = 4, CustomerId = 4, Total = 3500000.0, CreatedAt = DateTime.Now },
-                new PurchaseOrder { Id = 5, CustomerId = 5, Total = 1900000.0, CreatedAt = DateTime.Now },
+            };
+        }
+        public static List<Manufacturer> GetManufacturersSeedingData()
+        {
+            return new List<Manufacturer>()
+            { 
+                new Manufacturer { Id = 1, Name = "Corsair"},
+                new Manufacturer { Id = 2, Name = "Dell"},
+                new Manufacturer { Id = 3, Name = "Acer"},
+                new Manufacturer { Id = 4, Name = "ASUS"},
+                new Manufacturer { Id = 5, Name = "Kingston"},
+                new Manufacturer { Id = 6, Name = "Logitech"},
+                new Manufacturer { Id = 7, Name = "Razer"},
+                new Manufacturer { Id = 8, Name = "Intel"},
+                new Manufacturer { Id = 9, Name = "AMD"},
+            };
+        }
+        public static List<Category> GetCategoriesSeedingData()
+        {
+            return new List<Category>()
+            {
+                new Category { Id = 1, Name = "Màn hình"},
+                new Category { Id = 2, Name = "Nguồn máy tính"},
+                new Category { Id = 3, Name = "Mainboard" },
+                new Category { Id = 4, Name = "Chuột" },
+                new Category { Id = 5, Name = "Bàn phím"},
+                new Category { Id = 6, Name = "Thiết bị lưu trữ, bộ nhớ" },
+                new Category { Id = 7, Name = "Tai nghe" },
+                new Category { Id = 8, Name = "CPU" },
+                new Category { Id = 9, Name = "VGA" },
+                new Category { Id = 10, Name = "Tản nhiệt" },
+                new Category { Id = 11, Name = "Ergonomic" },
+                new Category { Id = 12, Name = "Webcam" },
+                new Category { Id = 13, Name = "PC" },
+                new Category { Id = 14, Name = "Thiết bị ngoại vi" },
+            };
+        }
+        public static List<PurchasedProduct> GetPurchasedProductsSeedingData()
+        {
+            return new List<PurchasedProduct>()
+            {
+                new PurchasedProduct { Id = 1, ProductName = "Nguồn Corsair CX450M", PurchaseOrderId = 1, ProductSerial = "8887", CategoryId = 2, ManufacturerId = 1, WarrantyPeriod = DateTime.Parse("2023-12-31"), Price = 1500000 },
+                new PurchasedProduct { Id = 2, ProductName = "Màn hình Dell S2722DGM", PurchaseOrderId = 2, ProductSerial = "8888", CategoryId = 1, ManufacturerId = 2, WarrantyPeriod = DateTime.Parse("2023-12-31"), Price = 6000000 },
+                new PurchasedProduct { Id = 3, ProductName = "Logitech C920 HD Pro", PurchaseOrderId = 3, ProductSerial = "8889", CategoryId = 12, ManufacturerId = 6, WarrantyPeriod = DateTime.Parse("2023-12-31"), Price = 4500000 }
             };
         }
         public static List<Status> GetStatusSeedingData()
@@ -133,6 +175,9 @@
                 new Accessory { Id = 17, Name = "Màn hình Dell S2722DGM", Price = 6000000, Unit = "Chiếc" },
                 new Accessory { Id = 18, Name = "Màn hình Samsung Odyssey G32T550", Price = 7000000, Unit = "Chiếc" },
                 new Accessory { Id = 19, Name = "Màn hình LG UltraGear 27GN600-B", Price = 8000000, Unit = "Chiếc" },
+                new Accessory { Id = 20, Name = "Logitech C920 HD Pro", Price = 4500000, Unit = "Chiếc" },
+                new Accessory { Id = 21, Name = "Logitech Brio 4K", Price = 9000000, Unit = "Chiếc" },
+                new Accessory { Id = 22, Name = "Razer Kiyo Pro", Price = 12000000, Unit = "Chiếc" },
             };
         }
     }

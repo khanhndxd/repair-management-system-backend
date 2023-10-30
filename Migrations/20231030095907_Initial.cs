@@ -467,7 +467,31 @@ namespace repair_management_backend.Migrations
                     { 16, "Màn hình ASUS TUF Gaming VG24VQ", 5000000.0, "Chiếc" },
                     { 17, "Màn hình Dell S2722DGM", 6000000.0, "Chiếc" },
                     { 18, "Màn hình Samsung Odyssey G32T550", 7000000.0, "Chiếc" },
-                    { 19, "Màn hình LG UltraGear 27GN600-B", 8000000.0, "Chiếc" }
+                    { 19, "Màn hình LG UltraGear 27GN600-B", 8000000.0, "Chiếc" },
+                    { 20, "Logitech C920 HD Pro", 4500000.0, "Chiếc" },
+                    { 21, "Logitech Brio 4K", 9000000.0, "Chiếc" },
+                    { 22, "Razer Kiyo Pro", 12000000.0, "Chiếc" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Màn hình" },
+                    { 2, "Nguồn máy tính" },
+                    { 3, "Mainboard" },
+                    { 4, "Chuột" },
+                    { 5, "Bàn phím" },
+                    { 6, "Thiết bị lưu trữ, bộ nhớ" },
+                    { 7, "Tai nghe" },
+                    { 8, "CPU" },
+                    { 9, "VGA" },
+                    { 10, "Tản nhiệt" },
+                    { 11, "Ergonomic" },
+                    { 12, "Webcam" },
+                    { 13, "PC" },
+                    { 14, "Thiết bị ngoại vi" }
                 });
 
             migrationBuilder.InsertData(
@@ -481,6 +505,22 @@ namespace repair_management_backend.Migrations
                     { 4, "SO 48 LE DAI HANH, HA BA TRUNG, HA NOI", "buivand@gmail.com", "Bùi Văn D", "", "0192845924" },
                     { 5, "110 NGUYEN NGOC NAI, KHUONG MAI, T.XUAN, HN", "phamvane@gmail.com", "Phạm Văn E", "", "0495867284" },
                     { 6, "65B HAI BA TRUNG, HOAN KIEM, HA NOI", "nguyenhuyg@gmail.com", "Nguyễn Huy G", "", "0394857624" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Manufacturers",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Corsair" },
+                    { 2, "Dell" },
+                    { 3, "Acer" },
+                    { 4, "ASUS" },
+                    { 5, "Kingston" },
+                    { 6, "Logitech" },
+                    { 7, "Razer" },
+                    { 8, "Intel" },
+                    { 9, "AMD" }
                 });
 
             migrationBuilder.InsertData(
@@ -535,11 +575,19 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "Total" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6668), 1, 1200000.0 },
-                    { 2, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6685), 2, 1600000.0 },
-                    { 3, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6685), 3, 2400000.0 },
-                    { 4, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6689), 4, 3500000.0 },
-                    { 5, new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6689), 5, 1900000.0 }
+                    { 1, new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(8987), 1, 1200000.0 },
+                    { 2, new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(9000), 2, 1600000.0 },
+                    { 3, new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(9000), 3, 2400000.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PurchasedProducts",
+                columns: new[] { "Id", "CategoryId", "ManufacturerId", "Price", "ProductName", "ProductSerial", "PurchaseOrderId", "WarrantyPeriod" },
+                values: new object[,]
+                {
+                    { 1, 2, 1, 1500000.0, "Nguồn Corsair CX450M", "8887", 1, new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 1, 2, 6000000.0, "Màn hình Dell S2722DGM", "8888", 2, new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, 12, 6, 4500000.0, "Logitech C920 HD Pro", "8889", 3, new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(

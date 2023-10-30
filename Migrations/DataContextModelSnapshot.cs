@@ -390,6 +390,27 @@ namespace repair_management_backend.Migrations
                             Name = "Màn hình LG UltraGear 27GN600-B",
                             Price = 8000000.0,
                             Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Logitech C920 HD Pro",
+                            Price = 4500000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Logitech Brio 4K",
+                            Price = 9000000.0,
+                            Unit = "Chiếc"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Razer Kiyo Pro",
+                            Price = 12000000.0,
+                            Unit = "Chiếc"
                         });
                 });
 
@@ -409,6 +430,78 @@ namespace repair_management_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Màn hình"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Nguồn máy tính"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Mainboard"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Chuột"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Bàn phím"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Thiết bị lưu trữ, bộ nhớ"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Tai nghe"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "CPU"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "VGA"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Tản nhiệt"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Ergonomic"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Webcam"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "PC"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Thiết bị ngoại vi"
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.Customer", b =>
@@ -521,6 +614,53 @@ namespace repair_management_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Manufacturers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Corsair"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Dell"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Acer"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "ASUS"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Kingston"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Logitech"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Razer"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Intel"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "AMD"
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.PurchaseOrder", b =>
@@ -550,37 +690,23 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6668),
+                            CreatedAt = new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(8987),
                             CustomerId = 1,
                             Total = 1200000.0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6685),
+                            CreatedAt = new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(9000),
                             CustomerId = 2,
                             Total = 1600000.0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6685),
+                            CreatedAt = new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(9000),
                             CustomerId = 3,
                             Total = 2400000.0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6689),
-                            CustomerId = 4,
-                            Total = 3500000.0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2023, 10, 28, 13, 45, 12, 246, DateTimeKind.Local).AddTicks(6689),
-                            CustomerId = 5,
-                            Total = 1900000.0
                         });
                 });
 
@@ -626,6 +752,41 @@ namespace repair_management_backend.Migrations
                     b.HasIndex("PurchaseOrderId");
 
                     b.ToTable("PurchasedProducts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 2,
+                            ManufacturerId = 1,
+                            Price = 1500000.0,
+                            ProductName = "Nguồn Corsair CX450M",
+                            ProductSerial = "8887",
+                            PurchaseOrderId = 1,
+                            WarrantyPeriod = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            ManufacturerId = 2,
+                            Price = 6000000.0,
+                            ProductName = "Màn hình Dell S2722DGM",
+                            ProductSerial = "8888",
+                            PurchaseOrderId = 2,
+                            WarrantyPeriod = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 12,
+                            ManufacturerId = 6,
+                            Price = 4500000.0,
+                            ProductName = "Logitech C920 HD Pro",
+                            ProductSerial = "8889",
+                            PurchaseOrderId = 3,
+                            WarrantyPeriod = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.RepairAccessory", b =>
