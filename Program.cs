@@ -16,7 +16,6 @@ using repair_management_backend.Repositories.TaskRepo;
 using repair_management_backend.Repositories.AccessoryRepo;
 using repair_management_backend.Repositories.CustomerRepo;
 using repair_management_backend.Repositories.PurchaseOrderRepo;
-using repair_management_backend.Repositories.PurchasedProductRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +34,6 @@ builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IAccessoryRepository, AccessoryRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
-builder.Services.AddScoped<IPurchasedProductRepository, PurchasedProductRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
