@@ -1,12 +1,31 @@
-﻿namespace repair_management_backend.Repositories.CustomerRepo
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using repair_management_backend.DTOs.Customer;
+
+namespace repair_management_backend.Repositories.CustomerRepo
 {
     public class CustomerRepository : ICustomerRepository
     {
         private readonly DataContext _dataContext;
-        public CustomerRepository(DataContext dataContext)
+        private readonly IMapper _mapper;
+        public CustomerRepository(DataContext dataContext, IMapper mapper)
         {
             _dataContext = dataContext;
+            _mapper = mapper;
         }
+
+        public async Task<ServiceResponse<string>> AddCustomer(AddCustomerDTO newCustomer)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+            var customer =_mapper.Map<Customer>(newCustomer);
+
+            _dataContext.Customers.Add(customer);
+            await _dataContext.SaveChangesAsync();
+
+            serviceResponse.Data = "Tạo thành công khách hàng";
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<Customer>>> GetAll()
         {
             var serviceResponse = new ServiceResponse<List<Customer>>();
