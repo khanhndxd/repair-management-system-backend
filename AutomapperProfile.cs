@@ -12,6 +12,7 @@ namespace repair_management_backend
             CreateMap<PurchasedProduct, GetPurchasedProductDTO>();
             CreateMap<PurchaseOrder, GetPurchaseOrderDTO>();
             CreateMap<Customer, GetCustomerDTO>();
+            CreateMap<AddCustomerDTO, Customer>();
         }
     }
 }
