@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using repair_management_backend.DTOs.Customer;
 using repair_management_backend.Repositories.CustomerRepo;
 
 namespace repair_management_backend.Controllers
@@ -25,6 +26,16 @@ namespace repair_management_backend.Controllers
             if (result.Data is null)
             {
                 return NotFound(result);
+            }
+            return Ok(result);
+        }
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<string>>> AddCustomer([FromBody] AddCustomerDTO newCustomer)
+        {
+            var result = await _customerRepository.AddCustomer(newCustomer);
+            if (result.Data is null)
+            {
+                return BadRequest(result);
             }
             return Ok(result);
         }
