@@ -14,10 +14,10 @@ namespace repair_management_backend.Controllers
         {
             _purchaseOrderRepository = purchaseOrderRepository;
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<List<GetPurchaseOrderDTO>>>> GetByCustomerId(int id)
+        [HttpGet("Customer/{customerId}")]
+        public async Task<ActionResult<ServiceResponse<List<GetPurchaseOrderDTO>>>> GetPurchaseOrderByCustomerId(int customerId)
         {
-            var result = await _purchaseOrderRepository.GetPurchaseOrdersByCustomerId(id);
+            var result = await _purchaseOrderRepository.GetPurchaseOrdersByCustomerId(customerId);
             if (result.Data is null)
             {
                 return NotFound(result);
