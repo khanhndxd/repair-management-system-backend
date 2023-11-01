@@ -33,12 +33,12 @@ namespace repair_management_backend.Repositories.CustomerRepo
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<Customer>> GetCustomerById(int id)
+        public async Task<ServiceResponse<GetCustomerDTO>> GetCustomerById(int id)
         {
-            var serviceResponse = new ServiceResponse<Customer>();
+            var serviceResponse = new ServiceResponse<GetCustomerDTO>();
             try
             {
-                var result = await _dataContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+                var result = await _dataContext.Customers.Select(c => _mapper.Map<GetCustomerDTO>(c)).FirstOrDefaultAsync(c => c.Id == id);
                 if (result is null)
                 {
                     throw new Exception($"Không tìm thấy khách hàng có id là `{id}`");
