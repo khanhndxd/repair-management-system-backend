@@ -1,8 +1,11 @@
-﻿namespace repair_management_backend.Repositories.RepairOrderRepo
+﻿using repair_management_backend.DTOs.RepairOrder;
+
+namespace repair_management_backend.Repositories.RepairOrderRepo
 {
     public interface IRepairOrderRepository
     {
-        Task<ServiceResponse<List<RepairOrder>>> GetAll();
-        Task<ServiceResponse<RepairOrder>> GetRepairOrderById(int id);
+        Task<ServiceResponse<List<GetRepairOrderDTO>>> GetAll();
+        Task<ServiceResponse<GetRepairOrderDTO>> GetRepairOrderById(int id);
+        Task<ServiceResponse<string>> AddRepairOrder(RepairOrderFullDTO newRepairOrder);
     }
 }
