@@ -12,7 +12,7 @@ using repair_management_backend.Data;
 namespace repair_management_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231030095907_Initial")]
+    [Migration("20231102141731_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -50,6 +50,18 @@ namespace repair_management_backend.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "4c82dbc5-601a-4840-94cf-c0f831509dd8",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = "d4c3ee1b-4118-4481-a208-c7bd3fe92424",
+                            Name = "Staff"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -212,6 +224,18 @@ namespace repair_management_backend.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "1",
+                            RoleId = "4c82dbc5-601a-4840-94cf-c0f831509dd8"
+                        },
+                        new
+                        {
+                            UserId = "2",
+                            RoleId = "d4c3ee1b-4118-4481-a208-c7bd3fe92424"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -693,21 +717,21 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(8987),
+                            CreatedAt = new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2812),
                             CustomerId = 1,
                             Total = 1200000.0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(9000),
+                            CreatedAt = new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2829),
                             CustomerId = 2,
                             Total = 1600000.0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(9000),
+                            CreatedAt = new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2833),
                             CustomerId = 3,
                             Total = 2400000.0
                         });
@@ -1103,6 +1127,40 @@ namespace repair_management_backend.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.HasDiscriminator().HasValue("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "99767332-8982-4988-8ea8-608c57253825",
+                            Email = "admin@admin.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN.COM",
+                            NormalizedUserName = "NGUYEN DUY KHANH",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKgwauJa7I4bSGJ2OZDXDJBHPtEfYQf8nqWSh2aBdqD9E+E2W1q0BrFffpIA4tNdnA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "Nguyễn Duy Khánh"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a74ec75c-c3c6-444d-9ecb-b0a1455cdcc4",
+                            Email = "staff1@staff.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "STAFF1@STAFF.COM",
+                            NormalizedUserName = "NGUYEN HOANG A",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIqpXH0KFrqlUkm3YWbGSP4abWNnmhqmSlheTOEOUZ89br9f5Sy3WYU0dzu44iEUzQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "Nguyễn Hoàng A"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

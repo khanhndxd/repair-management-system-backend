@@ -474,6 +474,24 @@ namespace repair_management_backend.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "4c82dbc5-601a-4840-94cf-c0f831509dd8", null, "Admin", null },
+                    { "d4c3ee1b-4118-4481-a208-c7bd3fe92424", null, "Staff", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "1", 0, "99767332-8982-4988-8ea8-608c57253825", "User", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "NGUYEN DUY KHANH", "AQAAAAIAAYagAAAAEKgwauJa7I4bSGJ2OZDXDJBHPtEfYQf8nqWSh2aBdqD9E+E2W1q0BrFffpIA4tNdnA==", null, false, "", false, "Nguyễn Duy Khánh" },
+                    { "2", 0, "a74ec75c-c3c6-444d-9ecb-b0a1455cdcc4", "User", "staff1@staff.com", true, false, null, "STAFF1@STAFF.COM", "NGUYEN HOANG A", "AQAAAAIAAYagAAAAEIqpXH0KFrqlUkm3YWbGSP4abWNnmhqmSlheTOEOUZ89br9f5Sy3WYU0dzu44iEUzQ==", null, false, "", false, "Nguyễn Hoàng A" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -571,13 +589,22 @@ namespace repair_management_backend.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "4c82dbc5-601a-4840-94cf-c0f831509dd8", "1" },
+                    { "d4c3ee1b-4118-4481-a208-c7bd3fe92424", "2" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "PurchaseOrders",
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "Total" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(8987), 1, 1200000.0 },
-                    { 2, new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(9000), 2, 1600000.0 },
-                    { 3, new DateTime(2023, 10, 30, 16, 59, 7, 700, DateTimeKind.Local).AddTicks(9000), 3, 2400000.0 }
+                    { 1, new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2812), 1, 1200000.0 },
+                    { 2, new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2829), 2, 1600000.0 },
+                    { 3, new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2833), 3, 2400000.0 }
                 });
 
             migrationBuilder.InsertData(
