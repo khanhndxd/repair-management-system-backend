@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using repair_management_backend.DTOs.Category;
+using repair_management_backend.DTOs.Manufacturer;
+using repair_management_backend.DTOs.RepairProduct;
+using System.ComponentModel.DataAnnotations;
 
 namespace repair_management_backend.DTOs.PurchasedProduct
 {
@@ -11,6 +14,7 @@ namespace repair_management_backend.DTOs.PurchasedProduct
         public string ProductSerial { get; set; }
         public double Price { get; set; }
         public DateTime WarrantyPeriod { get; set; }
-        public virtual ICollection<RepairProduct> RepairProducts { get; set; }
+        public GetCategoryDTO Category { get; set; }
+        public GetManufacturerDTO Manufacturer { get; set; }
     }
 }
