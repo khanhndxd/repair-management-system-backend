@@ -1,7 +1,53 @@
-﻿namespace repair_management_backend.Data
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace repair_management_backend.Data
 {
     public static class Seeder
     {
+        public static void SeedUsersWithRoles(ModelBuilder modelBuilder)
+        {
+            var roles = new List<IdentityRole>
+        {
+            new IdentityRole("Admin"),
+            new IdentityRole("Staff")
+        };
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+            var hasher = new PasswordHasher<User>();
+            var users = new List<User>()
+            {
+                new User
+                {
+                    Id = "1",
+                    UserName = "Nguyễn Duy Khánh",
+                    NormalizedUserName = "NGUYEN DUY KHANH",
+                    Email = "admin@admin.com",
+                    NormalizedEmail = "ADMIN@ADMIN.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "123456"),
+                    SecurityStamp = string.Empty
+                },
+                new User
+                {
+                    Id = "2",
+                    UserName = "Nguyễn Hoàng A",
+                    NormalizedUserName = "NGUYEN HOANG A",
+                    Email = "staff1@staff.com",
+                    NormalizedEmail = "STAFF1@STAFF.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "123456"),
+                    SecurityStamp = string.Empty
+                }
+            };
+            modelBuilder.Entity<User>().HasData(users);
+            // Seed UserRoles
+            var userRoles = new List<IdentityUserRole<string>>();
+
+            userRoles.Add(new IdentityUserRole<string> { UserId = users[0].Id, RoleId = roles.First(r => r.Name == "Admin").Id });
+            userRoles.Add(new IdentityUserRole<string> { UserId = users[1].Id, RoleId = roles.First(r => r.Name == "Staff").Id });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoles);
+        }
         public static List<Customer> GetCustomerSeedingData()
         {
             return new List<Customer>()

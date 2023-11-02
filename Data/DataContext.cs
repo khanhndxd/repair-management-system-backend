@@ -26,6 +26,9 @@ namespace repair_management_backend.Data
                 .HasForeignKey(ro => ro.RepairedById)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // seed users và roles
+            Seeder.SeedUsersWithRoles(modelBuilder);
+
             // lấy dữ liệu seeding
             var customers = Seeder.GetCustomerSeedingData();
             var purchaseOrders = Seeder.GetPurchaseOrderSeedingData();
