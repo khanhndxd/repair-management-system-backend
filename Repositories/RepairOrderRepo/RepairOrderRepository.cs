@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using repair_management_backend.DTOs.RepairOrder;
+using repair_management_backend.Models;
 
 namespace repair_management_backend.Repositories.RepairOrderRepo
 {
@@ -63,6 +64,7 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 .Include(r => r.CreatedBy)
                 .Include(r => r.RepairedBy)
                 .Include(r => r.RepairProducts)
+                    .ThenInclude(rp => rp.PurchasedProduct)
                 .Include(r => r.RepairAccessories)
                 .Select(r => _mapper.Map<GetRepairOrderDTO>(r))
                 .ToListAsync();
@@ -74,7 +76,7 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
             var serviceResponse = new ServiceResponse<GetRepairOrderDTO>();
             try
             {
-                var result = await _dataContext.RepairOrders
+                var result_1 = await _dataContext.RepairOrders
                     .Include(r => r.Customer)
                     .Include(r => r.RepairReason)
                     .Include(r => r.RepairType)
@@ -83,9 +85,12 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                     .Include(r => r.CreatedBy)
                     .Include(r => r.RepairedBy)
                     .Include(r => r.RepairProducts)
+                        .ThenInclude(rp => rp.PurchasedProduct)
                     .Include(r => r.RepairAccessories)
-                    .Select(r => _mapper.Map<GetRepairOrderDTO>(r))
-                    .FirstOrDefaultAsync(x => x.Id == id);
+                    .Where(r => r.Id == id)
+                    .ToListAsync();
+
+                var result = _mapper.Map<GetRepairOrderDTO>(result_1.FirstOrDefault());
 
                 if (result is null)
                 {
@@ -94,6 +99,27 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 serviceResponse.Data = result;
 
             } catch(Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<string>> UpdateRepairOrderStatus(UpdateRepairOrderStatusDTO updateRepairOrderStatusDTO)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+            try
+            {
+                var result = await _dataContext.RepairOrders.FirstOrDefaultAsync(r => r.Id == updateRepairOrderStatusDTO.Id);
+                if (result is null)
+                {
+                    throw new Exception($"Không tìm thấy đơn bảo hành có id là `{updateRepairOrderStatusDTO.Id}`");
+                }
+                result.StatusId = updateRepairOrderStatusDTO.StatusId;
+                await _dataContext.SaveChangesAsync();
+                serviceResponse.Data = "Cập nhật thành công trạng thái đơn bảo hành";
+            } catch (Exception ex)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
