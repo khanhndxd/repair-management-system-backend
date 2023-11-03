@@ -41,5 +41,15 @@ namespace repair_management_backend.Controllers
             }
             return Ok(result);
         }
+        [HttpPatch]
+        public async Task<ActionResult<ServiceResponse<string>>> UpdateRepairOrderStatus([FromBody] UpdateRepairOrderStatusDTO updateRepairOrderStatusDTO)
+        {
+            var result = await _repairOrderRepository.UpdateRepairOrderStatus(updateRepairOrderStatusDTO);
+            if (result.Data is null)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
     }
 }
