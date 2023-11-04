@@ -66,6 +66,7 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 .Include(r => r.RepairProducts)
                     .ThenInclude(rp => rp.PurchasedProduct)
                 .Include(r => r.RepairAccessories)
+                    .ThenInclude(ra => ra.Accessory)
                 .Select(r => _mapper.Map<GetRepairOrderDTO>(r))
                 .ToListAsync();
             return serviceResponse;
@@ -87,6 +88,7 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                     .Include(r => r.RepairProducts)
                         .ThenInclude(rp => rp.PurchasedProduct)
                     .Include(r => r.RepairAccessories)
+                        .ThenInclude(ra => ra.Accessory)
                     .Where(r => r.Id == id)
                     .ToListAsync();
 
