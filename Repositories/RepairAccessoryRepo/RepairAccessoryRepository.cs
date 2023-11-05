@@ -20,6 +20,16 @@ namespace repair_management_backend.Repositories.RepairAccessoryRepo
 
             try
             {
+                // Lấy ra danh sách RepairOrderId từ addRepairAccessoryDTO
+                var repairOrderIds = addRepairAccessoryDTO.Select(dto => dto.RepairOrderId).ToList();
+
+                // Xóa dữ liệu trong RepairAccessory có RepairOrderId nằm trong danh sách trước khi thêm mới
+                var accessoriesToDelete = _dataContext.RepairAccessories.Where(ra => repairOrderIds.Contains(ra.RepairOrderId));
+                _dataContext.RepairAccessories.RemoveRange(accessoriesToDelete);
+
+                await _dataContext.SaveChangesAsync();
+
+                // Thêm dữ liệu mới
                 for (int i = 0; i < addRepairAccessoryDTO.Count; i++)
                 {
                     var repairAccessory = new RepairAccessory
@@ -30,12 +40,13 @@ namespace repair_management_backend.Repositories.RepairAccessoryRepo
                     };
                     _dataContext.RepairAccessories.Add(repairAccessory);
 
-                    // kiểm tra nếu đã thêm 10 sản phẩm thì sẽ lưu vào database
+                    // cứ thêm 10 sản phẩm vào bộ nhớ thì sẽ lưu vào database
                     if (i % 10 == 0)
                     {
                         await _dataContext.SaveChangesAsync();
                     }
                 }
+
                 await _dataContext.SaveChangesAsync();
                 transaction.Commit();
                 serviceResponse.Data = "Thêm thành công linh kiện vào đơn bảo hành";

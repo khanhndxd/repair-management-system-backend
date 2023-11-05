@@ -3,6 +3,8 @@
     public class UpdateRepairOrderStatusDTO
     {
         public int Id { get; set; }
+        public string CreatedById { get; set; }
+        public string RepairedById { get; set; }
         public int StatusId { get; set; }
     }
 }

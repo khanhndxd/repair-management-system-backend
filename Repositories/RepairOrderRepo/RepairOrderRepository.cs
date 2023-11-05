@@ -118,6 +118,10 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 {
                     throw new Exception($"Không tìm thấy đơn bảo hành có id là `{updateRepairOrderStatusDTO.Id}`");
                 }
+                if (result.RepairedById != updateRepairOrderStatusDTO.RepairedById && result.CreatedById != updateRepairOrderStatusDTO.CreatedById)
+                {
+                    throw new Exception($"Không thể cập nhật trạng thái vì không phải người tiếp nhận hay người tạo đơn");
+                }
                 result.StatusId = updateRepairOrderStatusDTO.StatusId;
                 await _dataContext.SaveChangesAsync();
                 serviceResponse.Data = "Cập nhật thành công trạng thái đơn bảo hành";
