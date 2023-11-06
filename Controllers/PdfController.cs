@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using repair_management_backend.DTOs.Pdf;
 using System.IO;
 
 namespace repair_management_backend.Controllers
@@ -11,108 +13,145 @@ namespace repair_management_backend.Controllers
     [ApiController]
     public class PdfController : ControllerBase
     {
-        [HttpGet("generate")]
-        public IActionResult GetPDF()
+        [HttpPost("Generate")]
+        public IActionResult GetPDF([FromBody] PdfGenerationRequest pdfGenerationRequest)
         {
             QuestPDF.Settings.License = LicenseType.Community;
-            var pdfBytes = Document.Create(document =>
+            var pdfBytes = Document.Create(container =>
             {
-                document.Page(page =>
+                container.Page(page =>
                 {
-                    page.Margin(2, Unit.Centimetre);
-                    page.DefaultTextStyle(x => x.FontSize(12));
+                    page.Margin(1, Unit.Centimetre);
+                    page.Size(PageSizes.A5);
+                    page.DefaultTextStyle(x => x.FontSize(6));
                     page.DefaultTextStyle(x => x.FontFamily("Arial"));
                     page.Header()
                     .Row(row =>
                     {
-                        row.Spacing(25);
-
-                        row.RelativeItem()
-
-                            .Column(column =>
-                            {
-                                column.Item()
-                                .Text("Phiếu bảo hành")
-                                .SemiBold()
-                                .FontSize(30)
-                                .FontColor(Colors.Blue.Medium);
-
-                                column.Item()
-                                .Text("Q&A Table")
-                                .Underline()
-                                .FontSize(20)
-                                .FontColor(Colors.Blue.Medium);
-                            });
+                        row.AutoItem().Text("Công ty TNHH Nguyễn Duy Khánh").FontSize(6);
                     });
 
-                    page.Content()
-                    .PaddingVertical(25).Table(table =>
+                    page.Content().Column(column =>
                     {
-                        table.ColumnsDefinition(columns =>
+                        column.Spacing(4);
+                        column.Item().AlignCenter().Text("Phiếu bảo hành").FontSize(16).Bold();
+                        column.Item().Table(table0 => 
                         {
-                            // s.no, question,qtype, weightage, sortorder
-                            columns.ConstantColumn(50);
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.ConstantColumn(60);
-                            columns.ConstantColumn(60);
+                            table0.ColumnsDefinition(columns =>
+                            {
+                                columns.ConstantColumn(50);
+                                columns.RelativeColumn();
+                                columns.ConstantColumn(50);
+                                columns.RelativeColumn();
+                            });
+
+                            table0.Cell().AlignLeft().Text("Khách hàng").FontSize(6).Bold();
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.CustomerName).FontSize(6);
+                            table0.Cell().AlignLeft().Text("Số phiếu").FontSize(6).Bold();
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.repairOrderId).FontSize(6);
+
+                            table0.Cell().AlignLeft().Text("Địa chỉ").FontSize(6).Bold();
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.CustomerAddress).FontSize(6);
+                            table0.Cell().AlignLeft().Text("Ngày tiếp nhận").FontSize(6).Bold();
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.CreatedAt.ToString("dd-MM-yyyy")).FontSize(6);
+
+                            table0.Cell().AlignLeft().Text("Số điện thoại").FontSize(6).Bold();
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.CustomerPhone).FontSize(6);
+                            table0.Cell().AlignLeft().Text("Ngày trả hàng").FontSize(6).Bold();
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.ReceiveAt.ToString("dd-MM-yyyy")).FontSize(6);
+
+                            table0.Cell().AlignLeft().Text("Lý do bảo hành").FontSize(6).Bold();
+                            table0.Cell().AlignLeft().Text("Sản phẩm lỗi").FontSize(6);
+                            table0.Cell().AlignLeft().Text("Người tạo phiếu").FontSize(6).Bold();
+                            table0.Cell().AlignLeft().Text("Nguyễn Duy Khánh").FontSize(6);
                         });
-                        table.Header(header =>
+                        column.Item().Text("Sản phẩm bảo hành").FontSize(9).Bold();
+                        column.Item().Table(table1 =>
                         {
-                            header.Cell().Text("S.No");
-                            header.Cell().AlignRight().Text("Question");
-                            header.Cell().AlignRight().Text("QType");
-                            header.Cell().AlignRight().Text("Weightage");
-                            header.Cell().AlignRight().Text("Sortorder");
+                            table1.ColumnsDefinition(columns =>
+                            {
+                                columns.ConstantColumn(50);
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
 
+                            table1.Header(header =>
+                            {
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("STT").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Mã sản phẩm").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Tên sản phẩm").FontSize(6);
+                            });
+
+                            var index1 = 1;
+                            foreach (var item in pdfGenerationRequest.RepairProducts)
+                            {
+                                table1.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(index1).FontSize(6);
+                                table1.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Id).FontSize(6);
+                                table1.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Name).FontSize(6);
+                                index1++;
+                            }
                         });
-                        table.Cell().Text("1");
-                        table.Cell().Text("what is the important aspects of IT?");
-                        table.Cell().AlignRight().Text("Essay");
-                        table.Cell().AlignRight().Text("5");
-                        table.Cell().AlignRight().Text("6");
+                        column.Item().Text("Linh kiện thay thế").FontSize(9).Bold();
+                        column.Item().Table(table2 =>
+                        {
+                            table2.ColumnsDefinition(columns =>
+                            {
+                                columns.ConstantColumn(50);
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
 
-                        table.Cell().Text("2");
-                        table.Cell().Text("an extension of image file?");
-                        table.Cell().AlignRight().Text("Choice");
-                        table.Cell().AlignRight().Text("2");
-                        table.Cell().AlignRight().Text("1");
+                            table2.Header(header =>
+                            {
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("STT").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Mã linh kiện").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Tên linh kiện").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Đơn vị").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Số lượng").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Chi phí").FontSize(6);
+                            });
 
-                        table.Cell().Text("3");
-                        table.Cell().Text("What are security controls?");
-                        table.Cell().AlignRight().Text("Essay");
-                        table.Cell().AlignRight().Text("5");
-                        table.Cell().AlignRight().Text("7");
+                            var index2 = 1;
+                            foreach (var item in pdfGenerationRequest.Accessories)
+                            {
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(index2).FontSize(6);
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Id).FontSize(6);
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Name).FontSize(6);
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Unit).FontSize(6);
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Quantity).FontSize(6);
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Price).FontSize(6);
+                                index2++;
+                            }
+                        });
+                        column.Item().Text("Tổng tiền: 9.000.000 đ").FontSize(10);
+                        column.Item().PaddingTop(15).Table(table3 =>
+                        {
+                            table3.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
 
-                        table.Cell().Text("4");
-                        table.Cell().Text("compliance standard?");
-                        table.Cell().AlignRight().Text("Choice");
-                        table.Cell().AlignRight().Text("2");
-                        table.Cell().AlignRight().Text("2");
+                            table3.Cell().AlignCenter().Text("Khách hàng").FontSize(6).Bold();
+                            table3.Cell().AlignCenter().Text("Người lập phiếu").FontSize(6).Bold();
+                            table3.Cell().AlignCenter().Text("Kỹ thuật viên").FontSize(6).Bold();
+                            table3.Cell().AlignCenter().Text("Trưởng phòng bảo hành").FontSize(6).Bold();
 
-                        table.Cell().Text("5");
-                        table.Cell().Text("Risk is the failure in component?");
-                        table.Cell().AlignRight().Text("Choice");
-                        table.Cell().AlignRight().Text("2");
-                        table.Cell().AlignRight().Text("3");
-
-                        table.Cell().Text("6");
-                        table.Cell().Text("Third party tools in software?");
-                        table.Cell().AlignRight().Text("Essay");
-                        table.Cell().AlignRight().Text("5");
-                        table.Cell().AlignRight().Text("5");
-
-                        table.Cell().Text("7");
-                        table.Cell().Text("What are cloud based solutions?");
-                        table.Cell().AlignRight().Text("Essay");
-                        table.Cell().AlignRight().Text("5");
-                        table.Cell().AlignRight().Text("4");
-
+                            table3.Cell().AlignCenter().Text("(Ký, họ tên)").FontSize(6);
+                            table3.Cell().AlignCenter().Text("(Ký, họ tên)").FontSize(6);
+                            table3.Cell().AlignCenter().Text("(Ký, họ tên)").FontSize(6);
+                            table3.Cell().AlignCenter().Text("(Ký, họ tên)").FontSize(6);
+                        });
                     });
                 });
             }).GeneratePdf();
 
-            Response.Headers.Add("content-disposition", "attachment; filename=hello.pdf");
+            Response.Headers.Add("content-disposition", "attachment; filename=baohanh.pdf");
             return File(pdfBytes, "application/pdf");
         }
     }
