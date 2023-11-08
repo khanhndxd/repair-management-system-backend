@@ -59,7 +59,6 @@ namespace repair_management_backend.Repositories.RepairAccessoryRepo
             }
             return serviceResponse;
         }
-
         public async Task<ServiceResponse<List<GetRepairAccessoryDTO>>> GetRepairAccessoryByRepairOrderId(int id)
         {
             var serviceResponse = new ServiceResponse<List<GetRepairAccessoryDTO>>();
