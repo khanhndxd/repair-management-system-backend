@@ -37,6 +37,7 @@ namespace repair_management_backend
             CreateMap<Accessory, GetAccessoryDTO>();
             CreateMap<RepairAccessory, GetRepairAccessoryDTO>();
             CreateMap<AddRepairAccessoryDTO, RepairAccessory>();
+            CreateMap<UpdateRepairOrderDTO, RepairOrder>();
         }
     }
 }
