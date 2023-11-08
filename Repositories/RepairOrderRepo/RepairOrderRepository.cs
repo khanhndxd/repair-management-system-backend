@@ -14,9 +14,9 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<int>> AddRepairOrder(AddRepairOrderDTO newRepairOrder)
+        public async Task<ServiceResponse<string>> AddRepairOrder(RepairOrderFullDTO newRepairOrder)
         {
-            var serviceResponse = new ServiceResponse<int>();
+            var serviceResponse = new ServiceResponse<string>();
             var repairOrder = new RepairOrder
             {
                 CustomerId = newRepairOrder.CustomerId,
@@ -33,17 +33,22 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 Note = newRepairOrder.Note
             };
 
-            try
-            {
-                _dataContext.RepairOrders.Add(repairOrder);
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
-            }
+            _dataContext.RepairOrders.Add(repairOrder);
             await _dataContext.SaveChangesAsync();
-            serviceResponse.Data = repairOrder.Id;
+
+            int repairOrderId = repairOrder.Id;
+
+            var repairProduct = new RepairProduct
+            {
+                RepairOrderId = repairOrderId,
+                PurchasedProductId = newRepairOrder.ProductId,
+                Description = newRepairOrder.ProductDescription,
+            };
+
+            _dataContext.RepairProducts.Add(repairProduct);
+            await _dataContext.SaveChangesAsync();
+
+            serviceResponse.Data = "Tạo thành công đơn bảo hành";
             return serviceResponse;
         }
 
@@ -94,30 +99,6 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                     throw new Exception($"Không tìm thấy đơn sửa chữa có id là `{id}`");
                 }
                 serviceResponse.Data = result;
-
-            } catch(Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
-            }
-            return serviceResponse;
-        }
-
-        public async Task<ServiceResponse<string>> UpdateRepairOrder(UpdateRepairOrderDTO updateRepairOrderDTO)
-        {
-            var serviceResponse = new ServiceResponse<string>();
-            try
-            {
-                var repairOrder = await _dataContext.RepairOrders.FirstOrDefaultAsync(ro => ro.Id == updateRepairOrderDTO.Id);
-                if (repairOrder is null)
-                {
-                    throw new Exception($"Không tìm thấy đơn bảo hành mã '{updateRepairOrderDTO.Id}'");
-                }
-                _mapper.Map(updateRepairOrderDTO, repairOrder);
-
-                await _dataContext.SaveChangesAsync();
-                serviceResponse.Data = "Cập nhật đơn bảo hành thành công";
-                serviceResponse.Message = "Cập nhật đơn bảo hành thành công";
 
             } catch(Exception ex)
             {
