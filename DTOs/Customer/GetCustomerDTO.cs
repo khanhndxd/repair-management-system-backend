@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using repair_management_backend.DTOs.PurchaseOrder;
+using repair_management_backend.DTOs.RepairOrder;
+using System.ComponentModel.DataAnnotations;
 
 namespace repair_management_backend.DTOs.Customer
 {
@@ -15,5 +17,7 @@ namespace repair_management_backend.DTOs.Customer
         public string Phone { get; set; } = string.Empty;
         [MaxLength(255)]
         public string Note { get; set; } = string.Empty;
+        public List<GetPurchaseOrderNoCustomerDTO>? PurchaseOrders { get; set; }
+        public List<GetRepairOrderNoCustomerDTO>? RepairOrders { get; set; }
     }
 }
