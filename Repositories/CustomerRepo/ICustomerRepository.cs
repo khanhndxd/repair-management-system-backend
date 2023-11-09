@@ -7,5 +7,6 @@ namespace repair_management_backend.Repositories.CustomerRepo
         Task<ServiceResponse<List<Customer>>> GetAll();
         Task<ServiceResponse<GetCustomerDTO>> GetCustomerById(int id);
         Task<ServiceResponse<string>> AddCustomer(AddCustomerDTO newCustomer);
+        Task<ServiceResponse<string>> UpdateCustomer(UpdateCustomerDTO updateCustomerDTO);
     }
 }
