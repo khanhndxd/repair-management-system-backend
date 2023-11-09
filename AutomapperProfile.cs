@@ -22,10 +22,12 @@ namespace repair_management_backend
         {
             CreateMap<PurchasedProduct, GetPurchasedProductDTO>();
             CreateMap<PurchaseOrder, GetPurchaseOrderDTO>();
+            CreateMap<PurchaseOrder, GetPurchaseOrderNoCustomerDTO>();
             CreateMap<Customer, GetCustomerDTO>();
             CreateMap<AddCustomerDTO, Customer>();
             CreateMap<AddRepairOrderDTO, RepairOrder>();
             CreateMap<RepairOrder, GetRepairOrderDTO>();
+            CreateMap<RepairOrder, GetRepairOrderNoCustomerDTO>();
             CreateMap<User, GetUserDTO>();
             CreateMap<Models.Task, GetTaskDTO>();
             CreateMap<RepairType, GetRepairTypeDTO>();
@@ -38,6 +40,7 @@ namespace repair_management_backend
             CreateMap<RepairAccessory, GetRepairAccessoryDTO>();
             CreateMap<AddRepairAccessoryDTO, RepairAccessory>();
             CreateMap<UpdateRepairOrderDTO, RepairOrder>();
+            CreateMap<UpdateCustomerDTO, Customer>();
         }
     }
 }
