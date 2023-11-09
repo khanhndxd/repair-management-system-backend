@@ -20,7 +20,7 @@ namespace repair_management_backend.Controllers
             return Ok(await _customerRepository.GetAll());
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<Customer>>> GetSingle(int id)
+        public async Task<ActionResult<ServiceResponse<GetCustomerDTO>>> GetSingle(int id)
         {
             var result = await _customerRepository.GetCustomerById(id);
             if (result.Data is null)
@@ -33,6 +33,16 @@ namespace repair_management_backend.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> AddCustomer([FromBody] AddCustomerDTO newCustomer)
         {
             var result = await _customerRepository.AddCustomer(newCustomer);
+            if (result.Data is null)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpPatch]
+        public async Task<ActionResult<ServiceResponse<string>>> UpdateCustomer([FromBody] UpdateCustomerDTO updateCustomerDTO)
+        {
+            var result = await _customerRepository.UpdateCustomer(updateCustomerDTO);
             if (result.Data is null)
             {
                 return BadRequest(result);
