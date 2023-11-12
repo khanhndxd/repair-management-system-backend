@@ -6,5 +6,6 @@ namespace repair_management_backend.Repositories.Auth
     {
         Task<ServiceResponse<string>> Register(string userName, string email, string password);
         Task<ServiceResponse<string>> Login(string email, string password);
+        Task<ServiceResponse<TokenResponse>> RefreshToken(TokenRequest tokenRequest);
     }
 }

@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using repair_management_backend.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace repair_management_backend.Repositories.Auth
@@ -10,11 +13,15 @@ namespace repair_management_backend.Repositories.Auth
     public class AuthRepository : IAuthRepository
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DataContext _dataContext;
         private readonly JwtConfig _jwtConfig;
-        public AuthRepository(UserManager<IdentityUser> userManager, IOptionsMonitor<JwtConfig> optionsMonitor)
+        public AuthRepository(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IOptionsMonitor<JwtConfig> optionsMonitor, DataContext dataContext)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _jwtConfig = optionsMonitor.CurrentValue;
+            _dataContext = dataContext;
         }
         public async Task<ServiceResponse<string>> Login(string email, string password)
         {
@@ -36,7 +43,7 @@ namespace repair_management_backend.Repositories.Auth
                 return serviceResponse;
             }
 
-            var jwtToken = GenerateJwtToken(existingUser);
+            var jwtToken = await GenerateJwtToken(existingUser.UserName);
             serviceResponse.Data = jwtToken;
             serviceResponse.Message = "Đăng nhập thành công";
 
@@ -55,11 +62,11 @@ namespace repair_management_backend.Repositories.Auth
                 return serviceResponse;
             }
 
-            var newUser = new IdentityUser() { Email = email, UserName = userName };
+            var newUser = new User() { Email = email, UserName = userName };
             var isCreated = await _userManager.CreateAsync(newUser, password);
             if(isCreated.Succeeded)
             {
-                serviceResponse.Data = GenerateJwtToken(newUser);
+                serviceResponse.Data = await GenerateJwtToken(newUser.UserName);
                 serviceResponse.Message = "Tạo thành công user";
             } else
             {
@@ -70,28 +77,114 @@ namespace repair_management_backend.Repositories.Auth
 
             return serviceResponse;
         }
-        private string GenerateJwtToken(IdentityUser user)
+        private async Task<string> GenerateJwtToken(string username)
         {
+            var claims = await GetClaims(username);
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtConfig.Secret);
 
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim("Id", user.Id),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                }),
-                Expires = DateTime.UtcNow.AddHours(6),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+            var securityToken = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(1),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            );
 
-            var token = jwtTokenHandler.CreateToken(tokenDescriptor);
-            var jwtToken = jwtTokenHandler.WriteToken(token);
+            var jwtToken = jwtTokenHandler.WriteToken(securityToken);
 
             return jwtToken;
+        }
+        public string GenerateAccessToken(IEnumerable<Claim> claims)
+        {
+            var key = Encoding.UTF8.GetBytes(_jwtConfig.Secret);
+
+            var tokeOptions = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(1),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
+            return tokenString;
+        }
+        private async Task<List<Claim>> GetClaims(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.Email) };
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            return claims;
+        }
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var key = Encoding.UTF8.GetBytes(_jwtConfig.Secret);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateLifetime = true,
+                RequireExpirationTime = true
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
+        }
+
+        public async Task<ServiceResponse<TokenResponse>> RefreshToken(TokenRequest tokenRequest)
+        {
+            var serviceResponse = new ServiceResponse<TokenResponse>();
+            if (tokenRequest is null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Token không hợp lệ";
+            }
+
+            string accessToken = tokenRequest.AccessToken;
+            string refreshToken = tokenRequest.RefreshToken;
+
+            var principal = GetPrincipalFromExpiredToken(accessToken);
+            var email = principal.Identity.Name; //this is mapped to the Name claim by default
+
+            //var user = await _userManager.FindByEmailAsync(email);
+
+            var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Request không hợp lệ";
+            }
+
+            var newAccessToken = GenerateAccessToken(principal.Claims);
+            var newRefreshToken = GenerateRefreshToken();
+
+            user.RefreshToken = newRefreshToken;
+            await _dataContext.SaveChangesAsync();
+
+            serviceResponse.Data = new TokenResponse() { Token = newAccessToken, RefreshToken = newRefreshToken };
+            
+            return serviceResponse;
         }
     }
 }
