@@ -48,5 +48,16 @@ namespace repair_management_backend.Controllers
             }
             return BadRequest();
         }
+        [HttpPost]
+        [Route("RefreshToken")]
+        public async Task<ActionResult<ServiceResponse<TokenResponse>>> RefreshToken([FromBody] TokenRequest tokenRequest)
+        {
+            var result = await _auth.RefreshToken(tokenRequest);
+            if (result.Success == false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
     }
 }
