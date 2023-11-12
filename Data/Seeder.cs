@@ -20,7 +20,7 @@ namespace repair_management_backend.Data
                 {
                     Id = "1",
                     UserName = "Nguyễn Duy Khánh",
-                    NormalizedUserName = "NGUYEN DUY KHANH",
+                    NormalizedUserName = "NGUYỄN DUY KHÁNH",
                     Email = "admin@admin.com",
                     NormalizedEmail = "ADMIN@ADMIN.COM",
                     EmailConfirmed = true,
@@ -31,7 +31,7 @@ namespace repair_management_backend.Data
                 {
                     Id = "2",
                     UserName = "Nguyễn Hoàng A",
-                    NormalizedUserName = "NGUYEN HOANG A",
+                    NormalizedUserName = "NGUYỄN HOÀNG A",
                     Email = "staff1@staff.com",
                     NormalizedEmail = "STAFF1@STAFF.COM",
                     EmailConfirmed = true,
