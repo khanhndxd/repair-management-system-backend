@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using repair_management_backend.DTOs.RepairOrder;
 using repair_management_backend.Repositories.RepairOrderRepo;
@@ -7,6 +8,7 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RepairOrderController : ControllerBase
     {
         private readonly IRepairOrderRepository _repairOrderRepository;
@@ -15,11 +17,13 @@ namespace repair_management_backend.Controllers
             _repairOrderRepository = repairOrderRepository;
         }
         [HttpGet("GetAll")]
+        [Authorize(Roles = "Full")]
         public async Task<ActionResult<ServiceResponse<List<GetRepairOrderDTO>>>> Get()
         {
             return Ok(await _repairOrderRepository.GetAll());
         }
         [HttpGet("{id}")]
+        [Authorize(Roles = "Full, Staff")]
         public async Task<ActionResult<ServiceResponse<GetRepairOrderDTO>>> GetSingle(int id)
         {
             var result = await _repairOrderRepository.GetRepairOrderById(id);

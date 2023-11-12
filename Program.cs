@@ -55,12 +55,25 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true,
-        RequireExpirationTime = false
+        RequireExpirationTime = true
     };
 });
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Full", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+    options.AddPolicy("Staff", policy =>
+    {
+        policy.RequireRole("Staff");
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddCors(c =>
@@ -70,7 +83,7 @@ builder.Services.AddCors(c =>
     .AllowAnyMethod()
     .AllowAnyHeader());
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
