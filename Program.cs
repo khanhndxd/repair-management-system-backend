@@ -18,6 +18,7 @@ using repair_management_backend.Repositories.CustomerRepo;
 using repair_management_backend.Repositories.PurchaseOrderRepo;
 using repair_management_backend.Repositories.RepairAccessoryRepo;
 using repair_management_backend.Repositories.RepairProductRepo;
+using repair_management_backend.Repositories.TokenRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,7 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
 builder.Services.AddScoped<IRepairAccessoryRepository, RepairAccessoryRepository>();
 builder.Services.AddScoped<IRepairProductRepository, RepairProductRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -55,7 +57,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true,
-        RequireExpirationTime = true
+        RequireExpirationTime = true,
+        ClockSkew = TimeSpan.Zero
     };
 });
 
@@ -65,13 +68,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Full", policy =>
+    options.AddPolicy("FullControlPolicy", policy =>
     {
         policy.RequireRole("Admin");
     });
-    options.AddPolicy("Staff", policy =>
+    options.AddPolicy("ReadWritePolicy", policy =>
     {
-        policy.RequireRole("Staff");
+        policy.RequireRole("Admin","Staff");
     });
 });
 
