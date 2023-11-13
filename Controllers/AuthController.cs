@@ -50,7 +50,7 @@ namespace repair_management_backend.Controllers
         }
         [HttpPost]
         [Route("RefreshToken")]
-        public async Task<ActionResult<ServiceResponse<TokenResponse>>> RefreshToken([FromBody] TokenRequest tokenRequest)
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequest tokenRequest)
         {
             var result = await _auth.RefreshToken(tokenRequest);
             if (result.Success == false)
