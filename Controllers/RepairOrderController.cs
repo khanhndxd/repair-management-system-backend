@@ -17,13 +17,13 @@ namespace repair_management_backend.Controllers
             _repairOrderRepository = repairOrderRepository;
         }
         [HttpGet("GetAll")]
-        [Authorize(Roles = "Full")]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<List<GetRepairOrderDTO>>>> Get()
         {
             return Ok(await _repairOrderRepository.GetAll());
         }
         [HttpGet("{id}")]
-        [Authorize(Roles = "Full, Staff")]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<GetRepairOrderDTO>>> GetSingle(int id)
         {
             var result = await _repairOrderRepository.GetRepairOrderById(id);
@@ -34,6 +34,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpPost]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<int>>> AddRepairOrder([FromBody] AddRepairOrderDTO newRepairOrder)
         {
             var result = await _repairOrderRepository.AddRepairOrder(newRepairOrder);
@@ -44,6 +45,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpPatch("Status")]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<string>>> UpdateRepairOrderStatus([FromBody] UpdateRepairOrderStatusDTO updateRepairOrderStatusDTO)
         {
             var result = await _repairOrderRepository.UpdateRepairOrderStatus(updateRepairOrderStatusDTO);
@@ -54,6 +56,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpPatch]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<string>>> UpdateRepairOrder([FromBody] UpdateRepairOrderDTO updateRepairOrderDTO)
         {
             var result = await _repairOrderRepository.UpdateRepairOrder(updateRepairOrderDTO);
