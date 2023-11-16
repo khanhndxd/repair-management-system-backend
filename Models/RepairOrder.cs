@@ -21,15 +21,15 @@ namespace repair_management_backend.Models
         public int StatusId { get; set; }
         public int RepairTypeId { get; set; }
         public int RepairReasonId { get; set; }
-        public int TaskId { get; set; }
         [MaxLength(255)]
         public string Note { get; set; }
         public Customer Customer { get; set; }
         public Status Status { get; set; }
         public RepairType RepairType { get; set; }
         public RepairReason RepairReason { get; set; }
-        public Task Task { get; set; }
         public virtual ICollection<RepairProduct> RepairProducts { get; set; }
         public virtual ICollection<RepairAccessory> RepairAccessories { get; set; }
+        public virtual ICollection<RepairCustomerProduct> RepairCustomerProducts { get; set; }
+        public virtual ICollection<RepairTask> RepairTasks { get; set; }
     }
 }
