@@ -16,7 +16,6 @@ namespace repair_management_backend.DTOs.RepairOrder
         public int StatusId { get; set; }
         public int RepairTypeId { get; set; }
         public int RepairReasonId { get; set; }
-        public int TaskId { get; set; }
         [MaxLength(255)]
         public string Note { get; set; }
     }
