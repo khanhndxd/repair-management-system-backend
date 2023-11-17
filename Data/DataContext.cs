@@ -67,6 +67,9 @@ namespace repair_management_backend.Data
         public DbSet<RepairType> RepairTypes { get; set; }
         public DbSet<RepairReason> RepairReasons { get; set; }
         public DbSet<Models.Task> Tasks { get; set; }
+        public DbSet<RepairTask> RepairTasks { get; set; }
+        public DbSet<CustomerProduct> CustomerProducts { get; set; }
+        public DbSet<RepairCustomerProduct> RepairCustomerProducts { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }
