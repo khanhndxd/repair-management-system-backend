@@ -46,7 +46,7 @@ namespace repair_management_backend.Repositories.Auth
             var refreshToken = _tokenRepository.GenerateRefreshToken();
 
             existingUser.RefreshToken = refreshToken;
-            existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(5);
+            existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(120);
             await _dataContext.SaveChangesAsync();
 
             serviceResponse.Data = new TokenResponse() { Token = jwtToken, RefreshToken = refreshToken};
