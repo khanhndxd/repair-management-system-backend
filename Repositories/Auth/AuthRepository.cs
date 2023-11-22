@@ -96,9 +96,16 @@ namespace repair_management_backend.Repositories.Auth
             string refreshToken = tokenRequest.RefreshToken;
 
             var principal = _tokenRepository.GetPrincipalFromExpiredToken(accessToken);
-            var email = principal.Identity.Name;
+            var email = principal.FindFirst(ClaimTypes.Email);
 
-            var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+            if (email == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Lỗi khi lấy claim từ token";
+                return serviceResponse;
+            }
+
+            var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email.Value);
 
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
