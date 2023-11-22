@@ -34,7 +34,7 @@ namespace repair_management_backend.Repositories.TokenRepo
 
             var securityToken = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(2),
+                expires: DateTime.UtcNow.AddMinutes(20),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             );
 
@@ -71,14 +71,19 @@ namespace repair_management_backend.Repositories.TokenRepo
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature, StringComparison.InvariantCultureIgnoreCase))
-                throw new SecurityTokenException("Invalid token");
+                throw new SecurityTokenException("Token không hợp lệ");
 
+            var emailClaim = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            if (emailClaim != null)
+            {
+                ((ClaimsIdentity)principal.Identity).AddClaim(emailClaim);
+            }
             return principal;
         }
         private async Task<List<Claim>> GetClaims(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.Email) };
+            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.UserName), new Claim(ClaimTypes.Email, user.Email) };
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)
             {
