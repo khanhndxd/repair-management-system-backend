@@ -5,6 +5,7 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using repair_management_backend.DTOs.Pdf;
+using System.Globalization;
 using System.IO;
 
 namespace repair_management_backend.Controllers
@@ -48,7 +49,7 @@ namespace repair_management_backend.Controllers
                             table0.Cell().AlignLeft().Text("Khách hàng").FontSize(6).Bold();
                             table0.Cell().AlignLeft().Text(pdfGenerationRequest.CustomerName).FontSize(6);
                             table0.Cell().AlignLeft().Text("Số phiếu").FontSize(6).Bold();
-                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.repairOrderId).FontSize(6);
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.RepairOrderId).FontSize(6);
 
                             table0.Cell().AlignLeft().Text("Địa chỉ").FontSize(6).Bold();
                             table0.Cell().AlignLeft().Text(pdfGenerationRequest.CustomerAddress).FontSize(6);
@@ -61,9 +62,9 @@ namespace repair_management_backend.Controllers
                             table0.Cell().AlignLeft().Text(pdfGenerationRequest.ReceiveAt.ToString("dd-MM-yyyy")).FontSize(6);
 
                             table0.Cell().AlignLeft().Text("Lý do bảo hành").FontSize(6).Bold();
-                            table0.Cell().AlignLeft().Text("Sản phẩm lỗi").FontSize(6);
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.RepairReason).FontSize(6);
                             table0.Cell().AlignLeft().Text("Người tạo phiếu").FontSize(6).Bold();
-                            table0.Cell().AlignLeft().Text("Nguyễn Duy Khánh").FontSize(6);
+                            table0.Cell().AlignLeft().Text(pdfGenerationRequest.CreatedBy).FontSize(6);
                         });
                         column.Item().Text("Sản phẩm bảo hành").FontSize(9).Bold();
                         column.Item().Table(table1 =>
@@ -90,8 +91,15 @@ namespace repair_management_backend.Controllers
                                 table1.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Name).FontSize(6);
                                 index1++;
                             }
+                            foreach (var item in pdfGenerationRequest.RepairCustomerProducts)
+                            {
+                                table1.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(index1).FontSize(6);
+                                table1.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Id).FontSize(6);
+                                table1.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Name).FontSize(6);
+                                index1++;
+                            }
                         });
-                        column.Item().Text("Linh kiện thay thế").FontSize(9).Bold();
+                        column.Item().Text("Công việc bảo hành").FontSize(9).Bold();
                         column.Item().Table(table2 =>
                         {
                             table2.ColumnsDefinition(columns =>
@@ -100,33 +108,59 @@ namespace repair_management_backend.Controllers
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
+                            });
+
+                            table2.Header(header =>
+                            {
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("STT").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Mã công việc").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Tên công việc").FontSize(6);
+                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Chi phí").FontSize(6);
+                            });
+
+                            var index2 = 1;
+                            foreach (var item in pdfGenerationRequest.RepairTasks)
+                            {
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(index2).FontSize(6);
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Id).FontSize(6);
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Name).FontSize(6);
+                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(ConvertToVND(item.Price)).FontSize(6);
+                                index2++;
+                            }
+                        });
+                        column.Item().Text("Linh kiện thay thế").FontSize(9).Bold();
+                        column.Item().Table(table3 =>
+                        {
+                            table3.ColumnsDefinition(columns =>
+                            {
+                                columns.ConstantColumn(50);
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                             });
 
-                            table2.Header(header =>
+                            table3.Header(header =>
                             {
                                 header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("STT").FontSize(6);
                                 header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Mã linh kiện").FontSize(6);
                                 header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Tên linh kiện").FontSize(6);
                                 header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Đơn vị").FontSize(6);
                                 header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Số lượng").FontSize(6);
-                                header.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text("Chi phí").FontSize(6);
                             });
 
-                            var index2 = 1;
+                            var index3 = 1;
                             foreach (var item in pdfGenerationRequest.Accessories)
                             {
-                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(index2).FontSize(6);
-                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Id).FontSize(6);
-                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Name).FontSize(6);
-                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Unit).FontSize(6);
-                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Quantity).FontSize(6);
-                                table2.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Price).FontSize(6);
-                                index2++;
+                                table3.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(index3).FontSize(6);
+                                table3.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Id).FontSize(6);
+                                table3.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Name).FontSize(6);
+                                table3.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Unit).FontSize(6);
+                                table3.Cell().Border((float)0.5).AlignCenter().AlignMiddle().Text(item.Quantity).FontSize(6);
+                                index3++;
                             }
                         });
-                        column.Item().Text("Tổng tiền: 9.000.000 đ").FontSize(10);
+                        column.Item().Text($"Tổng tiền: {ConvertToVND(pdfGenerationRequest.TotalPrice)}").FontSize(10);
                         column.Item().PaddingTop(15).Table(table3 =>
                         {
                             table3.ColumnsDefinition(columns =>
@@ -153,6 +187,16 @@ namespace repair_management_backend.Controllers
 
             Response.Headers.Add("content-disposition", "attachment; filename=baohanh.pdf");
             return File(pdfBytes, "application/pdf");
+        }
+        public static string ConvertToVND(double price)
+        {
+            // Tạo một đối tượng CultureInfo cho tiếng Việt (Việt Nam)
+            CultureInfo cultureInfo = new CultureInfo("vi-VN");
+
+            // Định dạng giá trị số thành chuỗi tiền tệ
+            string formattedPrice = price.ToString("C0", cultureInfo);
+
+            return formattedPrice;
         }
     }
 }
