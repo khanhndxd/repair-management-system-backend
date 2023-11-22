@@ -16,6 +16,5 @@ namespace repair_management_backend.Models
         public CustomerProduct CustomerProduct { get; set; }
         [DeleteBehavior(DeleteBehavior.NoAction)]
         public RepairOrder RepairOrder { get; set; }
-
     }
 }
