@@ -13,7 +13,7 @@
         public string RepairReason { get; set; }
         public List<AccessoryRequest> Accessories { get; set; }
         public List<RepairProductsRequest> RepairProducts { get; set; }
-        public List<TaskRequest> Tasks { get; set; }
+        public List<TaskRequest> RepairTasks { get; set; }
         public List<RepairCustomerProductRequest> RepairCustomerProducts { get; set; }
         public double TotalPrice { get; set; }
     }
