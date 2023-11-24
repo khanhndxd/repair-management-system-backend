@@ -18,7 +18,7 @@ namespace repair_management_backend.Repositories.PurchaseOrderRepo
             try
             {
                 var result = await  _dataContext.PurchaseOrders.Include(x => x.Customer).Include(x => x.PurchaseProducts).Where(x => x.CustomerId == id).Select(x => _mapper.Map<GetPurchaseOrderDTO>(x)).ToListAsync();
-                if(result.Count() == 0)
+                if(result.Count == 0)
                 {
                     throw new Exception($"Không tìm thấy đơn sửa chữa bảo dưỡng nào của khách hàng có id là `{id}`");
                 }
