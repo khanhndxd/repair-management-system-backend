@@ -6,6 +6,7 @@ namespace repair_management_backend.Models
     public class RepairOrder
     {
         public int Id { get; set; }
+        public bool IsDeleted { get; set; } = false;
         public int CustomerId { get; set; }
         [ForeignKey("CreatedBy")]
         public string CreatedById { get; set; }
