@@ -40,31 +40,31 @@ namespace repair_management_backend.Repositories.CustomerRepo
             var serviceResponse = new ServiceResponse<GetCustomerDTO>();
             try
             {
-                var result_1 = await _dataContext.Customers
+                var result = await _dataContext.Customers
+                    .Where(c => c.Id == id)
                     .Include(c => c.PurchaseOrders)
-                        .ThenInclude(c => c.PurchaseProducts)
-                    .Include(c => c.RepairOrders)
-                        .ThenInclude(c => c.RepairProducts)
-                    .Include(c => c.RepairOrders)
-                        .ThenInclude(c => c.RepairAccessories)
-                    .Include(c => c.RepairOrders)
-                        .ThenInclude(c => c.CreatedBy)
-                    .Include(c => c.RepairOrders)
-                        .ThenInclude(c => c.RepairedBy)
-                    .Include(c => c.RepairOrders)
-                        .ThenInclude(c => c.Status)
-                    .Where(r => r.Id == id)
-                    .ToListAsync();
-
-                var result = _mapper.Map<GetCustomerDTO>(result_1.FirstOrDefault());
+                        .ThenInclude(po => po.PurchaseProducts)
+                    .Include(c => c.RepairOrders.Where(x => x.IsDeleted == false))
+                        .ThenInclude(ro => ro.RepairProducts)
+                    .Include(c => c.RepairOrders.Where(x => x.IsDeleted == false))
+                        .ThenInclude(ro => ro.RepairAccessories)
+                    .Include(c => c.RepairOrders.Where(x => x.IsDeleted == false))
+                        .ThenInclude(ro => ro.CreatedBy)
+                    .Include(c => c.RepairOrders.Where(x => x.IsDeleted == false))
+                        .ThenInclude(ro => ro.RepairedBy)
+                    .Include(c => c.RepairOrders.Where(x => x.IsDeleted == false))
+                        .ThenInclude(ro => ro.Status)
+                    .Select(c => _mapper.Map<GetCustomerDTO>(c))
+                    .FirstOrDefaultAsync();
 
                 if (result is null)
                 {
                     throw new Exception($"Không tìm thấy khách hàng có id là `{id}`");
                 }
-                serviceResponse.Data = result;
 
-            } catch(Exception ex)
+                serviceResponse.Data = result;
+            }
+            catch (Exception ex)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
