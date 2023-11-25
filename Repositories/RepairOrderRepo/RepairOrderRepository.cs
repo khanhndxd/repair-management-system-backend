@@ -29,7 +29,6 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 StatusId = newRepairOrder.StatusId,
                 RepairTypeId = newRepairOrder.RepairTypeId,
                 RepairReasonId = newRepairOrder.RepairReasonId,
-                TaskId = newRepairOrder.TaskId,
                 Note = newRepairOrder.Note
             };
 
@@ -47,23 +46,112 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetRepairOrderDTO>>> GetAll()
+        public async Task<ServiceResponse<string>> DeleteRepairOrder(DeleteRepairOrderDTO deleteRepairOrderDTO)
+        {
+            var serviceResponse = new ServiceResponse<string>();
+            try
+            {
+                var result = await _dataContext.RepairOrders.FirstOrDefaultAsync(x => x.Id == deleteRepairOrderDTO.Id);
+                if (result == null)
+                {
+                    throw new Exception($"Không tìm thấy đơn bảo hành sửa chữa có id là {deleteRepairOrderDTO.Id}");
+                }
+                result.IsDeleted = true;
+                await _dataContext.SaveChangesAsync();
+                serviceResponse.Data = "Xóa đơn thành công";
+                serviceResponse.Message = "Xóa đơn thành công";
+            } catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetRepairOrderDTO>>> GetAll(string fieldQuery, string timeQuery)
         {
             var serviceResponse = new ServiceResponse<List<GetRepairOrderDTO>>();
-            serviceResponse.Data = await _dataContext.RepairOrders
-                .Include(r => r.Customer)
-                .Include(r => r.RepairReason)
-                .Include(r => r.RepairType)
-                .Include(r => r.Task)
-                .Include(r => r.Status)
-                .Include(r => r.CreatedBy)
-                .Include(r => r.RepairedBy)
-                .Include(r => r.RepairProducts)
-                    .ThenInclude(rp => rp.PurchasedProduct)
-                .Include(r => r.RepairAccessories)
-                    .ThenInclude(ra => ra.Accessory)
+            IQueryable<RepairOrder> result = _dataContext.RepairOrders.Where(r => r.IsDeleted == false);
+
+            // Query theo field nếu có
+            if (!string.IsNullOrEmpty(fieldQuery))
+            {
+                switch (fieldQuery.ToLower())
+                {
+                    case "repairtasks":
+                        result = result
+                            .Include(r => r.RepairTasks)
+                                .ThenInclude(ra => ra.Task);
+                        break;
+                    case "repairtype":
+                        result = result
+                            .Include(r => r.RepairType);
+                        break;
+                    case "repairproducts":
+                        result = result
+                            .Include(r => r.RepairProducts)
+                                .ThenInclude(rp => rp.PurchasedProduct)
+                                    .ThenInclude(p => p.Category);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                result = result
+                    .Include(r => r.Customer)
+                    .Include(r => r.RepairReason)
+                    .Include(r => r.RepairType)
+                    .Include(r => r.Status)
+                    .Include(r => r.CreatedBy)
+                    .Include(r => r.RepairedBy)
+                    .Include(r => r.RepairProducts)
+                        .ThenInclude(rp => rp.PurchasedProduct)
+                    .Include(r => r.RepairAccessories)
+                        .ThenInclude(ra => ra.Accessory)
+                    .Include(r => r.RepairTasks)
+                        .ThenInclude(ra => ra.Task)
+                    .Include(r => r.RepairCustomerProducts)
+                        .ThenInclude(ra => ra.CustomerProduct);
+            }
+
+            if(!string.IsNullOrEmpty(timeQuery))
+            {
+                DateTime currentDate = DateTime.Now;
+                DateTime startDate;
+                DateTime endDate;
+
+                // Query theo thời gian nếu có
+                if (!string.IsNullOrEmpty(timeQuery))
+                {
+                    switch (timeQuery.ToLower())
+                    {
+                        case "week":
+                            startDate = currentDate.AddDays(-(int)currentDate.DayOfWeek);
+                            endDate = startDate.AddDays(6);
+                            result = result.Where(r => r.CreatedAt >= startDate && r.CreatedAt <= endDate);
+                            break;
+                        case "current-month":
+                            startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
+                            endDate = startDate.AddMonths(1).AddDays(-1);
+                            result = result.Where(r => r.CreatedAt >= startDate && r.CreatedAt <= endDate);
+                            break;
+                        case "months":
+                            startDate = new DateTime(currentDate.Year, 1, 1);
+                            endDate = startDate.AddYears(1).AddDays(-1);
+                            result = result.Where(r => r.CreatedAt >= startDate && r.CreatedAt <= endDate);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            serviceResponse.Data = await result
                 .Select(r => _mapper.Map<GetRepairOrderDTO>(r))
                 .ToListAsync();
+
             return serviceResponse;
         }
 
@@ -72,11 +160,11 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
             var serviceResponse = new ServiceResponse<GetRepairOrderDTO>();
             try
             {
-                var result_1 = await _dataContext.RepairOrders
+                var result = await _dataContext.RepairOrders
+                    .Where(r => r.Id == id && r.IsDeleted == false)
                     .Include(r => r.Customer)
                     .Include(r => r.RepairReason)
                     .Include(r => r.RepairType)
-                    .Include(r => r.Task)
                     .Include(r => r.Status)
                     .Include(r => r.CreatedBy)
                     .Include(r => r.RepairedBy)
@@ -84,10 +172,12 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                         .ThenInclude(rp => rp.PurchasedProduct)
                     .Include(r => r.RepairAccessories)
                         .ThenInclude(ra => ra.Accessory)
-                    .Where(r => r.Id == id)
-                    .ToListAsync();
-
-                var result = _mapper.Map<GetRepairOrderDTO>(result_1.FirstOrDefault());
+                    .Include(r => r.RepairTasks)
+                        .ThenInclude(ra => ra.Task)
+                    .Include(r => r.RepairCustomerProducts)
+                        .ThenInclude(ra => ra.CustomerProduct)
+                    .Select(r => _mapper.Map<GetRepairOrderDTO>(r))
+                    .FirstOrDefaultAsync();
 
                 if (result is null)
                 {
@@ -96,6 +186,52 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 serviceResponse.Data = result;
 
             } catch(Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<int>> GetRepairOrderByStatus(int id)
+        {
+            var serviceResponse = new ServiceResponse<int>();
+            try
+            {
+                var result = -1;
+                if (id == -1)
+                {
+                    result = await _dataContext.RepairOrders
+                        .Where(r => r.IsDeleted == false)
+                        .CountAsync();
+                } else
+                {
+                    result = await _dataContext.RepairOrders
+                        .Where(r => r.IsDeleted == false)
+                        .CountAsync(ro => ro.StatusId == id);
+                }
+                serviceResponse.Data = result;
+
+
+            } catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<double>> GetTotalPrice()
+        {
+            var serviceResponse = new ServiceResponse<double>();
+            try
+            {
+                var result = await _dataContext.RepairOrders
+                    .Where(r => r.IsDeleted == false)
+                    .SumAsync(ro => ro.TotalPrice);
+                serviceResponse.Data = result;
+            }
+            catch (Exception ex)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
