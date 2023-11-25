@@ -13,6 +13,7 @@ namespace repair_management_backend.DTOs.RepairOrder
     public class GetRepairOrderNoCustomerDTO
     {
         public int Id { get; set; }
+        public bool IsDeleted { get; set; }
         public virtual GetUserDTO CreatedBy { get; set; }
         public virtual GetUserDTO RepairedBy { get; set; }
         public DateTime CreatedAt { get; set; }
