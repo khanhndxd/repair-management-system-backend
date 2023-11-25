@@ -8,7 +8,7 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class RepairOrderController : ControllerBase
     {
         private readonly IRepairOrderRepository _repairOrderRepository;
@@ -18,12 +18,12 @@ namespace repair_management_backend.Controllers
         }
         [HttpGet("GetAll")]
         [Authorize(Policy = "ReadWritePolicy")]
-        public async Task<ActionResult<ServiceResponse<List<GetRepairOrderDTO>>>> Get()
+        public async Task<ActionResult<ServiceResponse<List<GetRepairOrderDTO>>>> Get([FromQuery] string? field, [FromQuery] string? time)
         {
-            return Ok(await _repairOrderRepository.GetAll());
+            return Ok(await _repairOrderRepository.GetAll(field, time));
         }
         [HttpGet("{id}")]
-        [Authorize(Policy = "ReadWritePolicy")]
+        //[Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<GetRepairOrderDTO>>> GetSingle(int id)
         {
             var result = await _repairOrderRepository.GetRepairOrderById(id);
@@ -60,6 +60,36 @@ namespace repair_management_backend.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> UpdateRepairOrder([FromBody] UpdateRepairOrderDTO updateRepairOrderDTO)
         {
             var result = await _repairOrderRepository.UpdateRepairOrder(updateRepairOrderDTO);
+            if (result.Success == false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet("Status/{statusId}")]
+        public async Task<IActionResult> GetRepairOrderbyStatus(int statusId)
+        {
+            var result = await _repairOrderRepository.GetRepairOrderByStatus(statusId);
+            if (result.Success == false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet("TotalPrice")]
+        public async Task<IActionResult> GetTotalPrice()
+        {
+            var result = await _repairOrderRepository.GetTotalPrice();
+            if (result.Success == false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpDelete()]
+        public async Task<IActionResult> DeleteRepairOrder([FromBody] DeleteRepairOrderDTO deleteRepairOrderDTO)
+        {
+            var result = await _repairOrderRepository.DeleteRepairOrder(deleteRepairOrderDTO);
             if (result.Success == false)
             {
                 return BadRequest(result);
