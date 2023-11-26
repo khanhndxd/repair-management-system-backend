@@ -22,11 +22,12 @@ using repair_management_backend.Repositories.TokenRepo;
 using repair_management_backend.Repositories.RepairTask;
 using repair_management_backend.Repositories.RepairCustomerProductRepo;
 using repair_management_backend.Repositories.CustomerProductRepo;
+using repair_management_backend.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddSignalR();
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -88,9 +89,12 @@ builder.Services.AddControllers();
 builder.Services.AddCors(c =>
 {
     c.AddPolicy("CorsPolicy", builder =>
-    builder.AllowAnyOrigin()
+    builder
+    .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+    //.SetIsOriginAllowed(_ => true)
+    //.AllowCredentials()); 
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -104,6 +108,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(x => x
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(origin => true) // allow any origin
+        .AllowCredentials()); // allow credentials
 }
 
 app.UseHttpsRedirection();
@@ -114,5 +123,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<UpdateHub>("/update");
 
 app.Run();
