@@ -34,7 +34,7 @@ namespace repair_management_backend.Repositories.TokenRepo
 
             var securityToken = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(20),
+                expires: DateTime.UtcNow.AddMinutes(40),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             );
 
@@ -83,7 +83,7 @@ namespace repair_management_backend.Repositories.TokenRepo
         private async Task<List<Claim>> GetClaims(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.UserName), new Claim(ClaimTypes.Email, user.Email) };
+            var claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.UserName), new Claim(ClaimTypes.Email, user.Email), new Claim(ClaimTypes.NameIdentifier, user.Id) };
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)
             {
