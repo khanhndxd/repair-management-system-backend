@@ -23,6 +23,9 @@ using repair_management_backend.Repositories.RepairTask;
 using repair_management_backend.Repositories.RepairCustomerProductRepo;
 using repair_management_backend.Repositories.CustomerProductRepo;
 using repair_management_backend.Hubs;
+using repair_management_backend.Repositories.RepairLogRepo;
+using repair_management_backend.Repositories.UserRepo;
+using repair_management_backend.Repositories.WarrantyPolicyTaskRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +50,9 @@ builder.Services.AddScoped<IRepairTaskRepository, RepairTaskRepository>();
 builder.Services.AddScoped<IRepairCustomerProductRepository, RepairCustomerProductRepository>();
 builder.Services.AddScoped<ICustomerProductRepository, CustomerProductRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IRepairLogRepository, RepairLogRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IWarrantyPolicyTaskRepository, WarrantyPolicyTaskRepository>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -69,9 +75,21 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<DataContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.User.AllowedUserNameCharacters = "";
+    options.User.RequireUniqueEmail = true;
+
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -81,7 +99,7 @@ builder.Services.AddAuthorization(options =>
     });
     options.AddPolicy("ReadWritePolicy", policy =>
     {
-        policy.RequireRole("Admin","Staff");
+        policy.RequireRole("Admin","Staff", "Techlead", "Technician");
     });
 });
 
@@ -124,6 +142,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<UpdateHub>("/update");
+app.MapHub<NotificationHub>("/notification");
 
 app.Run();
