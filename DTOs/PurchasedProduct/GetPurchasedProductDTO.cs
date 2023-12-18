@@ -16,5 +16,8 @@ namespace repair_management_backend.DTOs.PurchasedProduct
         public DateTime WarrantyPeriod { get; set; }
         public GetCategoryDTO Category { get; set; }
         public GetManufacturerDTO Manufacturer { get; set; }
+        public double OriginalPrice { get; set; }
+        public bool IsWarrantyExpired { get; set; }
+        public int DaysLeftInWarranty { get; set; }
     }
 }
