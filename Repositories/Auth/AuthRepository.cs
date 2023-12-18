@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using repair_management_backend.Models;
 using repair_management_backend.Repositories.TokenRepo;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -55,29 +56,43 @@ namespace repair_management_backend.Repositories.Auth
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<string>> Register(string userName, string email, string password)
+        public async Task<ServiceResponse<string>> Register(string userName, string email, string phone, string password, string role)
         {
             var serviceResponse = new ServiceResponse<string>();
             var existingUser = await _userManager.FindByEmailAsync(email);
 
-            if(existingUser != null)
+            if (existingUser != null)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = "Tài khoản đã tồn tại";
                 return serviceResponse;
             }
 
-            var newUser = new User() { Email = email, UserName = userName };
+            var newUser = new User() { Email = email, UserName = userName, PhoneNumber = phone };
             var isCreated = await _userManager.CreateAsync(newUser, password);
-            if(isCreated.Succeeded)
+
+            if (isCreated.Succeeded)
             {
-                serviceResponse.Data = await _tokenRepository.GenerateAccessTokenFromUserName(newUser.UserName);
-                serviceResponse.Message = "Tạo thành công user";
-            } else
+                // Thêm người dùng vào vai trò chỉ định
+                var addToRoleResult = await _userManager.AddToRoleAsync(newUser, role);
+
+                if (addToRoleResult.Succeeded)
+                {
+                    //serviceResponse.Data = await _tokenRepository.GenerateAccessTokenFromUserName(newUser.UserName);
+                    serviceResponse.Message = "Tạo thành công user";
+                }
+                else
+                {
+                    // Nếu không thêm được vào vai trò, xóa người dùng và trả về lỗi
+                    await _userManager.DeleteAsync(newUser);
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Lỗi khi gán vai trò cho user: {string.Join(", ", addToRoleResult.Errors.Select(e => e.Description))}";
+                }
+            }
+            else
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = isCreated.ToString();
-                return serviceResponse;
+                serviceResponse.Message = $"Lỗi khi tạo user";
             }
 
             return serviceResponse;

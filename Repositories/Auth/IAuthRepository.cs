@@ -4,7 +4,7 @@ namespace repair_management_backend.Repositories.Auth
 {
     public interface IAuthRepository
     {
-        Task<ServiceResponse<string>> Register(string userName, string email, string password);
+        Task<ServiceResponse<string>> Register(string userName, string email, string phone, string password, string role);
         Task<ServiceResponse<TokenResponse>> Login(string email, string password);
         Task<ServiceResponse<TokenResponse>> RefreshToken(TokenRequest tokenRequest);
     }
