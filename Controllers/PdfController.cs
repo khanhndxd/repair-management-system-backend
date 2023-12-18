@@ -168,15 +168,12 @@ namespace repair_management_backend.Controllers
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
-                                columns.RelativeColumn();
                             });
 
                             table3.Cell().AlignCenter().Text("Khách hàng").FontSize(6).Bold();
                             table3.Cell().AlignCenter().Text("Người lập phiếu").FontSize(6).Bold();
                             table3.Cell().AlignCenter().Text("Kỹ thuật viên").FontSize(6).Bold();
-                            table3.Cell().AlignCenter().Text("Trưởng phòng bảo hành").FontSize(6).Bold();
 
-                            table3.Cell().AlignCenter().Text("(Ký, họ tên)").FontSize(6);
                             table3.Cell().AlignCenter().Text("(Ký, họ tên)").FontSize(6);
                             table3.Cell().AlignCenter().Text("(Ký, họ tên)").FontSize(6);
                             table3.Cell().AlignCenter().Text("(Ký, họ tên)").FontSize(6);
