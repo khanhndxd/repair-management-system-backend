@@ -14,6 +14,9 @@ namespace repair_management_backend.Models
         [ForeignKey("RepairedBy")]
         public string RepairedById { get; set; }
         public virtual User RepairedBy { get; set; }
+        [ForeignKey("ReceivedBy")]
+        public string ReceivedById { get; set; }
+        public virtual User ReceivedBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ReceiveAt { get; set; }
         [MaxLength(255)]
@@ -28,6 +31,7 @@ namespace repair_management_backend.Models
         public Status Status { get; set; }
         public RepairType RepairType { get; set; }
         public RepairReason RepairReason { get; set; }
+        public List<RepairLog>? RepairLogs { get; set; }
         public virtual ICollection<RepairProduct> RepairProducts { get; set; }
         public virtual ICollection<RepairAccessory> RepairAccessories { get; set; }
         public virtual ICollection<RepairCustomerProduct> RepairCustomerProducts { get; set; }
