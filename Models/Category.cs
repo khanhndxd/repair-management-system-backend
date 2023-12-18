@@ -8,5 +8,6 @@ namespace repair_management_backend.Models
         [MaxLength(50)]
         public string Name { get; set; }
         public List<PurchasedProduct>? PurchasedProducts { get; set; }
+        public WarrantyPolicy WarrantyPolicy { get; set; }
     }
 }
