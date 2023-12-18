@@ -25,7 +25,7 @@ namespace repair_management_backend.Controllers
         {
             if(ModelState.IsValid)
             {
-                var response = await _auth.Register(user.UserName, user.Email, user.Password);
+                var response = await _auth.Register(user.UserName, user.Email, user.Phone, user.Password, user.Role);
                 if (!response.Success)
                 {
                     return BadRequest(response);
