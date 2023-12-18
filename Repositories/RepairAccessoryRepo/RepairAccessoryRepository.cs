@@ -29,21 +29,25 @@ namespace repair_management_backend.Repositories.RepairAccessoryRepo
 
                 await _dataContext.SaveChangesAsync();
 
-                // Thêm dữ liệu mới
-                for (int i = 0; i < addRepairAccessoryDTO.Count; i++)
+                // Kiểm tra xem có linh kiện nào được thêm không
+                if (addRepairAccessoryDTO[0].AccessoryId != -1 && addRepairAccessoryDTO.Count >= 1)
                 {
-                    var repairAccessory = new RepairAccessory
+                    // Thêm dữ liệu mới
+                    for (int i = 0; i < addRepairAccessoryDTO.Count; i++)
                     {
-                        AccessoryId = addRepairAccessoryDTO[i].AccessoryId,
-                        RepairOrderId = addRepairAccessoryDTO[i].RepairOrderId,
-                        Quantity = addRepairAccessoryDTO[i].Quantity
-                    };
-                    _dataContext.RepairAccessories.Add(repairAccessory);
+                        var repairAccessory = new RepairAccessory
+                        {
+                            AccessoryId = addRepairAccessoryDTO[i].AccessoryId,
+                            RepairOrderId = addRepairAccessoryDTO[i].RepairOrderId,
+                            Quantity = addRepairAccessoryDTO[i].Quantity
+                        };
+                        _dataContext.RepairAccessories.Add(repairAccessory);
 
-                    // cứ thêm 10 sản phẩm vào bộ nhớ thì sẽ lưu vào database
-                    if (i % 10 == 0)
-                    {
-                        await _dataContext.SaveChangesAsync();
+                        // cứ thêm 10 sản phẩm vào bộ nhớ thì sẽ lưu vào database
+                        if (i % 10 == 0)
+                        {
+                            await _dataContext.SaveChangesAsync();
+                        }
                     }
                 }
 
