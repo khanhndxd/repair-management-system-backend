@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using repair_management_backend.DTOs.RepairOrder;
 using repair_management_backend.Repositories.RepairOrderRepo;
+using System.Security.Claims;
 
 namespace repair_management_backend.Controllers
 {
@@ -18,9 +19,31 @@ namespace repair_management_backend.Controllers
         }
         [HttpGet("GetAll")]
         [Authorize(Policy = "ReadWritePolicy")]
-        public async Task<ActionResult<ServiceResponse<List<GetRepairOrderDTO>>>> Get([FromQuery] string? field, [FromQuery] string? time)
+        public async Task<ActionResult<ServiceResponse<List<GetRepairOrderDTO>>>> Get([FromQuery] string? field, [FromQuery] string? time, [FromQuery] string? startDate, [FromQuery] string? endDate)
         {
-            return Ok(await _repairOrderRepository.GetAll(field, time));
+            var user = HttpContext.User;
+
+            if (user != null && user.Claims != null)
+            {
+                var roles = user.Claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value)
+                    .ToList();
+
+                var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+                if (userIdClaim != null)
+                {
+                    var userId = userIdClaim.Value;
+                    return Ok(await _repairOrderRepository.GetAll(userId, roles, field, time, startDate, endDate));
+                }
+                else
+                {
+                    return Forbid();
+                }
+
+            }
+            return Forbid();
         }
         [HttpGet("{id}")]
         //[Authorize(Policy = "ReadWritePolicy")]
@@ -74,6 +97,16 @@ namespace repair_management_backend.Controllers
             {
                 return BadRequest(result);
             }
+            return Ok(result);
+        }
+        [HttpGet("Category")]
+        public async Task<IActionResult> GetRepairCategoryStats()
+        {
+            var result = await _repairOrderRepository.GetRepairCategoryStat();
+            if (result.Success == false)
+            {
+                return BadRequest(result);
+            } 
             return Ok(result);
         }
         [HttpGet("TotalPrice")]
