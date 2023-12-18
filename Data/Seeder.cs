@@ -8,8 +8,10 @@ namespace repair_management_backend.Data
         {
             var roles = new List<IdentityRole>
         {
-            new IdentityRole("Admin"),
-            new IdentityRole("Staff")
+            new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
+            new IdentityRole { Name = "Creator", NormalizedName = "CREATOR" },
+            new IdentityRole { Name = "Receiver", NormalizedName = "RECEIVER" },
+            new IdentityRole { Name = "Technician", NormalizedName = "TECHNICIAN" }
         };
             modelBuilder.Entity<IdentityRole>().HasData(roles);
 
@@ -32,8 +34,30 @@ namespace repair_management_backend.Data
                     Id = "2",
                     UserName = "Nguyễn Hoàng A",
                     NormalizedUserName = "NGUYỄN HOÀNG A",
-                    Email = "staff1@staff.com",
-                    NormalizedEmail = "STAFF1@STAFF.COM",
+                    Email = "creator1@creator.com",
+                    NormalizedEmail = "CREATOR1@CREATOR.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "123456"),
+                    SecurityStamp = string.Empty
+                },
+                new User
+                {
+                    Id = "3",
+                    UserName = "Nguyễn Văn Hoàng",
+                    NormalizedUserName = "NGUYỄN VĂN HOÀNG",
+                    Email = "receiver1@receiver.com",
+                    NormalizedEmail = "RECEIVER1@RECEIVER.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "123456"),
+                    SecurityStamp = string.Empty
+                },
+                new User
+                {
+                    Id = "4",
+                    UserName = "Nguyễn Duy Quang",
+                    NormalizedUserName = "NGUYỄN DUY QUANG",
+                    Email = "tech1@tech.com",
+                    NormalizedEmail = "TECH1@TECH.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "123456"),
                     SecurityStamp = string.Empty
@@ -44,7 +68,9 @@ namespace repair_management_backend.Data
             var userRoles = new List<IdentityUserRole<string>>();
 
             userRoles.Add(new IdentityUserRole<string> { UserId = users[0].Id, RoleId = roles.First(r => r.Name == "Admin").Id });
-            userRoles.Add(new IdentityUserRole<string> { UserId = users[1].Id, RoleId = roles.First(r => r.Name == "Staff").Id });
+            userRoles.Add(new IdentityUserRole<string> { UserId = users[1].Id, RoleId = roles.First(r => r.Name == "Creator").Id });
+            userRoles.Add(new IdentityUserRole<string> { UserId = users[2].Id, RoleId = roles.First(r => r.Name == "Receiver").Id });
+            userRoles.Add(new IdentityUserRole<string> { UserId = users[3].Id, RoleId = roles.First(r => r.Name == "Technician").Id });
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoles);
         }
@@ -140,10 +166,30 @@ namespace repair_management_backend.Data
                 new Category { Id = 8, Name = "CPU" },
                 new Category { Id = 9, Name = "VGA" },
                 new Category { Id = 10, Name = "Tản nhiệt" },
-                new Category { Id = 11, Name = "Ergonomic" },
+                new Category { Id = 11, Name = "Card màn hình" },
                 new Category { Id = 12, Name = "Webcam" },
                 new Category { Id = 13, Name = "PC" },
                 new Category { Id = 14, Name = "Thiết bị ngoại vi" },
+            };
+        }
+        public static List<WarrantyPolicy> GetWarrantyPolicySeedingData()
+        {
+            return new List<WarrantyPolicy>()
+            {
+                new WarrantyPolicy { Id = 1, CategoryId = 1, Description = "Chính sách bảo hành của Màn hình"},
+                new WarrantyPolicy { Id = 2, CategoryId = 2, Description = "Chính sách bảo hành của Nguồn máy tính"},
+                new WarrantyPolicy { Id = 3, CategoryId = 3, Description = "Chính sách bảo hành của Mainboard" },
+                new WarrantyPolicy { Id = 4, CategoryId = 4, Description = "Chính sách bảo hành của Chuột" },
+                new WarrantyPolicy { Id = 5, CategoryId = 5, Description = "Chính sách bảo hành của Bàn phím"},
+                new WarrantyPolicy { Id = 6, CategoryId = 6, Description = "Chính sách bảo hành của Thiết bị lưu trữ, bộ nhớ" },
+                new WarrantyPolicy { Id = 7, CategoryId = 7, Description = "Chính sách bảo hành của Tai nghe" },
+                new WarrantyPolicy { Id = 8, CategoryId = 8, Description = "Chính sách bảo hành của CPU" },
+                new WarrantyPolicy { Id = 9, CategoryId = 9, Description = "Chính sách bảo hành của VGA" },
+                new WarrantyPolicy { Id = 10, CategoryId = 10, Description = "Chính sách bảo hành của Tản nhiệt" },
+                new WarrantyPolicy { Id = 11, CategoryId = 11, Description = "Chính sách bảo hành của Card màn hình" },
+                new WarrantyPolicy { Id = 12, CategoryId = 12, Description = "Chính sách bảo hành của Webcam" },
+                new WarrantyPolicy { Id = 13, CategoryId = 13, Description = "Chính sách bảo hành của PC" },
+                new WarrantyPolicy { Id = 14, CategoryId = 14, Description = "Chính sách bảo hành của Thiết bị ngoại vi" },
             };
         }
         public static List<PurchasedProduct> GetPurchasedProductsSeedingData()
@@ -176,6 +222,7 @@ namespace repair_management_backend.Data
             {
                 new RepairType { Id = 1, Name = "Bảo hành" },
                 new RepairType { Id = 2, Name = "Sửa chữa" },
+                new RepairType { Id = 3, Name = "Đổi mới" },
             };
         }
         public static List<RepairReason> GetRepairReasonSeedingData()
@@ -191,11 +238,48 @@ namespace repair_management_backend.Data
         {
             return new List<Models.Task>()
             {
-                new Models.Task { Id = 1, Name = "Vệ sinh máy tính", Price = 100000.0 },
-                new Models.Task { Id = 2, Name = "Cài lại win", Price = 200000.0 },
-                new Models.Task { Id = 3, Name = "Cài đặt phần mềm", Price = 50000.0 },
-                new Models.Task { Id = 4, Name = "Sửa chữa phần mềm", Price = 100000.0 },
-                new Models.Task { Id = 5, Name = "Bảo dưỡng định kỳ", Price = 100000.0 },
+                new Models.Task { Id = 1, Name = "Vệ sinh sản phẩm", Price = 100000.0 },
+                new Models.Task { Id = 2, Name = "Cài đặt phần mềm", Price = 50000.0 },
+                new Models.Task { Id = 3, Name = "Sửa chữa phần mềm", Price = 100000.0 },
+                new Models.Task { Id = 4, Name = "Thay thế linh kiện", Price = 100000.0 },
+                new Models.Task { Id = 5, Name = "Đổi mới", Price = 0.0 },
+                new Models.Task { Id = 6, Name = "Sửa chữa phần cứng", Price = 0.0 },
+            };
+        }
+        public static List<WarrantyPolicyTask> GetWarrantyPolicyTaskSeedingData()
+        {
+            return new List<WarrantyPolicyTask>()
+            {
+                new WarrantyPolicyTask { Id = 1, WarrantyPolicyId = 1, TaskId = 4},
+                new WarrantyPolicyTask { Id = 2, WarrantyPolicyId = 1, TaskId = 6},
+                new WarrantyPolicyTask { Id = 3, WarrantyPolicyId = 2, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 4, WarrantyPolicyId = 2, TaskId = 6 },
+                new WarrantyPolicyTask { Id = 5, WarrantyPolicyId = 3, TaskId = 4},
+                new WarrantyPolicyTask { Id = 6, WarrantyPolicyId = 3, TaskId = 6 },
+                new WarrantyPolicyTask { Id = 7, WarrantyPolicyId = 4, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 8, WarrantyPolicyId = 4, TaskId = 5 },
+                new WarrantyPolicyTask { Id = 9, WarrantyPolicyId = 4, TaskId = 6 },
+                new WarrantyPolicyTask { Id = 10, WarrantyPolicyId = 5, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 11, WarrantyPolicyId = 5, TaskId = 5 },
+                new WarrantyPolicyTask { Id = 12, WarrantyPolicyId = 5, TaskId = 6 },
+                new WarrantyPolicyTask { Id = 13, WarrantyPolicyId = 6, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 14, WarrantyPolicyId = 6, TaskId = 5 },
+                new WarrantyPolicyTask { Id = 15, WarrantyPolicyId = 7, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 16, WarrantyPolicyId = 7, TaskId = 5 },
+                new WarrantyPolicyTask { Id = 17, WarrantyPolicyId = 8, TaskId = 5 },
+                new WarrantyPolicyTask { Id = 18, WarrantyPolicyId = 9, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 19, WarrantyPolicyId = 9, TaskId = 5 },
+                new WarrantyPolicyTask { Id = 20, WarrantyPolicyId = 10, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 21, WarrantyPolicyId = 10, TaskId = 6 },
+                new WarrantyPolicyTask { Id = 22, WarrantyPolicyId = 11, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 23, WarrantyPolicyId = 11, TaskId = 5 },
+                new WarrantyPolicyTask { Id = 24, WarrantyPolicyId = 11, TaskId = 6 },
+                new WarrantyPolicyTask { Id = 25, WarrantyPolicyId = 12, TaskId = 5 },
+                new WarrantyPolicyTask { Id = 26, WarrantyPolicyId = 12, TaskId = 6 },
+                new WarrantyPolicyTask { Id = 27, WarrantyPolicyId = 13, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 28, WarrantyPolicyId = 13, TaskId = 6 },
+                new WarrantyPolicyTask { Id = 29, WarrantyPolicyId = 14, TaskId = 4 },
+                new WarrantyPolicyTask { Id = 30, WarrantyPolicyId = 11, TaskId = 5 },
             };
         }
         public static List<Accessory> GetAccessorySeedingData()

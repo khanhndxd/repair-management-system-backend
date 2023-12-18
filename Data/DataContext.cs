@@ -26,6 +26,12 @@ namespace repair_management_backend.Data
                 .HasForeignKey(ro => ro.RepairedById)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<RepairOrder>()
+                .HasOne(ro => ro.ReceivedBy)
+                .WithMany(u => u.ReceivedOrders)
+                .HasForeignKey(ro => ro.ReceivedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // seed users và roles
             Seeder.SeedUsersWithRoles(modelBuilder);
 
@@ -40,6 +46,8 @@ namespace repair_management_backend.Data
             var categories = Seeder.GetCategoriesSeedingData();
             var manufacturers = Seeder.GetManufacturersSeedingData();
             var purchasedProducts = Seeder.GetPurchasedProductsSeedingData();
+            var warrantyPolicies = Seeder.GetWarrantyPolicySeedingData();
+            var warrantyPolicyTasks = Seeder.GetWarrantyPolicyTaskSeedingData();
 
             // đồ dữ liệu seeding vào bảng
             modelBuilder.Entity<Customer>().HasData(customers);
@@ -52,6 +60,8 @@ namespace repair_management_backend.Data
             modelBuilder.Entity<Category>().HasData(categories);
             modelBuilder.Entity<Manufacturer>().HasData(manufacturers);
             modelBuilder.Entity<PurchasedProduct>().HasData(purchasedProducts);
+            modelBuilder.Entity<WarrantyPolicy>().HasData(warrantyPolicies);
+            modelBuilder.Entity<WarrantyPolicyTask>().HasData(warrantyPolicyTasks);
         }
 
         public DbSet<Customer> Customers { get; set; }
@@ -70,6 +80,9 @@ namespace repair_management_backend.Data
         public DbSet<RepairTask> RepairTasks { get; set; }
         public DbSet<CustomerProduct> CustomerProducts { get; set; }
         public DbSet<RepairCustomerProduct> RepairCustomerProducts { get; set; }
+        public DbSet<RepairLog> RepairLogs { get; set; }
+        public DbSet<WarrantyPolicy> WarrantyPolicies { get; set; }
+        public DbSet<WarrantyPolicyTask> WarrantyPolicyTasks { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }
