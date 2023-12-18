@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using repair_management_backend.Data;
 
@@ -11,9 +12,11 @@ using repair_management_backend.Data;
 namespace repair_management_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231203102516_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,27 +54,23 @@ namespace repair_management_backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6f678273-e39a-40f6-924b-2e2d1ba2a392",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Id = "57e5fe0c-273b-4920-a9c7-67a5acf08c40",
+                            Name = "Admin"
                         },
                         new
                         {
-                            Id = "24b17cc8-44a8-4d55-9a94-7ba39fedc768",
-                            Name = "Creator",
-                            NormalizedName = "CREATOR"
+                            Id = "e0202692-4be9-4182-a2fd-3034055d0447",
+                            Name = "Staff"
                         },
                         new
                         {
-                            Id = "28ed9c30-8f1d-40ae-8ffe-675b323153f2",
-                            Name = "Receiver",
-                            NormalizedName = "RECEIVER"
+                            Id = "f4d30968-d935-4128-985c-83642a5cc959",
+                            Name = "Techlead"
                         },
                         new
                         {
-                            Id = "d2952c29-c0f2-4837-8409-c48e574a1954",
-                            Name = "Technician",
-                            NormalizedName = "TECHNICIAN"
+                            Id = "4035ce5c-4731-4fb2-af49-ff433db651aa",
+                            Name = "Technician"
                         });
                 });
 
@@ -240,22 +239,22 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             UserId = "1",
-                            RoleId = "6f678273-e39a-40f6-924b-2e2d1ba2a392"
+                            RoleId = "57e5fe0c-273b-4920-a9c7-67a5acf08c40"
                         },
                         new
                         {
                             UserId = "2",
-                            RoleId = "24b17cc8-44a8-4d55-9a94-7ba39fedc768"
+                            RoleId = "e0202692-4be9-4182-a2fd-3034055d0447"
                         },
                         new
                         {
                             UserId = "3",
-                            RoleId = "28ed9c30-8f1d-40ae-8ffe-675b323153f2"
+                            RoleId = "f4d30968-d935-4128-985c-83642a5cc959"
                         },
                         new
                         {
                             UserId = "4",
-                            RoleId = "d2952c29-c0f2-4837-8409-c48e574a1954"
+                            RoleId = "4035ce5c-4731-4fb2-af49-ff433db651aa"
                         });
                 });
 
@@ -533,7 +532,7 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 11,
-                            Name = "Card màn hình"
+                            Name = "Ergonomic"
                         },
                         new
                         {
@@ -766,21 +765,21 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 17, 11, 35, 29, 940, DateTimeKind.Local).AddTicks(912),
+                            CreatedAt = new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7885),
                             CustomerId = 1,
                             Total = 1200000.0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 17, 11, 35, 29, 940, DateTimeKind.Local).AddTicks(932),
+                            CreatedAt = new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7897),
                             CustomerId = 2,
                             Total = 1600000.0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 17, 11, 35, 29, 940, DateTimeKind.Local).AddTicks(932),
+                            CreatedAt = new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7897),
                             CustomerId = 3,
                             Total = 2400000.0
                         });
@@ -1244,352 +1243,32 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Vệ sinh sản phẩm",
+                            Name = "Vệ sinh máy tính",
                             Price = 100000.0
                         },
                         new
                         {
                             Id = 2,
+                            Name = "Cài lại win",
+                            Price = 200000.0
+                        },
+                        new
+                        {
+                            Id = 3,
                             Name = "Cài đặt phần mềm",
                             Price = 50000.0
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 4,
                             Name = "Sửa chữa phần mềm",
                             Price = 100000.0
                         },
                         new
                         {
-                            Id = 4,
-                            Name = "Thay thế linh kiện",
+                            Id = 5,
+                            Name = "Bảo dưỡng định kỳ",
                             Price = 100000.0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Đổi mới",
-                            Price = 0.0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Sửa chữa phần cứng",
-                            Price = 0.0
-                        });
-                });
-
-            modelBuilder.Entity("repair_management_backend.Models.WarrantyPolicy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
-
-                    b.ToTable("WarrantyPolicies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            Description = "Chính sách bảo hành của Màn hình"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 2,
-                            Description = "Chính sách bảo hành của Nguồn máy tính"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 3,
-                            Description = "Chính sách bảo hành của Mainboard"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 4,
-                            Description = "Chính sách bảo hành của Chuột"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CategoryId = 5,
-                            Description = "Chính sách bảo hành của Bàn phím"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CategoryId = 6,
-                            Description = "Chính sách bảo hành của Thiết bị lưu trữ, bộ nhớ"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CategoryId = 7,
-                            Description = "Chính sách bảo hành của Tai nghe"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CategoryId = 8,
-                            Description = "Chính sách bảo hành của CPU"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CategoryId = 9,
-                            Description = "Chính sách bảo hành của VGA"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CategoryId = 10,
-                            Description = "Chính sách bảo hành của Tản nhiệt"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CategoryId = 11,
-                            Description = "Chính sách bảo hành của Card màn hình"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CategoryId = 12,
-                            Description = "Chính sách bảo hành của Webcam"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CategoryId = 13,
-                            Description = "Chính sách bảo hành của PC"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CategoryId = 14,
-                            Description = "Chính sách bảo hành của Thiết bị ngoại vi"
-                        });
-                });
-
-            modelBuilder.Entity("repair_management_backend.Models.WarrantyPolicyTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WarrantyPolicyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId");
-
-                    b.HasIndex("WarrantyPolicyId");
-
-                    b.ToTable("WarrantyPolicyTasks");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            TaskId = 4,
-                            WarrantyPolicyId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            TaskId = 6,
-                            WarrantyPolicyId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            TaskId = 4,
-                            WarrantyPolicyId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            TaskId = 6,
-                            WarrantyPolicyId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            TaskId = 4,
-                            WarrantyPolicyId = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            TaskId = 6,
-                            WarrantyPolicyId = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            TaskId = 4,
-                            WarrantyPolicyId = 4
-                        },
-                        new
-                        {
-                            Id = 8,
-                            TaskId = 5,
-                            WarrantyPolicyId = 4
-                        },
-                        new
-                        {
-                            Id = 9,
-                            TaskId = 6,
-                            WarrantyPolicyId = 4
-                        },
-                        new
-                        {
-                            Id = 10,
-                            TaskId = 4,
-                            WarrantyPolicyId = 5
-                        },
-                        new
-                        {
-                            Id = 11,
-                            TaskId = 5,
-                            WarrantyPolicyId = 5
-                        },
-                        new
-                        {
-                            Id = 12,
-                            TaskId = 6,
-                            WarrantyPolicyId = 5
-                        },
-                        new
-                        {
-                            Id = 13,
-                            TaskId = 4,
-                            WarrantyPolicyId = 6
-                        },
-                        new
-                        {
-                            Id = 14,
-                            TaskId = 5,
-                            WarrantyPolicyId = 6
-                        },
-                        new
-                        {
-                            Id = 15,
-                            TaskId = 4,
-                            WarrantyPolicyId = 7
-                        },
-                        new
-                        {
-                            Id = 16,
-                            TaskId = 5,
-                            WarrantyPolicyId = 7
-                        },
-                        new
-                        {
-                            Id = 17,
-                            TaskId = 5,
-                            WarrantyPolicyId = 8
-                        },
-                        new
-                        {
-                            Id = 18,
-                            TaskId = 4,
-                            WarrantyPolicyId = 9
-                        },
-                        new
-                        {
-                            Id = 19,
-                            TaskId = 5,
-                            WarrantyPolicyId = 9
-                        },
-                        new
-                        {
-                            Id = 20,
-                            TaskId = 4,
-                            WarrantyPolicyId = 10
-                        },
-                        new
-                        {
-                            Id = 21,
-                            TaskId = 6,
-                            WarrantyPolicyId = 10
-                        },
-                        new
-                        {
-                            Id = 22,
-                            TaskId = 4,
-                            WarrantyPolicyId = 11
-                        },
-                        new
-                        {
-                            Id = 23,
-                            TaskId = 5,
-                            WarrantyPolicyId = 11
-                        },
-                        new
-                        {
-                            Id = 24,
-                            TaskId = 6,
-                            WarrantyPolicyId = 11
-                        },
-                        new
-                        {
-                            Id = 25,
-                            TaskId = 5,
-                            WarrantyPolicyId = 12
-                        },
-                        new
-                        {
-                            Id = 26,
-                            TaskId = 6,
-                            WarrantyPolicyId = 12
-                        },
-                        new
-                        {
-                            Id = 27,
-                            TaskId = 4,
-                            WarrantyPolicyId = 13
-                        },
-                        new
-                        {
-                            Id = 28,
-                            TaskId = 6,
-                            WarrantyPolicyId = 13
-                        },
-                        new
-                        {
-                            Id = 29,
-                            TaskId = 4,
-                            WarrantyPolicyId = 14
-                        },
-                        new
-                        {
-                            Id = 30,
-                            TaskId = 5,
-                            WarrantyPolicyId = 11
                         });
                 });
 
@@ -1610,13 +1289,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "91236f40-4910-4640-a486-e898144bfd1c",
+                            ConcurrencyStamp = "b0578801-243c-4b7b-837f-aaa065ee54af",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "NGUYỄN DUY KHÁNH",
-                            PasswordHash = "AQAAAAIAAYagAAAAED1gLNLbQ31S7EvHmBEWkcvF5u8/yIfsea0GQ26Xw3fDkhHmMi1SSseP2+xuvvs3GQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK3wP8iKQR+xlAIaXoVb+M83Tv/fkUoaNGdzM9HDcUB3chCrKsiwho5SGik5nC0jfg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1627,13 +1306,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0fd61d17-8ee9-487a-b8bd-77a8f8a65c73",
-                            Email = "creator1@creator.com",
+                            ConcurrencyStamp = "415dd5b1-2c3a-4f39-acd7-698ad9fb760f",
+                            Email = "staff1@staff.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "CREATOR1@CREATOR.COM",
+                            NormalizedEmail = "STAFF1@STAFF.COM",
                             NormalizedUserName = "NGUYỄN HOÀNG A",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIpdiHiBzcRtwcUbbVy8ZZl1nDmIF6PedPKYVr3pqShHdQ3LkU2lwwhqoSVSVOttng==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC4oWLf2CdkOOKOTz1+GyOcKyDTD4h6AJSkGbZL461qeNcRb+AgVsbUFmmAP18L1ug==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1644,13 +1323,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "974d8667-65a7-468c-ac4e-193ec5a86e5f",
-                            Email = "receiver1@receiver.com",
+                            ConcurrencyStamp = "9c608353-aaa0-4281-957a-e8b23488da59",
+                            Email = "lead1@lead.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "RECEIVER1@RECEIVER.COM",
+                            NormalizedEmail = "LEAD1@LEAD.COM",
                             NormalizedUserName = "NGUYỄN VĂN HOÀNG",
-                            PasswordHash = "AQAAAAIAAYagAAAAENKK/sYumtAJThHCDZRUtUb1tzrTObh7v0vklpLLo1eymPeVB8LKahf1LI0SEkNPdg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJCp+k7Bf/OinBjYS70wyE+HKTr3VqozTQQAOhPxLTYl5mSJkSJpLF1anOGN3ymEDw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1661,13 +1340,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2e876c55-ccb8-41f3-b624-3c394afc347f",
+                            ConcurrencyStamp = "495163f0-4ed8-475a-812e-21a61ba13e13",
                             Email = "tech1@tech.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TECH1@TECH.COM",
                             NormalizedUserName = "NGUYỄN DUY QUANG",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL8VHvXT6i8AYCrf1MeEb9e/gm/5hg0y07cCJbbEamoqR/WlSUh0ZeuENF0SqjGz4Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGx/TEY4OHLe7NKp/Z4giTkZ2CLAjgzLUUYVVpIf33DnbaFzL+VvjlaIo3qi4fyLeA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1932,34 +1611,6 @@ namespace repair_management_backend.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("repair_management_backend.Models.WarrantyPolicy", b =>
-                {
-                    b.HasOne("repair_management_backend.Models.Category", null)
-                        .WithOne("WarrantyPolicy")
-                        .HasForeignKey("repair_management_backend.Models.WarrantyPolicy", "CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("repair_management_backend.Models.WarrantyPolicyTask", b =>
-                {
-                    b.HasOne("repair_management_backend.Models.Task", "Task")
-                        .WithMany()
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("repair_management_backend.Models.WarrantyPolicy", "WarrantyPolicy")
-                        .WithMany()
-                        .HasForeignKey("WarrantyPolicyId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Task");
-
-                    b.Navigation("WarrantyPolicy");
-                });
-
             modelBuilder.Entity("repair_management_backend.Models.Accessory", b =>
                 {
                     b.Navigation("RepairAccessories");
@@ -1968,9 +1619,6 @@ namespace repair_management_backend.Migrations
             modelBuilder.Entity("repair_management_backend.Models.Category", b =>
                 {
                     b.Navigation("PurchasedProducts");
-
-                    b.Navigation("WarrantyPolicy")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.Customer", b =>

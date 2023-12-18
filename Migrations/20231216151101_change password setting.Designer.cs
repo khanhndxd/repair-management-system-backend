@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using repair_management_backend.Data;
 
@@ -11,9 +12,11 @@ using repair_management_backend.Data;
 namespace repair_management_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231216151101_change password setting")]
+    partial class changepasswordsetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,25 +54,25 @@ namespace repair_management_backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6f678273-e39a-40f6-924b-2e2d1ba2a392",
+                            Id = "7525dcbb-2525-4a70-9fbc-b20297997287",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "24b17cc8-44a8-4d55-9a94-7ba39fedc768",
-                            Name = "Creator",
-                            NormalizedName = "CREATOR"
+                            Id = "ea408df1-96f5-4af8-a705-b804b1f54e98",
+                            Name = "Staff",
+                            NormalizedName = "STAFF"
                         },
                         new
                         {
-                            Id = "28ed9c30-8f1d-40ae-8ffe-675b323153f2",
-                            Name = "Receiver",
-                            NormalizedName = "RECEIVER"
+                            Id = "f0ae4d4e-374b-4eb2-b9f2-79f0cf62e7b6",
+                            Name = "Techlead",
+                            NormalizedName = "TECHLEAD"
                         },
                         new
                         {
-                            Id = "d2952c29-c0f2-4837-8409-c48e574a1954",
+                            Id = "286834b0-bb90-4b49-920f-429a704f443f",
                             Name = "Technician",
                             NormalizedName = "TECHNICIAN"
                         });
@@ -240,22 +243,22 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             UserId = "1",
-                            RoleId = "6f678273-e39a-40f6-924b-2e2d1ba2a392"
+                            RoleId = "7525dcbb-2525-4a70-9fbc-b20297997287"
                         },
                         new
                         {
                             UserId = "2",
-                            RoleId = "24b17cc8-44a8-4d55-9a94-7ba39fedc768"
+                            RoleId = "ea408df1-96f5-4af8-a705-b804b1f54e98"
                         },
                         new
                         {
                             UserId = "3",
-                            RoleId = "28ed9c30-8f1d-40ae-8ffe-675b323153f2"
+                            RoleId = "f0ae4d4e-374b-4eb2-b9f2-79f0cf62e7b6"
                         },
                         new
                         {
                             UserId = "4",
-                            RoleId = "d2952c29-c0f2-4837-8409-c48e574a1954"
+                            RoleId = "286834b0-bb90-4b49-920f-429a704f443f"
                         });
                 });
 
@@ -766,21 +769,21 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 17, 11, 35, 29, 940, DateTimeKind.Local).AddTicks(912),
+                            CreatedAt = new DateTime(2023, 12, 16, 22, 11, 1, 249, DateTimeKind.Local).AddTicks(9136),
                             CustomerId = 1,
                             Total = 1200000.0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 17, 11, 35, 29, 940, DateTimeKind.Local).AddTicks(932),
+                            CreatedAt = new DateTime(2023, 12, 16, 22, 11, 1, 249, DateTimeKind.Local).AddTicks(9153),
                             CustomerId = 2,
                             Total = 1600000.0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 17, 11, 35, 29, 940, DateTimeKind.Local).AddTicks(932),
+                            CreatedAt = new DateTime(2023, 12, 16, 22, 11, 1, 249, DateTimeKind.Local).AddTicks(9153),
                             CustomerId = 3,
                             Total = 2400000.0
                         });
@@ -1610,13 +1613,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "91236f40-4910-4640-a486-e898144bfd1c",
+                            ConcurrencyStamp = "68921891-a14f-4774-a875-339e136dbeda",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "NGUYỄN DUY KHÁNH",
-                            PasswordHash = "AQAAAAIAAYagAAAAED1gLNLbQ31S7EvHmBEWkcvF5u8/yIfsea0GQ26Xw3fDkhHmMi1SSseP2+xuvvs3GQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH6mojtFf5WB/EHaNpQu9ftt6msZ/ety+K/sapzNuErMJhJJsDBwDwGW+mbGG7K96Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1627,13 +1630,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0fd61d17-8ee9-487a-b8bd-77a8f8a65c73",
-                            Email = "creator1@creator.com",
+                            ConcurrencyStamp = "ac2b6c38-c89a-494e-91d0-973f79499938",
+                            Email = "staff1@staff.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "CREATOR1@CREATOR.COM",
+                            NormalizedEmail = "STAFF1@STAFF.COM",
                             NormalizedUserName = "NGUYỄN HOÀNG A",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIpdiHiBzcRtwcUbbVy8ZZl1nDmIF6PedPKYVr3pqShHdQ3LkU2lwwhqoSVSVOttng==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHotuAFN+zZHSDuECQzv72M65jp4UycgtpV3gcut7XRNqjXlV0jE++4PWSF6LYIZZQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1644,13 +1647,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "974d8667-65a7-468c-ac4e-193ec5a86e5f",
-                            Email = "receiver1@receiver.com",
+                            ConcurrencyStamp = "d79f8559-7730-403b-b17c-155a8421dfff",
+                            Email = "lead1@lead.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "RECEIVER1@RECEIVER.COM",
+                            NormalizedEmail = "LEAD1@LEAD.COM",
                             NormalizedUserName = "NGUYỄN VĂN HOÀNG",
-                            PasswordHash = "AQAAAAIAAYagAAAAENKK/sYumtAJThHCDZRUtUb1tzrTObh7v0vklpLLo1eymPeVB8LKahf1LI0SEkNPdg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDLEn+kokrFA7jpej1MwAI8tyJERVby+MPRiPpvYYs7xcMgRV9ULRWjMYPR4k36PLg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1661,13 +1664,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2e876c55-ccb8-41f3-b624-3c394afc347f",
+                            ConcurrencyStamp = "ac06fe36-4d82-4f52-b8cb-912839043c1b",
                             Email = "tech1@tech.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TECH1@TECH.COM",
                             NormalizedUserName = "NGUYỄN DUY QUANG",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL8VHvXT6i8AYCrf1MeEb9e/gm/5hg0y07cCJbbEamoqR/WlSUh0ZeuENF0SqjGz4Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMlSBomULsJ9XstfLXWhgE+WluSVHyHAD/bGeeeFrpMRPa6rePXlSjNVJwfvUBczgg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

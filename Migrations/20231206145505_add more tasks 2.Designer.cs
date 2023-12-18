@@ -12,8 +12,8 @@ using repair_management_backend.Data;
 namespace repair_management_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231112111347_Add_User_Props")]
-    partial class Add_User_Props
+    [Migration("20231206145505_add more tasks 2")]
+    partial class addmoretasks2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,23 @@ namespace repair_management_backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "534f6fbd-914c-4e37-82d5-c647cf349f14",
+                            Id = "2458f121-4cc4-4892-8fd3-8135adb29345",
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = "9eabcdb7-dff6-4eb5-8cbc-62e6581677c3",
+                            Id = "4a0502af-3c6b-4a2e-9b7b-963378e67666",
                             Name = "Staff"
+                        },
+                        new
+                        {
+                            Id = "8cfbaaf8-30e0-464f-8597-92c32e7fe7d2",
+                            Name = "Techlead"
+                        },
+                        new
+                        {
+                            Id = "cbe2bb35-2906-4c4d-88d0-59fd6a628548",
+                            Name = "Technician"
                         });
                 });
 
@@ -229,12 +239,22 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             UserId = "1",
-                            RoleId = "534f6fbd-914c-4e37-82d5-c647cf349f14"
+                            RoleId = "2458f121-4cc4-4892-8fd3-8135adb29345"
                         },
                         new
                         {
                             UserId = "2",
-                            RoleId = "9eabcdb7-dff6-4eb5-8cbc-62e6581677c3"
+                            RoleId = "4a0502af-3c6b-4a2e-9b7b-963378e67666"
+                        },
+                        new
+                        {
+                            UserId = "3",
+                            RoleId = "8cfbaaf8-30e0-464f-8597-92c32e7fe7d2"
+                        },
+                        new
+                        {
+                            UserId = "4",
+                            RoleId = "cbe2bb35-2906-4c4d-88d0-59fd6a628548"
                         });
                 });
 
@@ -625,6 +645,34 @@ namespace repair_management_backend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("repair_management_backend.Models.CustomerProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("CustomerProducts");
+                });
+
             modelBuilder.Entity("repair_management_backend.Models.Manufacturer", b =>
                 {
                     b.Property<int>("Id")
@@ -717,21 +765,21 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 11, 12, 18, 13, 47, 41, DateTimeKind.Local).AddTicks(1447),
+                            CreatedAt = new DateTime(2023, 12, 6, 21, 55, 4, 823, DateTimeKind.Local).AddTicks(3917),
                             CustomerId = 1,
                             Total = 1200000.0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 11, 12, 18, 13, 47, 41, DateTimeKind.Local).AddTicks(1467),
+                            CreatedAt = new DateTime(2023, 12, 6, 21, 55, 4, 823, DateTimeKind.Local).AddTicks(3929),
                             CustomerId = 2,
                             Total = 1600000.0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 11, 12, 18, 13, 47, 41, DateTimeKind.Local).AddTicks(1467),
+                            CreatedAt = new DateTime(2023, 12, 6, 21, 55, 4, 823, DateTimeKind.Local).AddTicks(3933),
                             CustomerId = 3,
                             Total = 2400000.0
                         });
@@ -842,6 +890,66 @@ namespace repair_management_backend.Migrations
                     b.ToTable("RepairAccessories");
                 });
 
+            modelBuilder.Entity("repair_management_backend.Models.RepairCustomerProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("RepairOrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerProductId");
+
+                    b.HasIndex("RepairOrderId");
+
+                    b.ToTable("RepairCustomerProducts");
+                });
+
+            modelBuilder.Entity("repair_management_backend.Models.RepairLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Info")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("RepairOrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("RepairOrderId");
+
+                    b.ToTable("RepairLogs");
+                });
+
             modelBuilder.Entity("repair_management_backend.Models.RepairOrder", b =>
                 {
                     b.Property<int>("Id")
@@ -860,6 +968,9 @@ namespace repair_management_backend.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -872,6 +983,10 @@ namespace repair_management_backend.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ReceivedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("RepairReasonId")
                         .HasColumnType("int");
@@ -886,7 +1001,7 @@ namespace repair_management_backend.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TaskId")
+                    b.Property<int?>("TaskId")
                         .HasColumnType("int");
 
                     b.Property<double>("TotalPrice")
@@ -897,6 +1012,8 @@ namespace repair_management_backend.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("ReceivedById");
 
                     b.HasIndex("RepairReasonId");
 
@@ -974,6 +1091,34 @@ namespace repair_management_backend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("repair_management_backend.Models.RepairTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("RepairOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaskId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RepairOrderId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("RepairTasks");
+                });
+
             modelBuilder.Entity("repair_management_backend.Models.RepairType", b =>
                 {
                     b.Property<int>("Id")
@@ -1001,6 +1146,11 @@ namespace repair_management_backend.Migrations
                         {
                             Id = 2,
                             Name = "Sửa chữa"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Đổi mới"
                         });
                 });
 
@@ -1093,32 +1243,32 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Vệ sinh máy tính",
+                            Name = "Vệ sinh sản phẩm",
                             Price = 100000.0
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Cài lại win",
-                            Price = 200000.0
-                        },
-                        new
-                        {
-                            Id = 3,
                             Name = "Cài đặt phần mềm",
                             Price = 50000.0
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 3,
                             Name = "Sửa chữa phần mềm",
                             Price = 100000.0
                         },
                         new
                         {
-                            Id = 5,
-                            Name = "Bảo dưỡng định kỳ",
+                            Id = 4,
+                            Name = "Thay thế linh kiện",
                             Price = 100000.0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Đổi mới",
+                            Price = 0.0
                         });
                 });
 
@@ -1139,13 +1289,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b9e751c9-c01c-4b46-94b7-5259de695ee6",
+                            ConcurrencyStamp = "872be684-ce70-424b-8bb4-6ac81483c3d3",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "NGUYỄN DUY KHÁNH",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGpzHKrYJUba5KgVgVZ/NNm61c+kim8YH6GB0IWVyK/PVWbarG4yBGCOWHdh4aQZMg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFpTstCaf51epjv5Ml++Ccz8c80njmqQhekxu+x2f1MZxl8Ry+E3YEz0Jn4PV6qrCQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1156,17 +1306,51 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eb0228fc-135d-4770-82d4-0072c5c10bef",
+                            ConcurrencyStamp = "16bdd2ac-0927-4d18-9f17-ea2c921c1bee",
                             Email = "staff1@staff.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STAFF1@STAFF.COM",
                             NormalizedUserName = "NGUYỄN HOÀNG A",
-                            PasswordHash = "AQAAAAIAAYagAAAAENl5NnmnhGlHJV4pfMhEYu3BcO1cjsnyoITHAPvR7O/dBky7Jsn4vWF0zSDQq01DCw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP79cPnTif5mb6IX/fUgTEIXbi7JPyUXzGej6gRxuHXvlo5CTZN1dGE13Jf6lMGcWQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UserName = "Nguyễn Hoàng A",
+                            RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "3",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "644cd1e0-1f84-43b1-9dc6-3408455a33fc",
+                            Email = "lead1@lead.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "LEAD1@LEAD.COM",
+                            NormalizedUserName = "NGUYỄN VĂN HOÀNG",
+                            PasswordHash = "AQAAAAIAAYagAAAAENiaYUUYpffDSlQy0yHK8phQP3D58xVnoAIHmb+gBX3p2iw48Ox9mrEA54vAs5tBWQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "Nguyễn Văn Hoàng",
+                            RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ff6e3da8-52d1-4931-ac1a-54afed159e97",
+                            Email = "tech1@tech.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "TECH1@TECH.COM",
+                            NormalizedUserName = "NGUYỄN DUY QUANG",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO/qC2F7lmiC5iVW5rNsuEBj4tuUl/prahSXwHJIfLImLm4+eQV7b8yCGcbi+T02ug==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "Nguyễn Duy Quang",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -1220,6 +1404,17 @@ namespace repair_management_backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("repair_management_backend.Models.CustomerProduct", b =>
+                {
+                    b.HasOne("repair_management_backend.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.PurchaseOrder", b =>
@@ -1279,6 +1474,42 @@ namespace repair_management_backend.Migrations
                     b.Navigation("RepairOrder");
                 });
 
+            modelBuilder.Entity("repair_management_backend.Models.RepairCustomerProduct", b =>
+                {
+                    b.HasOne("repair_management_backend.Models.CustomerProduct", "CustomerProduct")
+                        .WithMany()
+                        .HasForeignKey("CustomerProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("repair_management_backend.Models.RepairOrder", "RepairOrder")
+                        .WithMany("RepairCustomerProducts")
+                        .HasForeignKey("RepairOrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CustomerProduct");
+
+                    b.Navigation("RepairOrder");
+                });
+
+            modelBuilder.Entity("repair_management_backend.Models.RepairLog", b =>
+                {
+                    b.HasOne("repair_management_backend.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("repair_management_backend.Models.RepairOrder", null)
+                        .WithMany("RepairLogs")
+                        .HasForeignKey("RepairOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
             modelBuilder.Entity("repair_management_backend.Models.RepairOrder", b =>
                 {
                     b.HasOne("repair_management_backend.Models.User", "CreatedBy")
@@ -1291,6 +1522,12 @@ namespace repair_management_backend.Migrations
                         .WithMany("RepairOrders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("repair_management_backend.Models.User", "ReceivedBy")
+                        .WithMany("ReceivedOrders")
+                        .HasForeignKey("ReceivedById")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("repair_management_backend.Models.RepairReason", "RepairReason")
@@ -1317,15 +1554,15 @@ namespace repair_management_backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("repair_management_backend.Models.Task", "Task")
+                    b.HasOne("repair_management_backend.Models.Task", null)
                         .WithMany("RepairOrders")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TaskId");
 
                     b.Navigation("CreatedBy");
 
                     b.Navigation("Customer");
+
+                    b.Navigation("ReceivedBy");
 
                     b.Navigation("RepairReason");
 
@@ -1334,8 +1571,6 @@ namespace repair_management_backend.Migrations
                     b.Navigation("RepairedBy");
 
                     b.Navigation("Status");
-
-                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.RepairProduct", b =>
@@ -1355,6 +1590,25 @@ namespace repair_management_backend.Migrations
                     b.Navigation("PurchasedProduct");
 
                     b.Navigation("RepairOrder");
+                });
+
+            modelBuilder.Entity("repair_management_backend.Models.RepairTask", b =>
+                {
+                    b.HasOne("repair_management_backend.Models.RepairOrder", "RepairOrder")
+                        .WithMany("RepairTasks")
+                        .HasForeignKey("RepairOrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("repair_management_backend.Models.Task", "Task")
+                        .WithMany()
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("RepairOrder");
+
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.Accessory", b =>
@@ -1393,7 +1647,13 @@ namespace repair_management_backend.Migrations
                 {
                     b.Navigation("RepairAccessories");
 
+                    b.Navigation("RepairCustomerProducts");
+
+                    b.Navigation("RepairLogs");
+
                     b.Navigation("RepairProducts");
+
+                    b.Navigation("RepairTasks");
                 });
 
             modelBuilder.Entity("repair_management_backend.Models.RepairReason", b =>
@@ -1419,6 +1679,8 @@ namespace repair_management_backend.Migrations
             modelBuilder.Entity("repair_management_backend.Models.User", b =>
                 {
                     b.Navigation("CreatedOrders");
+
+                    b.Navigation("ReceivedOrders");
 
                     b.Navigation("RepairedOrders");
                 });

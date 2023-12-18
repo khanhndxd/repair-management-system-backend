@@ -48,6 +48,8 @@ namespace repair_management_backend.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -271,6 +273,27 @@ namespace repair_management_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CustomerProducts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomerProducts_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PurchaseOrders",
                 columns: table => new
                 {
@@ -297,9 +320,11 @@ namespace repair_management_backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RepairedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReceivedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReceiveAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReceiveType = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -307,8 +332,8 @@ namespace repair_management_backend.Migrations
                     StatusId = table.Column<int>(type: "int", nullable: false),
                     RepairTypeId = table.Column<int>(type: "int", nullable: false),
                     RepairReasonId = table.Column<int>(type: "int", nullable: false),
-                    TaskId = table.Column<int>(type: "int", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    Note = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    TaskId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -316,6 +341,12 @@ namespace repair_management_backend.Migrations
                     table.ForeignKey(
                         name: "FK_RepairOrders_AspNetUsers_CreatedById",
                         column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RepairOrders_AspNetUsers_ReceivedById",
+                        column: x => x.ReceivedById,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -353,8 +384,7 @@ namespace repair_management_backend.Migrations
                         name: "FK_RepairOrders_Tasks_TaskId",
                         column: x => x.TaskId,
                         principalTable: "Tasks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -420,6 +450,84 @@ namespace repair_management_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RepairCustomerProducts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerProductId = table.Column<int>(type: "int", nullable: false),
+                    RepairOrderId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RepairCustomerProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RepairCustomerProducts_CustomerProducts_CustomerProductId",
+                        column: x => x.CustomerProductId,
+                        principalTable: "CustomerProducts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_RepairCustomerProducts_RepairOrders_RepairOrderId",
+                        column: x => x.RepairOrderId,
+                        principalTable: "RepairOrders",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RepairLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RepairOrderId = table.Column<int>(type: "int", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Info = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RepairLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RepairLogs_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RepairLogs_RepairOrders_RepairOrderId",
+                        column: x => x.RepairOrderId,
+                        principalTable: "RepairOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RepairTasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RepairOrderId = table.Column<int>(type: "int", nullable: false),
+                    TaskId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RepairTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RepairTasks_RepairOrders_RepairOrderId",
+                        column: x => x.RepairOrderId,
+                        principalTable: "RepairOrders",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_RepairTasks_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RepairProducts",
                 columns: table => new
                 {
@@ -478,17 +586,21 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4c82dbc5-601a-4840-94cf-c0f831509dd8", null, "Admin", null },
-                    { "d4c3ee1b-4118-4481-a208-c7bd3fe92424", null, "Staff", null }
+                    { "4035ce5c-4731-4fb2-af49-ff433db651aa", null, "Technician", null },
+                    { "57e5fe0c-273b-4920-a9c7-67a5acf08c40", null, "Admin", null },
+                    { "e0202692-4be9-4182-a2fd-3034055d0447", null, "Staff", null },
+                    { "f4d30968-d935-4128-985c-83642a5cc959", null, "Techlead", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "99767332-8982-4988-8ea8-608c57253825", "User", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "NGUYEN DUY KHANH", "AQAAAAIAAYagAAAAEKgwauJa7I4bSGJ2OZDXDJBHPtEfYQf8nqWSh2aBdqD9E+E2W1q0BrFffpIA4tNdnA==", null, false, "", false, "Nguyễn Duy Khánh" },
-                    { "2", 0, "a74ec75c-c3c6-444d-9ecb-b0a1455cdcc4", "User", "staff1@staff.com", true, false, null, "STAFF1@STAFF.COM", "NGUYEN HOANG A", "AQAAAAIAAYagAAAAEIqpXH0KFrqlUkm3YWbGSP4abWNnmhqmSlheTOEOUZ89br9f5Sy3WYU0dzu44iEUzQ==", null, false, "", false, "Nguyễn Hoàng A" }
+                    { "1", 0, "b0578801-243c-4b7b-837f-aaa065ee54af", "User", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "NGUYỄN DUY KHÁNH", "AQAAAAIAAYagAAAAEK3wP8iKQR+xlAIaXoVb+M83Tv/fkUoaNGdzM9HDcUB3chCrKsiwho5SGik5nC0jfg==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Duy Khánh" },
+                    { "2", 0, "415dd5b1-2c3a-4f39-acd7-698ad9fb760f", "User", "staff1@staff.com", true, false, null, "STAFF1@STAFF.COM", "NGUYỄN HOÀNG A", "AQAAAAIAAYagAAAAEC4oWLf2CdkOOKOTz1+GyOcKyDTD4h6AJSkGbZL461qeNcRb+AgVsbUFmmAP18L1ug==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Hoàng A" },
+                    { "3", 0, "9c608353-aaa0-4281-957a-e8b23488da59", "User", "lead1@lead.com", true, false, null, "LEAD1@LEAD.COM", "NGUYỄN VĂN HOÀNG", "AQAAAAIAAYagAAAAEJCp+k7Bf/OinBjYS70wyE+HKTr3VqozTQQAOhPxLTYl5mSJkSJpLF1anOGN3ymEDw==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Văn Hoàng" },
+                    { "4", 0, "495163f0-4ed8-475a-812e-21a61ba13e13", "User", "tech1@tech.com", true, false, null, "TECH1@TECH.COM", "NGUYỄN DUY QUANG", "AQAAAAIAAYagAAAAEGx/TEY4OHLe7NKp/Z4giTkZ2CLAjgzLUUYVVpIf33DnbaFzL+VvjlaIo3qi4fyLeA==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Duy Quang" }
                 });
 
             migrationBuilder.InsertData(
@@ -557,7 +669,8 @@ namespace repair_management_backend.Migrations
                 values: new object[,]
                 {
                     { 1, "Bảo hành" },
-                    { 2, "Sửa chữa" }
+                    { 2, "Sửa chữa" },
+                    { 3, "Đổi mới" }
                 });
 
             migrationBuilder.InsertData(
@@ -593,8 +706,10 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "4c82dbc5-601a-4840-94cf-c0f831509dd8", "1" },
-                    { "d4c3ee1b-4118-4481-a208-c7bd3fe92424", "2" }
+                    { "57e5fe0c-273b-4920-a9c7-67a5acf08c40", "1" },
+                    { "e0202692-4be9-4182-a2fd-3034055d0447", "2" },
+                    { "f4d30968-d935-4128-985c-83642a5cc959", "3" },
+                    { "4035ce5c-4731-4fb2-af49-ff433db651aa", "4" }
                 });
 
             migrationBuilder.InsertData(
@@ -602,9 +717,9 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "Total" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2812), 1, 1200000.0 },
-                    { 2, new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2829), 2, 1600000.0 },
-                    { 3, new DateTime(2023, 11, 2, 21, 17, 31, 409, DateTimeKind.Local).AddTicks(2833), 3, 2400000.0 }
+                    { 1, new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7885), 1, 1200000.0 },
+                    { 2, new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7897), 2, 1600000.0 },
+                    { 3, new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7897), 3, 2400000.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -657,6 +772,11 @@ namespace repair_management_backend.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomerProducts_CustomerId",
+                table: "CustomerProducts",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PurchasedProducts_CategoryId",
                 table: "PurchasedProducts",
                 column: "CategoryId");
@@ -687,6 +807,26 @@ namespace repair_management_backend.Migrations
                 column: "RepairOrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RepairCustomerProducts_CustomerProductId",
+                table: "RepairCustomerProducts",
+                column: "CustomerProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepairCustomerProducts_RepairOrderId",
+                table: "RepairCustomerProducts",
+                column: "RepairOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepairLogs_CreatedById",
+                table: "RepairLogs",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepairLogs_RepairOrderId",
+                table: "RepairLogs",
+                column: "RepairOrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RepairOrders_CreatedById",
                 table: "RepairOrders",
                 column: "CreatedById");
@@ -695,6 +835,11 @@ namespace repair_management_backend.Migrations
                 name: "IX_RepairOrders_CustomerId",
                 table: "RepairOrders",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepairOrders_ReceivedById",
+                table: "RepairOrders",
+                column: "ReceivedById");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RepairOrders_RepairedById",
@@ -730,6 +875,16 @@ namespace repair_management_backend.Migrations
                 name: "IX_RepairProducts_RepairOrderId",
                 table: "RepairProducts",
                 column: "RepairOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepairTasks_RepairOrderId",
+                table: "RepairTasks",
+                column: "RepairOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepairTasks_TaskId",
+                table: "RepairTasks",
+                column: "TaskId");
         }
 
         /// <inheritdoc />
@@ -754,13 +909,25 @@ namespace repair_management_backend.Migrations
                 name: "RepairAccessories");
 
             migrationBuilder.DropTable(
+                name: "RepairCustomerProducts");
+
+            migrationBuilder.DropTable(
+                name: "RepairLogs");
+
+            migrationBuilder.DropTable(
                 name: "RepairProducts");
+
+            migrationBuilder.DropTable(
+                name: "RepairTasks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Accessories");
+
+            migrationBuilder.DropTable(
+                name: "CustomerProducts");
 
             migrationBuilder.DropTable(
                 name: "PurchasedProducts");
