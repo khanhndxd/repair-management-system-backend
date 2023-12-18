@@ -8,6 +8,7 @@ using repair_management_backend.DTOs.PurchasedProduct;
 using repair_management_backend.DTOs.PurchaseOrder;
 using repair_management_backend.DTOs.RepairAccessory;
 using repair_management_backend.DTOs.RepairCustomerProduct;
+using repair_management_backend.DTOs.RepairLog;
 using repair_management_backend.DTOs.RepairOrder;
 using repair_management_backend.DTOs.RepairProduct;
 using repair_management_backend.DTOs.RepairReason;
@@ -16,6 +17,7 @@ using repair_management_backend.DTOs.RepairType;
 using repair_management_backend.DTOs.Status;
 using repair_management_backend.DTOs.Task;
 using repair_management_backend.DTOs.User;
+using repair_management_backend.DTOs.WarrantyPolicyTask;
 
 namespace repair_management_backend
 {
@@ -47,6 +49,8 @@ namespace repair_management_backend
             CreateMap<AddRepairAccessoryDTO, RepairAccessory>();
             CreateMap<UpdateRepairOrderDTO, RepairOrder>();
             CreateMap<UpdateCustomerDTO, Customer>();
+            CreateMap<RepairLog, GetRepairLogDTO>();
+            CreateMap<WarrantyPolicyTask, GetWarrantyPolicyTaskDTO>();
         }
     }
 }
