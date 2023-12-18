@@ -2,6 +2,6 @@
 {
     public interface IStatusRepository
     {
-        Task<ServiceResponse<List<Status>>> GetAll();
+        Task<ServiceResponse<List<Status>>> GetAll(List<string> roles);
     }
 }
