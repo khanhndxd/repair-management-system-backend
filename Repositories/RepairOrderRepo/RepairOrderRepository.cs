@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using repair_management_backend.DTOs.RepairOrder;
 using repair_management_backend.Models;
+using System.Globalization;
 
 namespace repair_management_backend.Repositories.RepairOrderRepo
 {
@@ -22,6 +23,7 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 CustomerId = newRepairOrder.CustomerId,
                 CreatedById = newRepairOrder.CreatedById,
                 RepairedById = newRepairOrder.RepairedById,
+                ReceivedById = newRepairOrder.ReceivedById,
                 CreatedAt = newRepairOrder.CreatedAt,
                 ReceiveAt = newRepairOrder.ReceiveAt,
                 ReceiveType = newRepairOrder.ReceiveType,
@@ -68,18 +70,23 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetRepairOrderDTO>>> GetAll(string fieldQuery, string timeQuery)
+        public async Task<ServiceResponse<List<GetRepairOrderDTO>>> GetAll(string userId, List<string> roles, string fieldQuery, string timeQuery, string startDateQuery, string endDateQuery)
         {
             var serviceResponse = new ServiceResponse<List<GetRepairOrderDTO>>();
-            IQueryable<RepairOrder> result = _dataContext.RepairOrders.Where(r => r.IsDeleted == false);
+            IQueryable<RepairOrder> result = _dataContext.RepairOrders.Where(r => r.IsDeleted == false).OrderByDescending(r => r.Id);
+            if(!roles.Contains("Admin"))
+            {
+                result = result.Where(r => r.CreatedById == userId || r.RepairedById == userId || r.ReceivedById == userId);
+            } 
 
             // Query theo field nếu có
             if (!string.IsNullOrEmpty(fieldQuery))
             {
                 switch (fieldQuery.ToLower())
                 {
-                    case "repairtasks":
+                    case "repairtask":
                         result = result
+                            .Include(r => r.RepairType)
                             .Include(r => r.RepairTasks)
                                 .ThenInclude(ra => ra.Task);
                         break;
@@ -87,11 +94,16 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                         result = result
                             .Include(r => r.RepairType);
                         break;
-                    case "repairproducts":
+                    case "category":
                         result = result
+                            .Include(r => r.RepairType)
                             .Include(r => r.RepairProducts)
                                 .ThenInclude(rp => rp.PurchasedProduct)
                                     .ThenInclude(p => p.Category);
+                        break;
+                    case "totalprice":
+                        result = result
+                            .Include(r => r.RepairType);
                         break;
                     default:
                         break;
@@ -106,6 +118,8 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                     .Include(r => r.Status)
                     .Include(r => r.CreatedBy)
                     .Include(r => r.RepairedBy)
+                    .Include(r => r.ReceivedBy)
+                    .Include(r => r.RepairLogs)
                     .Include(r => r.RepairProducts)
                         .ThenInclude(rp => rp.PurchasedProduct)
                     .Include(r => r.RepairAccessories)
@@ -116,20 +130,45 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                         .ThenInclude(ra => ra.CustomerProduct);
             }
 
-            if(!string.IsNullOrEmpty(timeQuery))
+            if(!string.IsNullOrEmpty(timeQuery) || (!string.IsNullOrEmpty(startDateQuery) && !string.IsNullOrEmpty(endDateQuery)))
             {
                 DateTime currentDate = DateTime.Now;
                 DateTime startDate;
                 DateTime endDate;
 
-                // Query theo thời gian nếu có
-                if (!string.IsNullOrEmpty(timeQuery))
+                // Nếu ít nhất một trong hai trường khoảng thời gian không rỗng, sử dụng để lọc dữ liệu
+                if (!string.IsNullOrEmpty(startDateQuery) && !string.IsNullOrEmpty(endDateQuery) && timeQuery.ToLower() == "range")
+                {
+                    if (DateTime.TryParse(startDateQuery, CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate) &&
+                        DateTime.TryParse(endDateQuery, CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
+                    {
+                        result = result.Where(r => r.CreatedAt >= startDate && r.CreatedAt <= endDate);
+                    }
+                    else
+                    {
+                        // Xử lý khi chuyển đổi ngày không thành công
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "Sai định dạng ngày tháng";
+                        return serviceResponse;
+                    }
+                } else
                 {
                     switch (timeQuery.ToLower())
                     {
-                        case "week":
+                        case "current-day":
+                            startDate = currentDate.Date; // Bắt đầu từ 00:00:00 của ngày hiện tại
+                            endDate = currentDate.Date.AddDays(1).AddTicks(-1); // Kết thúc vào 23:59:59 của ngày hiện tại
+                            result = result.Where(r => r.CreatedAt >= startDate && r.CreatedAt <= endDate);
+                            break;
+                        case "current-week":
                             startDate = currentDate.AddDays(-(int)currentDate.DayOfWeek);
                             endDate = startDate.AddDays(6);
+                            // Nếu ngày hiện tại là chủ nhật và startDate là ngày sau chủ nhật, giảm đi 7 ngày để đảm bảo lấy đúng tuần hiện tại
+                            if (currentDate.DayOfWeek == DayOfWeek.Sunday && startDate > currentDate)
+                            {
+                                startDate = startDate.AddDays(-7);
+                                endDate = endDate.AddDays(-7);
+                            }
                             result = result.Where(r => r.CreatedAt >= startDate && r.CreatedAt <= endDate);
                             break;
                         case "current-month":
@@ -155,6 +194,57 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<RepairCategoryStatsDTO>>> GetRepairCategoryStat()
+        {
+            var serviceResponse = new ServiceResponse<List<RepairCategoryStatsDTO>>();
+
+            try
+            {
+                var categoryStats = await _dataContext.Categories
+                    .Select(c => new
+                    {
+                        CategoryId = c.Id,
+                        CategoryName = c.Name,
+                        RepairTypeStats = _dataContext.RepairTypes
+                            .Select(rt => new
+                            {
+                                RepairTypeId = rt.Id,
+                                RepairTypeName = rt.Name,
+                                RepairCount = _dataContext.RepairOrders
+                                    .Where(ro => ro.RepairTypeId == rt.Id)
+                                    .SelectMany(ro => ro.RepairProducts.Where(rp => rp.PurchasedProduct.CategoryId == c.Id))
+                                    .Count(),
+                            })
+                            .ToList(),
+                    })
+                    .ToListAsync();
+
+                var categoryStatsDTO = categoryStats.Select(cs => new RepairCategoryStatsDTO
+                {
+                    CategoryId = cs.CategoryId,
+                    CategoryName = cs.CategoryName,
+                    RepairTypeStats = cs.RepairTypeStats.Select(rts => new RepairTypeStatsDTO
+                    {
+                        RepairTypeId = rts.RepairTypeId,
+                        RepairTypeName = rts.RepairTypeName,
+                        RepairCount = rts.RepairCount
+                    }).ToList()
+                })
+                .OrderByDescending(catStats => catStats.RepairTypeStats.Sum(rtStats => rtStats.RepairCount))
+                .ToList();
+
+                serviceResponse.Data = categoryStatsDTO;
+                serviceResponse.Message = "Thống kê thành công";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = $"Có lỗi khi thống kê: {ex.Message}";
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<GetRepairOrderDTO>> GetRepairOrderById(int id)
         {
             var serviceResponse = new ServiceResponse<GetRepairOrderDTO>();
@@ -168,8 +258,10 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                     .Include(r => r.Status)
                     .Include(r => r.CreatedBy)
                     .Include(r => r.RepairedBy)
+                    .Include(r => r.ReceivedBy)
+                    .Include(r => r.RepairLogs)
                     .Include(r => r.RepairProducts)
-                        .ThenInclude(rp => rp.PurchasedProduct)
+                        .ThenInclude(rp => rp.PurchasedProduct).ThenInclude(x => x.Category).ThenInclude(x => x.WarrantyPolicy)
                     .Include(r => r.RepairAccessories)
                         .ThenInclude(ra => ra.Accessory)
                     .Include(r => r.RepairTasks)
@@ -273,9 +365,9 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 {
                     throw new Exception($"Không tìm thấy đơn bảo hành có id là `{updateRepairOrderStatusDTO.Id}`");
                 }
-                if (result.RepairedById != updateRepairOrderStatusDTO.RepairedById && result.CreatedById != updateRepairOrderStatusDTO.CreatedById)
+                if (result.RepairedById != updateRepairOrderStatusDTO.RepairedById && result.CreatedById != updateRepairOrderStatusDTO.CreatedById && result.ReceivedById != updateRepairOrderStatusDTO.ReceivedById)
                 {
-                    throw new Exception($"Không thể cập nhật trạng thái vì không phải người tiếp nhận hay người tạo đơn");
+                    throw new Exception($"Không thể cập nhật trạng thái vì không phải người của đơn");
                 }
                 result.StatusId = updateRepairOrderStatusDTO.StatusId;
                 await _dataContext.SaveChangesAsync();

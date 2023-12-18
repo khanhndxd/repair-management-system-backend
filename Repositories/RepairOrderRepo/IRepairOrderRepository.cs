@@ -4,10 +4,11 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
 {
     public interface IRepairOrderRepository
     {
-        Task<ServiceResponse<List<GetRepairOrderDTO>>> GetAll(string fieldQuery, string timeQuery);
+        Task<ServiceResponse<List<GetRepairOrderDTO>>> GetAll(string userId, List<string> roles, string fieldQuery, string timeQuery, string startDateQuery, string endDateQuery);
         Task<ServiceResponse<GetRepairOrderDTO>> GetRepairOrderById(int id);
         Task<ServiceResponse<int>> GetRepairOrderByStatus(int id);
         Task<ServiceResponse<double>> GetTotalPrice();
+        Task<ServiceResponse<List<RepairCategoryStatsDTO>>> GetRepairCategoryStat();
         Task<ServiceResponse<int>> AddRepairOrder(AddRepairOrderDTO newRepairOrder);
         Task<ServiceResponse<string>> UpdateRepairOrderStatus(UpdateRepairOrderStatusDTO updateRepairOrderStatusDTO);
         Task<ServiceResponse<string>> UpdateRepairOrder(UpdateRepairOrderDTO updateRepairOrderDTO);
