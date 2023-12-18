@@ -16,6 +16,7 @@ namespace repair_management_backend.DTOs.RepairOrder
         public bool IsDeleted { get; set; }
         public virtual GetUserDTO CreatedBy { get; set; }
         public virtual GetUserDTO RepairedBy { get; set; }
+        public virtual GetUserDTO ReceivedBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ReceiveAt { get; set; }
         [MaxLength(255)]

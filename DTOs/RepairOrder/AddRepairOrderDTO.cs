@@ -8,6 +8,7 @@ namespace repair_management_backend.DTOs.RepairOrder
         public int CustomerId { get; set; }
         public string CreatedById { get; set; }
         public string RepairedById { get; set; }
+        public string ReceivedById { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ReceiveAt { get; set; }
         [MaxLength(255)]
