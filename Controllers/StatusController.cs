@@ -8,6 +8,7 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StatusController : ControllerBase
     {
         private readonly IStatusRepository _statusRepository;

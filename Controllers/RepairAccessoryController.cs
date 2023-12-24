@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using repair_management_backend.DTOs.RepairAccessory;
 using repair_management_backend.Repositories.RepairAccessoryRepo;
@@ -7,6 +8,7 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RepairAccessoryController : ControllerBase
     {
         private readonly IRepairAccessoryRepository _repairAccessoryRepository;
@@ -15,6 +17,7 @@ namespace repair_management_backend.Controllers
             _repairAccessoryRepository = repairAccessoryRepository;
         }
         [HttpGet("/RepairOrder/{id}")]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<List<GetRepairAccessoryDTO>>>> GetRepairAccessoryByRepairOrderId(int id)
         {
             var result = await _repairAccessoryRepository.GetRepairAccessoryByRepairOrderId(id);
@@ -25,6 +28,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpPost]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<string>>> AddRepairAccessory([FromBody] List<AddRepairAccessoryDTO> addRepairAccessoryDTO)
         {
             var result = await _repairAccessoryRepository.AddRepairAccessory(addRepairAccessoryDTO);

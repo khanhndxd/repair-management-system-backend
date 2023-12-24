@@ -9,7 +9,7 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class RepairOrderController : ControllerBase
     {
         private readonly IRepairOrderRepository _repairOrderRepository;
@@ -46,7 +46,7 @@ namespace repair_management_backend.Controllers
             return Forbid();
         }
         [HttpGet("{id}")]
-        //[Authorize(Policy = "ReadWritePolicy")]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<GetRepairOrderDTO>>> GetSingle(int id)
         {
             var result = await _repairOrderRepository.GetRepairOrderById(id);
@@ -57,7 +57,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpPost]
-        [Authorize(Policy = "ReadWritePolicy")]
+        [Authorize(Policy = "NotTechnicianPolicy")]
         public async Task<ActionResult<ServiceResponse<int>>> AddRepairOrder([FromBody] AddRepairOrderDTO newRepairOrder)
         {
             var result = await _repairOrderRepository.AddRepairOrder(newRepairOrder);
@@ -90,6 +90,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpGet("Status/{statusId}")]
+        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<IActionResult> GetRepairOrderbyStatus(int statusId)
         {
             var result = await _repairOrderRepository.GetRepairOrderByStatus(statusId);
@@ -100,6 +101,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpGet("Category")]
+        [Authorize(Policy = "FullControlPolicy")]
         public async Task<IActionResult> GetRepairCategoryStats()
         {
             var result = await _repairOrderRepository.GetRepairCategoryStat();
@@ -110,6 +112,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpGet("TotalPrice")]
+        [Authorize(Policy = "FullControlPolicy")]
         public async Task<IActionResult> GetTotalPrice()
         {
             var result = await _repairOrderRepository.GetTotalPrice();
@@ -120,6 +123,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpDelete()]
+        [Authorize(Policy = "FullControlPolicy")]
         public async Task<IActionResult> DeleteRepairOrder([FromBody] DeleteRepairOrderDTO deleteRepairOrderDTO)
         {
             var result = await _repairOrderRepository.DeleteRepairOrder(deleteRepairOrderDTO);
