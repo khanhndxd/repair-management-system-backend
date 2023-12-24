@@ -8,7 +8,6 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class PurchaseOrderController : ControllerBase
     {
         private readonly IPurchaseOrderRepository _purchaseOrderRepository;
@@ -17,7 +16,6 @@ namespace repair_management_backend.Controllers
             _purchaseOrderRepository = purchaseOrderRepository;
         }
         [HttpGet("Customer/{customerId}")]
-        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<List<GetPurchaseOrderDTO>>>> GetPurchaseOrderByCustomerId(int customerId)
         {
             var result = await _purchaseOrderRepository.GetPurchaseOrdersByCustomerId(customerId);

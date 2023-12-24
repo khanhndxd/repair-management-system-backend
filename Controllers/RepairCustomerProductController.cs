@@ -8,7 +8,6 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class RepairCustomerProductController : ControllerBase
     {
         private readonly IRepairCustomerProductRepository _repairCustomerProductRepository;
@@ -17,7 +16,6 @@ namespace repair_management_backend.Controllers
             _repairCustomerProductRepository = repairCustomerProductRepository;
         }
         [HttpPost]
-        [Authorize(Policy = "NotTechnicianPolicy")]
         public async Task<IActionResult> AddRepairCustomerProduct([FromBody] List<AddRepairCustomerProductDTO> addRepairCustomerProductDTOs)
         {
             var result = await _repairCustomerProductRepository.AddRepairCustomerProduct(addRepairCustomerProductDTOs);

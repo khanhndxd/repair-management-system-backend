@@ -7,7 +7,6 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class AccessoryController : ControllerBase
     {
         private readonly IAccessoryRepository _accessoryRepository;
@@ -16,7 +15,6 @@ namespace repair_management_backend.Controllers
             _accessoryRepository = accessoryRepository;
         }
         [HttpGet("GetAll")]
-        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<List<Accessory>>>> Get()
         {
             return Ok(await _accessoryRepository.GetAll());

@@ -8,7 +8,6 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class StatusController : ControllerBase
     {
         private readonly IStatusRepository _statusRepository;
@@ -17,7 +16,6 @@ namespace repair_management_backend.Controllers
             _statusRepository = statusRepository;
         }
         [HttpGet("GetAll")]
-        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<List<Status>>>> Get()
         {
             var user = HttpContext.User;

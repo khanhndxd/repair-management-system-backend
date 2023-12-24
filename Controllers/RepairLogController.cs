@@ -10,7 +10,6 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class RepairLogController : ControllerBase
     {
         private readonly IRepairLogRepository _repairLogRepository;
@@ -19,7 +18,6 @@ namespace repair_management_backend.Controllers
             _repairLogRepository = repairLogRepository;
         }
         [HttpGet("RepairOrder/{id}")]
-        [Authorize(Policy = "ReadWritePolicy")]
         public async Task<IActionResult> GetRepairLogByRepairOrderId(int id)
         {
             var result = await _repairLogRepository.GetRepairLogByRepairOrderId(id);

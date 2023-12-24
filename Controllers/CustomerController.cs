@@ -8,7 +8,6 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
@@ -17,13 +16,11 @@ namespace repair_management_backend.Controllers
             _customerRepository = customerRepository;
         }
         [HttpGet("GetAll")]
-        [Authorize(Policy = "NotTechnicianPolicy")]
         public async Task<ActionResult<ServiceResponse<List<Customer>>>> Get()
         {
             return Ok(await _customerRepository.GetAll());
         }
         [HttpGet("{id}")]
-        [Authorize(Policy = "NotTechnicianPolicy")]
         public async Task<ActionResult<ServiceResponse<GetCustomerDTO>>> GetSingle(int id)
         {
             var result = await _customerRepository.GetCustomerById(id);
@@ -34,7 +31,6 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpPost]
-        [Authorize(Policy = "NotTechnicianPolicy")]
         public async Task<ActionResult<ServiceResponse<string>>> AddCustomer([FromBody] AddCustomerDTO newCustomer)
         {
             var result = await _customerRepository.AddCustomer(newCustomer);
@@ -45,7 +41,6 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpPatch]
-        [Authorize(Policy = "NotTechnicianPolicy")]
         public async Task<ActionResult<ServiceResponse<string>>> UpdateCustomer([FromBody] UpdateCustomerDTO updateCustomerDTO)
         {
             var result = await _customerRepository.UpdateCustomer(updateCustomerDTO);

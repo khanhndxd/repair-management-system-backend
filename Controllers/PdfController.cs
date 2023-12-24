@@ -13,11 +13,9 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class PdfController : ControllerBase
     {
         [HttpPost("Generate")]
-        [Authorize(Policy = "ReadWritePolicy")]
         public IActionResult GetPDF([FromBody] PdfGenerationRequest pdfGenerationRequest)
         {
             QuestPDF.Settings.License = LicenseType.Community;
