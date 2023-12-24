@@ -54,10 +54,32 @@ namespace repair_management_backend.Data
                 new User
                 {
                     Id = "4",
+                    UserName = "Nguyễn Hoàng Khoa",
+                    NormalizedUserName = "NGUYỄN HOÀNG KHOA",
+                    Email = "receiver2@receiver.com",
+                    NormalizedEmail = "RECEIVER2@RECEIVER.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "123456"),
+                    SecurityStamp = string.Empty
+                },
+                new User
+                {
+                    Id = "5",
                     UserName = "Nguyễn Duy Quang",
                     NormalizedUserName = "NGUYỄN DUY QUANG",
                     Email = "tech1@tech.com",
                     NormalizedEmail = "TECH1@TECH.COM",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "123456"),
+                    SecurityStamp = string.Empty
+                },
+                new User
+                {
+                    Id = "6",
+                    UserName = "Nguyễn Thế Huy",
+                    NormalizedUserName = "NGUYỄN THẾ HUY",
+                    Email = "tech2@tech.com",
+                    NormalizedEmail = "TECH2@TECH.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "123456"),
                     SecurityStamp = string.Empty
@@ -70,7 +92,9 @@ namespace repair_management_backend.Data
             userRoles.Add(new IdentityUserRole<string> { UserId = users[0].Id, RoleId = roles.First(r => r.Name == "Admin").Id });
             userRoles.Add(new IdentityUserRole<string> { UserId = users[1].Id, RoleId = roles.First(r => r.Name == "Creator").Id });
             userRoles.Add(new IdentityUserRole<string> { UserId = users[2].Id, RoleId = roles.First(r => r.Name == "Receiver").Id });
-            userRoles.Add(new IdentityUserRole<string> { UserId = users[3].Id, RoleId = roles.First(r => r.Name == "Technician").Id });
+            userRoles.Add(new IdentityUserRole<string> { UserId = users[3].Id, RoleId = roles.First(r => r.Name == "Receiver").Id });
+            userRoles.Add(new IdentityUserRole<string> { UserId = users[4].Id, RoleId = roles.First(r => r.Name == "Technician").Id });
+            userRoles.Add(new IdentityUserRole<string> { UserId = users[5].Id, RoleId = roles.First(r => r.Name == "Technician").Id });
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoles);
         }
@@ -229,9 +253,10 @@ namespace repair_management_backend.Data
         {
             return new List<RepairReason>()
             {
-                new RepairReason { Id = 1, Reason = "Sản phẩm lỗi"},
+                new RepairReason { Id = 1, Reason = "Lỗi phần mềm"},
                 new RepairReason{ Id = 2, Reason = "Đổi mới" },
-                new RepairReason { Id = 3, Reason = "Giao nhầm sản phẩm cho khách"}
+                new RepairReason { Id = 3, Reason = "Lỗi phần cứng"},
+                new RepairReason { Id = 4, Reason = "Hỏng hóc, va đập"}
             };
         }
         public static List<Models.Task> GetTaskSeedingData()
@@ -243,7 +268,7 @@ namespace repair_management_backend.Data
                 new Models.Task { Id = 3, Name = "Sửa chữa phần mềm", Price = 100000.0 },
                 new Models.Task { Id = 4, Name = "Thay thế linh kiện", Price = 100000.0 },
                 new Models.Task { Id = 5, Name = "Đổi mới", Price = 0.0 },
-                new Models.Task { Id = 6, Name = "Sửa chữa phần cứng", Price = 0.0 },
+                new Models.Task { Id = 6, Name = "Sửa chữa phần cứng", Price = 200000.0 },
             };
         }
         public static List<WarrantyPolicyTask> GetWarrantyPolicyTaskSeedingData()
