@@ -99,7 +99,11 @@ builder.Services.AddAuthorization(options =>
     });
     options.AddPolicy("ReadWritePolicy", policy =>
     {
-        policy.RequireRole("Admin","Staff", "Techlead", "Technician");
+        policy.RequireRole("Admin", "Creator", "Receiver", "Technician");
+    });
+    options.AddPolicy("NotTechnicianPolicy", policy =>
+    {
+        policy.RequireRole("Admin", "Creator", "Receiver");
     });
 });
 
