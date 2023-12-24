@@ -93,12 +93,29 @@ namespace repair_management_backend.Controllers
         [Authorize(Policy = "ReadWritePolicy")]
         public async Task<IActionResult> GetRepairOrderbyStatus(int statusId)
         {
-            var result = await _repairOrderRepository.GetRepairOrderByStatus(statusId);
-            if (result.Success == false)
+            var user = HttpContext.User;
+
+            if (user != null && user.Claims != null)
             {
-                return BadRequest(result);
+                var roles = user.Claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value)
+                    .ToList();
+
+                var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+                if (userIdClaim != null)
+                {
+                    var userId = userIdClaim.Value;
+                    return Ok(await _repairOrderRepository.GetRepairOrderByStatus(userId, roles, statusId));
+                }
+                else
+                {
+                    return Forbid();
+                }
+
             }
-            return Ok(result);
+            return Forbid();
         }
         [HttpGet("Category")]
         [Authorize(Policy = "FullControlPolicy")]

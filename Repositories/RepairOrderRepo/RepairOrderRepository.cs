@@ -285,22 +285,41 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<int>> GetRepairOrderByStatus(int id)
+        public async Task<ServiceResponse<int>> GetRepairOrderByStatus(string userId, List<string> roles, int id)
         {
             var serviceResponse = new ServiceResponse<int>();
+          
             try
             {
                 var result = -1;
                 if (id == -1)
                 {
-                    result = await _dataContext.RepairOrders
+                    if (!roles.Contains("Admin"))
+                    {
+                        result = await _dataContext.RepairOrders
+                            .Where(r => r.IsDeleted == false)
+                            .Where(r => r.CreatedById == userId || r.RepairedById == userId || r.ReceivedById == userId)
+                            .CountAsync();
+                    } else
+                    {
+                        result = await _dataContext.RepairOrders
                         .Where(r => r.IsDeleted == false)
                         .CountAsync();
+                    }
                 } else
                 {
-                    result = await _dataContext.RepairOrders
-                        .Where(r => r.IsDeleted == false)
-                        .CountAsync(ro => ro.StatusId == id);
+                    if (!roles.Contains("Admin"))
+                    {
+                        result = await _dataContext.RepairOrders
+                            .Where(r => r.IsDeleted == false)
+                            .Where(r => r.CreatedById == userId || r.RepairedById == userId || r.ReceivedById == userId)
+                            .CountAsync(ro => ro.StatusId == id);
+                    } else
+                    {
+                        result = await _dataContext.RepairOrders
+                            .Where(r => r.IsDeleted == false)
+                            .CountAsync(ro => ro.StatusId == id);
+                    }
                 }
                 serviceResponse.Data = result;
 
