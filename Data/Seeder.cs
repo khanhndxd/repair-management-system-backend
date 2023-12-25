@@ -174,6 +174,7 @@ namespace repair_management_backend.Data
                 new Manufacturer { Id = 7, Name = "Razer"},
                 new Manufacturer { Id = 8, Name = "Intel"},
                 new Manufacturer { Id = 9, Name = "AMD"},
+                new Manufacturer { Id = 10, Name = "LG"},
             };
         }
         public static List<Category> GetCategoriesSeedingData()
@@ -222,7 +223,12 @@ namespace repair_management_backend.Data
             {
                 new PurchasedProduct { Id = 1, ProductName = "Nguồn Corsair CX450M", PurchaseOrderId = 1, ProductSerial = "8887", CategoryId = 2, ManufacturerId = 1, WarrantyPeriod = DateTime.Parse("2023-12-31"), Price = 1500000 },
                 new PurchasedProduct { Id = 2, ProductName = "Màn hình Dell S2722DGM", PurchaseOrderId = 2, ProductSerial = "8888", CategoryId = 1, ManufacturerId = 2, WarrantyPeriod = DateTime.Parse("2023-12-31"), Price = 6000000 },
-                new PurchasedProduct { Id = 3, ProductName = "Logitech C920 HD Pro", PurchaseOrderId = 3, ProductSerial = "8889", CategoryId = 12, ManufacturerId = 6, WarrantyPeriod = DateTime.Parse("2023-12-31"), Price = 4500000 }
+                new PurchasedProduct { Id = 3, ProductName = "Logitech C920 HD Pro", PurchaseOrderId = 3, ProductSerial = "8889", CategoryId = 12, ManufacturerId = 6, WarrantyPeriod = DateTime.Parse("2023-12-31"), Price = 4500000 },
+                new PurchasedProduct { Id = 4, ProductName = "Ổ cứng HDD 500GB", PurchaseOrderId = 1, ProductSerial = "8890", CategoryId = 6, ManufacturerId = 5, WarrantyPeriod = DateTime.Parse("2023-11-30"), Price = 3000000 },
+                new PurchasedProduct { Id = 5, ProductName = "Màn hình LG UltraGear 27GN600-B", PurchaseOrderId = 1, ProductSerial = "8891", CategoryId = 1, ManufacturerId = 10, WarrantyPeriod = DateTime.Parse("2024-01-10"), Price = 8000000 },
+                new PurchasedProduct { Id = 6, ProductName = "RAM DDR4 32GB", PurchaseOrderId = 2, ProductSerial = "8892", CategoryId = 6, ManufacturerId = 5, WarrantyPeriod = DateTime.Parse("2024-01-10"), Price = 5000000 },
+                new PurchasedProduct { Id = 7, ProductName = "Razer Kiyo Pro", PurchaseOrderId = 3, ProductSerial = "8893", CategoryId = 12, ManufacturerId = 7, WarrantyPeriod = DateTime.Parse("2024-01-10"), Price = 12000000 },
+                new PurchasedProduct { Id = 8, ProductName = "Màn hình Dell S2722DGM", PurchaseOrderId = 3, ProductSerial = "8894", CategoryId = 1, ManufacturerId = 2, WarrantyPeriod = DateTime.Parse("2024-01-10"), Price = 6000000 },
             };
         }
         public static List<Status> GetStatusSeedingData()
@@ -256,7 +262,8 @@ namespace repair_management_backend.Data
                 new RepairReason { Id = 1, Reason = "Lỗi phần mềm"},
                 new RepairReason{ Id = 2, Reason = "Đổi mới" },
                 new RepairReason { Id = 3, Reason = "Lỗi phần cứng"},
-                new RepairReason { Id = 4, Reason = "Hỏng hóc, va đập"}
+                new RepairReason { Id = 4, Reason = "Hỏng hóc, va đập"},
+                new RepairReason { Id = 5, Reason = "Khác"}
             };
         }
         public static List<Models.Task> GetTaskSeedingData()
