@@ -343,7 +343,7 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                             result = await _dataContext.RepairOrders
                                 .Where(r => r.IsDeleted == false)
                                 .Where(r => r.ReceivedById == userId)
-                                .CountAsync();
+                                .CountAsync(ro => ro.StatusId == id);
 
                         }
                         else if (roles.Contains("Creator"))
@@ -351,14 +351,14 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                             result = await _dataContext.RepairOrders
                                 .Where(r => r.IsDeleted == false)
                                 .Where(r => r.CreatedById == userId)
-                                .CountAsync();
+                                .CountAsync(ro => ro.StatusId == id);
                         }
                         else if (roles.Contains("Technician"))
                         {
                             result = await _dataContext.RepairOrders
                                 .Where(r => r.IsDeleted == false)
                                 .Where(r => r.RepairedById == userId)
-                                .CountAsync();
+                                .CountAsync(ro => ro.StatusId == id);
                         }
                     } else
                     {

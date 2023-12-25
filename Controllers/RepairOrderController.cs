@@ -9,7 +9,6 @@ namespace repair_management_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class RepairOrderController : ControllerBase
     {
         private readonly IRepairOrderRepository _repairOrderRepository;
@@ -18,7 +17,7 @@ namespace repair_management_backend.Controllers
             _repairOrderRepository = repairOrderRepository;
         }
         [HttpGet("GetAll")]
-        [Authorize(Policy = "ReadWritePolicy")]
+        //[Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<List<GetRepairOrderDTO>>>> Get([FromQuery] string? field, [FromQuery] string? time, [FromQuery] string? startDate, [FromQuery] string? endDate)
         {
             var user = HttpContext.User;
@@ -46,7 +45,7 @@ namespace repair_management_backend.Controllers
             return Forbid();
         }
         [HttpGet("{id}")]
-        [Authorize(Policy = "ReadWritePolicy")]
+        //[Authorize(Policy = "ReadWritePolicy")]
         public async Task<ActionResult<ServiceResponse<GetRepairOrderDTO>>> GetSingle(int id)
         {
             var result = await _repairOrderRepository.GetRepairOrderById(id);
@@ -90,7 +89,7 @@ namespace repair_management_backend.Controllers
             return Ok(result);
         }
         [HttpGet("Status/{statusId}")]
-        [Authorize(Policy = "ReadWritePolicy")]
+        //[Authorize(Policy = "ReadWritePolicy")]
         public async Task<IActionResult> GetRepairOrderbyStatus(int statusId)
         {
             var user = HttpContext.User;
