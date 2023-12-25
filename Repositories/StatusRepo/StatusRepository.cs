@@ -21,7 +21,7 @@ namespace repair_management_backend.Repositories.StatusRepo
                 serviceResponse.Data = await _dataContext.Statuses.Where(t => t.Id >= 6 && t.Id <= 9).ToListAsync();
             } else if (roles.Contains("Receiver"))
             {
-                serviceResponse.Data = await _dataContext.Statuses.Where(t => t.Id >= 2 && t.Id <= 9).ToListAsync();
+                serviceResponse.Data = await _dataContext.Statuses.Where(t => t.Id >= 2 && t.Id <= 5).ToListAsync();
             } else if (roles.Contains("Creator"))
             {
                 serviceResponse.Data = await _dataContext.Statuses.Where(t => t.Id >= 10).ToListAsync();

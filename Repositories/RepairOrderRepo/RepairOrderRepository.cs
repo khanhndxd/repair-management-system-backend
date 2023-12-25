@@ -76,7 +76,17 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
             IQueryable<RepairOrder> result = _dataContext.RepairOrders.Where(r => r.IsDeleted == false).OrderByDescending(r => r.Id);
             if(!roles.Contains("Admin"))
             {
-                result = result.Where(r => r.CreatedById == userId || r.RepairedById == userId || r.ReceivedById == userId);
+                if(roles.Contains("Receiver"))
+                {
+                    result = result.Where(r => r.ReceivedById == userId);
+
+                } else if(roles.Contains("Creator"))
+                {
+                    result = result.Where(r => r.CreatedById == userId);
+                } else if(roles.Contains("Technician"))
+                {
+                    result = result.Where(r => r.RepairedById == userId);
+                }
             } 
 
             // Query theo field nếu có
@@ -296,10 +306,28 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 {
                     if (!roles.Contains("Admin"))
                     {
-                        result = await _dataContext.RepairOrders
-                            .Where(r => r.IsDeleted == false)
-                            .Where(r => r.CreatedById == userId || r.RepairedById == userId || r.ReceivedById == userId)
-                            .CountAsync();
+                        if (roles.Contains("Receiver"))
+                        {
+                            result = await _dataContext.RepairOrders
+                                .Where(r => r.IsDeleted == false)
+                                .Where(r => r.ReceivedById == userId)
+                                .CountAsync();
+
+                        }
+                        else if (roles.Contains("Creator"))
+                        {
+                            result = await _dataContext.RepairOrders
+                                .Where(r => r.IsDeleted == false)
+                                .Where(r => r.CreatedById == userId)
+                                .CountAsync();
+                        }
+                        else if (roles.Contains("Technician"))
+                        {
+                            result = await _dataContext.RepairOrders
+                                .Where(r => r.IsDeleted == false)
+                                .Where(r => r.RepairedById == userId)
+                                .CountAsync();
+                        }
                     } else
                     {
                         result = await _dataContext.RepairOrders
@@ -310,10 +338,28 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
                 {
                     if (!roles.Contains("Admin"))
                     {
-                        result = await _dataContext.RepairOrders
-                            .Where(r => r.IsDeleted == false)
-                            .Where(r => r.CreatedById == userId || r.RepairedById == userId || r.ReceivedById == userId)
-                            .CountAsync(ro => ro.StatusId == id);
+                        if (roles.Contains("Receiver"))
+                        {
+                            result = await _dataContext.RepairOrders
+                                .Where(r => r.IsDeleted == false)
+                                .Where(r => r.ReceivedById == userId)
+                                .CountAsync();
+
+                        }
+                        else if (roles.Contains("Creator"))
+                        {
+                            result = await _dataContext.RepairOrders
+                                .Where(r => r.IsDeleted == false)
+                                .Where(r => r.CreatedById == userId)
+                                .CountAsync();
+                        }
+                        else if (roles.Contains("Technician"))
+                        {
+                            result = await _dataContext.RepairOrders
+                                .Where(r => r.IsDeleted == false)
+                                .Where(r => r.RepairedById == userId)
+                                .CountAsync();
+                        }
                     } else
                     {
                         result = await _dataContext.RepairOrders
