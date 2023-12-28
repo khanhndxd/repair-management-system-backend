@@ -13,5 +13,6 @@ namespace repair_management_backend.Repositories.RepairOrderRepo
         Task<ServiceResponse<string>> UpdateRepairOrderStatus(UpdateRepairOrderStatusDTO updateRepairOrderStatusDTO);
         Task<ServiceResponse<string>> UpdateRepairOrder(UpdateRepairOrderDTO updateRepairOrderDTO);
         Task<ServiceResponse<string>> DeleteRepairOrder(DeleteRepairOrderDTO deleteRepairOrderDTO);
+        Task<ServiceResponse<string>> UpdateTotalPrice(UpdateTotalPriceDTO updateTotalPriceDTO);
     }
 }
