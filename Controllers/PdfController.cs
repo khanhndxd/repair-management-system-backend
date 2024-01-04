@@ -28,11 +28,13 @@ namespace repair_management_backend.Controllers
                     page.DefaultTextStyle(x => x.FontSize(6));
                     page.DefaultTextStyle(x => x.FontFamily("Arial"));
                     page.Header()
-                    .Row(row =>
+                    .Column(column =>
                     {
-                        row.AutoItem().Text("Công ty TNHH Nguyễn Duy Khánh").FontSize(6);
+                        column.Spacing(1);
+                        column.Item().Text("Công ty TNHH Nguyễn Duy Khánh").FontSize(6).Bold();
+                        column.Item().Text("Địa chỉ: Xuân đỉnh, Bắc Từ Liêm, Hà Nội").FontSize(6);
+                        column.Item().Text("Email: ngduykhanh.xd@gmail.com").FontSize(6);
                     });
-
                     page.Content().Column(column =>
                     {
                         column.Spacing(4);
@@ -161,7 +163,7 @@ namespace repair_management_backend.Controllers
                                 index3++;
                             }
                         });
-                        column.Item().Text($"Tổng tiền: {ConvertToVND(pdfGenerationRequest.TotalPrice)}").FontSize(10);
+                        column.Item().Text($"Tổng chi phí bảo hành tạm tính: {ConvertToVND(pdfGenerationRequest.TotalPrice)}").FontSize(9);
                         column.Item().PaddingTop(15).Table(table3 =>
                         {
                             table3.ColumnsDefinition(columns =>
