@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using repair_management_backend.Data;
 
@@ -11,9 +12,11 @@ using repair_management_backend.Data;
 namespace repair_management_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240107115308_Change_warranty_period")]
+    partial class Change_warranty_period
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,25 +54,25 @@ namespace repair_management_backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4012e043-2de7-4931-9f36-762b7be3875b",
+                            Id = "2bb5d1d4-2691-4ab9-8246-fcbee6a621a9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4c4e83f8-e74a-4217-b07f-741f70ac81bc",
+                            Id = "2eeba6aa-e5c9-4b12-a639-46f582f3192b",
                             Name = "Creator",
                             NormalizedName = "CREATOR"
                         },
                         new
                         {
-                            Id = "a5840369-f4a3-4a58-8b7c-d97d1b2181bd",
+                            Id = "60b35331-6835-471f-9d37-feed300af77e",
                             Name = "Receiver",
                             NormalizedName = "RECEIVER"
                         },
                         new
                         {
-                            Id = "83d43110-29df-4d66-8b78-70873cdb5311",
+                            Id = "25a0a65a-8c26-48d0-a990-8f845133592d",
                             Name = "Technician",
                             NormalizedName = "TECHNICIAN"
                         });
@@ -240,32 +243,32 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             UserId = "1",
-                            RoleId = "4012e043-2de7-4931-9f36-762b7be3875b"
+                            RoleId = "2bb5d1d4-2691-4ab9-8246-fcbee6a621a9"
                         },
                         new
                         {
                             UserId = "2",
-                            RoleId = "4c4e83f8-e74a-4217-b07f-741f70ac81bc"
+                            RoleId = "2eeba6aa-e5c9-4b12-a639-46f582f3192b"
                         },
                         new
                         {
                             UserId = "3",
-                            RoleId = "a5840369-f4a3-4a58-8b7c-d97d1b2181bd"
+                            RoleId = "60b35331-6835-471f-9d37-feed300af77e"
                         },
                         new
                         {
                             UserId = "4",
-                            RoleId = "a5840369-f4a3-4a58-8b7c-d97d1b2181bd"
+                            RoleId = "60b35331-6835-471f-9d37-feed300af77e"
                         },
                         new
                         {
                             UserId = "5",
-                            RoleId = "83d43110-29df-4d66-8b78-70873cdb5311"
+                            RoleId = "25a0a65a-8c26-48d0-a990-8f845133592d"
                         },
                         new
                         {
                             UserId = "6",
-                            RoleId = "83d43110-29df-4d66-8b78-70873cdb5311"
+                            RoleId = "25a0a65a-8c26-48d0-a990-8f845133592d"
                         });
                 });
 
@@ -781,21 +784,21 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 1, 7, 18, 55, 3, 200, DateTimeKind.Local).AddTicks(7391),
+                            CreatedAt = new DateTime(2024, 1, 7, 18, 53, 8, 163, DateTimeKind.Local).AddTicks(6872),
                             CustomerId = 1,
                             Total = 1200000.0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 1, 7, 18, 55, 3, 200, DateTimeKind.Local).AddTicks(7403),
+                            CreatedAt = new DateTime(2024, 1, 7, 18, 53, 8, 163, DateTimeKind.Local).AddTicks(6884),
                             CustomerId = 2,
                             Total = 1600000.0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 1, 7, 18, 55, 3, 200, DateTimeKind.Local).AddTicks(7407),
+                            CreatedAt = new DateTime(2024, 1, 7, 18, 53, 8, 163, DateTimeKind.Local).AddTicks(6888),
                             CustomerId = 3,
                             Total = 2400000.0
                         });
@@ -909,7 +912,7 @@ namespace repair_management_backend.Migrations
                             ProductName = "RAM DDR4 32GB",
                             ProductSerial = "8892",
                             PurchaseOrderId = 2,
-                            WarrantyPeriod = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            WarrantyPeriod = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1690,13 +1693,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6aa3f0af-6a94-46a4-af62-8dc4354e0985",
+                            ConcurrencyStamp = "bdb007f8-66df-4a5d-bb6b-395935317fa7",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "NGUYỄN DUY KHÁNH",
-                            PasswordHash = "AQAAAAIAAYagAAAAEB/whwWcXih5ekbIms6yX3TXOYxGvGuOGNTIu8qY4mG8jgEKyJ+9pzbKP3Wf2d1+Mg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELyE7tJTC++1oqse5WepZIG5C19iaIz96PvwN5oXPLzl6QkgIgUSZlTh9ClvzXDJKw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1707,13 +1710,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e518dd95-caf8-4492-b0ba-afbeac53e49b",
+                            ConcurrencyStamp = "1641f3c4-7d2f-415c-ba0e-0db34b726b78",
                             Email = "creator1@creator.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "CREATOR1@CREATOR.COM",
                             NormalizedUserName = "NGUYỄN HOÀNG A",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEH51/tynt6wiDs21XmdfcrwZCQ70TIbIFWE9EHsDWpVmpGorDL1GvDhqaYfFe0R/Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEPd1F3lMPrhGah2n2KsAjFTtnZOUEhnP2aiAgaSCKh43Sv1qvWvjKyY/vAGbFT2Aw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1724,13 +1727,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9c359d0a-7780-4eee-8a7a-cf30aeee1b05",
+                            ConcurrencyStamp = "592ed803-faf0-4fd5-a2ca-d94f8185623e",
                             Email = "receiver1@receiver.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "RECEIVER1@RECEIVER.COM",
                             NormalizedUserName = "NGUYỄN VĂN HOÀNG",
-                            PasswordHash = "AQAAAAIAAYagAAAAECrFDG1G+4vt/+fCyF0htC2N0CRsWnAbQQ1lGooJABZUYDsqcxIDh52DdK8PDDcdWQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAw3Zc148CDD0mdMpghvazziN0h/MkrwM1lJ0+KT1691kFbYgZr8y9M7FCWRUcHbFw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1741,13 +1744,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e763d4b0-6efb-4894-9ffa-6e79ffac53a5",
+                            ConcurrencyStamp = "e7780921-2bc4-44db-a44a-b158865c7ac2",
                             Email = "receiver2@receiver.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "RECEIVER2@RECEIVER.COM",
                             NormalizedUserName = "NGUYỄN HOÀNG KHOA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO2Vb/Asj7vMpp7EtaobzXoJ5QHRMCi6EXxPLx0qqBTyG9RFL/KJaVTHIISCRsTuLw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJfasoro3EDlFyNoKOXru8OJl4k8FjJ8S5E1iIqPdZffAuktXhPJW91aHMbsd1iU2g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1758,13 +1761,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "625d5df9-e074-4d9b-ac32-fec919a83a41",
+                            ConcurrencyStamp = "1706df11-d5a8-447d-be71-6d444edb9181",
                             Email = "tech1@tech.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TECH1@TECH.COM",
                             NormalizedUserName = "NGUYỄN DUY QUANG",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBzR9dISVryHpgBaXUO2YzRnqC/lGwwgS8Fu3n2xD7KbIrBxR1VPDj4OpfCAgS5I0Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENFTKEIMMST29LEt0kOY5gqX07Ydg13EGpGzLuasmn5obRSuculcZa/pt5oY7cZ5Yw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1775,13 +1778,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "77058ca3-3986-417d-a566-4f59140d0173",
+                            ConcurrencyStamp = "2641c23e-5c35-4583-872e-0404312727af",
                             Email = "tech2@tech.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TECH2@TECH.COM",
                             NormalizedUserName = "NGUYỄN THẾ HUY",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPxGyiD45S8oCJ+Fx8cY2Np0T2e8Y56X3oSulIhIaj6Hmc9Kg2zRjE0YgDV6uZEwXg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHD/QNYS3aBWyO9ovd1wA7foHm4GW25nVSCVeoPaiqug2J+DIUnj2SBK9XX9BA5mEA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
