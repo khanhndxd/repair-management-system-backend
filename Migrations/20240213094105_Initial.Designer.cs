@@ -12,8 +12,8 @@ using repair_management_backend.Data;
 namespace repair_management_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231216131216_UpdateIdentityOptions2")]
-    partial class UpdateIdentityOptions2
+    [Migration("20240213094105_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,23 +54,27 @@ namespace repair_management_backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2dbed69a-45b3-4ab1-a8d1-f8c10fd16c73",
-                            Name = "Admin"
+                            Id = "dd1bcdad-35e4-486e-ad63-19aca5e80e35",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5ee23454-cd3f-4438-a8fe-bf159e5dc5c0",
-                            Name = "Staff"
+                            Id = "009bcfb0-bcab-40c9-a759-bbb55562519e",
+                            Name = "Creator",
+                            NormalizedName = "CREATOR"
                         },
                         new
                         {
-                            Id = "23998714-94eb-44ec-94a8-3690d0f3d77e",
-                            Name = "Techlead"
+                            Id = "a7d13cf3-9de4-4736-8bf2-d9fafcc1a232",
+                            Name = "Receiver",
+                            NormalizedName = "RECEIVER"
                         },
                         new
                         {
-                            Id = "7f2436f7-1b0e-4138-acf1-6b7ffc4fafb6",
-                            Name = "Technician"
+                            Id = "c896a667-3ea4-4b98-af9d-2545ea4b188c",
+                            Name = "Technician",
+                            NormalizedName = "TECHNICIAN"
                         });
                 });
 
@@ -153,7 +157,6 @@ namespace repair_management_backend.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .IsUnicode(true)
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
@@ -240,22 +243,32 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             UserId = "1",
-                            RoleId = "2dbed69a-45b3-4ab1-a8d1-f8c10fd16c73"
+                            RoleId = "dd1bcdad-35e4-486e-ad63-19aca5e80e35"
                         },
                         new
                         {
                             UserId = "2",
-                            RoleId = "5ee23454-cd3f-4438-a8fe-bf159e5dc5c0"
+                            RoleId = "009bcfb0-bcab-40c9-a759-bbb55562519e"
                         },
                         new
                         {
                             UserId = "3",
-                            RoleId = "23998714-94eb-44ec-94a8-3690d0f3d77e"
+                            RoleId = "a7d13cf3-9de4-4736-8bf2-d9fafcc1a232"
                         },
                         new
                         {
                             UserId = "4",
-                            RoleId = "7f2436f7-1b0e-4138-acf1-6b7ffc4fafb6"
+                            RoleId = "a7d13cf3-9de4-4736-8bf2-d9fafcc1a232"
+                        },
+                        new
+                        {
+                            UserId = "5",
+                            RoleId = "c896a667-3ea4-4b98-af9d-2545ea4b188c"
+                        },
+                        new
+                        {
+                            UserId = "6",
+                            RoleId = "c896a667-3ea4-4b98-af9d-2545ea4b188c"
                         });
                 });
 
@@ -736,6 +749,11 @@ namespace repair_management_backend.Migrations
                         {
                             Id = 9,
                             Name = "AMD"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "LG"
                         });
                 });
 
@@ -766,21 +784,21 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 12, 16, 20, 12, 16, 573, DateTimeKind.Local).AddTicks(5949),
+                            CreatedAt = new DateTime(2024, 2, 13, 16, 41, 4, 850, DateTimeKind.Local).AddTicks(4887),
                             CustomerId = 1,
                             Total = 1200000.0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 12, 16, 20, 12, 16, 573, DateTimeKind.Local).AddTicks(5965),
+                            CreatedAt = new DateTime(2024, 2, 13, 16, 41, 4, 850, DateTimeKind.Local).AddTicks(4907),
                             CustomerId = 2,
                             Total = 1600000.0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 12, 16, 20, 12, 16, 573, DateTimeKind.Local).AddTicks(5970),
+                            CreatedAt = new DateTime(2024, 2, 13, 16, 41, 4, 850, DateTimeKind.Local).AddTicks(4909),
                             CustomerId = 3,
                             Total = 2400000.0
                         });
@@ -862,6 +880,61 @@ namespace repair_management_backend.Migrations
                             ProductSerial = "8889",
                             PurchaseOrderId = 3,
                             WarrantyPeriod = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 6,
+                            ManufacturerId = 5,
+                            Price = 3000000.0,
+                            ProductName = "Ổ cứng HDD 500GB",
+                            ProductSerial = "8890",
+                            PurchaseOrderId = 1,
+                            WarrantyPeriod = new DateTime(2023, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 1,
+                            ManufacturerId = 10,
+                            Price = 8000000.0,
+                            ProductName = "Màn hình LG UltraGear 27GN600-B",
+                            ProductSerial = "8891",
+                            PurchaseOrderId = 1,
+                            WarrantyPeriod = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 6,
+                            ManufacturerId = 5,
+                            Price = 5000000.0,
+                            ProductName = "RAM DDR4 32GB",
+                            ProductSerial = "8892",
+                            PurchaseOrderId = 2,
+                            WarrantyPeriod = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 12,
+                            ManufacturerId = 7,
+                            Price = 12000000.0,
+                            ProductName = "Razer Kiyo Pro",
+                            ProductSerial = "8893",
+                            PurchaseOrderId = 3,
+                            WarrantyPeriod = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 1,
+                            ManufacturerId = 2,
+                            Price = 6000000.0,
+                            ProductName = "Màn hình Dell S2722DGM",
+                            ProductSerial = "8894",
+                            PurchaseOrderId = 3,
+                            WarrantyPeriod = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1078,7 +1151,7 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 1,
-                            Reason = "Sản phẩm lỗi"
+                            Reason = "Lỗi phần mềm"
                         },
                         new
                         {
@@ -1088,7 +1161,17 @@ namespace repair_management_backend.Migrations
                         new
                         {
                             Id = 3,
-                            Reason = "Giao nhầm sản phẩm cho khách"
+                            Reason = "Lỗi phần cứng"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Reason = "Hỏng hóc, va đập"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Reason = "Khác"
                         });
                 });
 
@@ -1275,7 +1358,7 @@ namespace repair_management_backend.Migrations
                         {
                             Id = 6,
                             Name = "Sửa chữa phần cứng",
-                            Price = 0.0
+                            Price = 200000.0
                         });
                 });
 
@@ -1610,13 +1693,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c848b32e-4efd-49b6-810a-63533a9c4cc3",
+                            ConcurrencyStamp = "06030b66-424c-4f7d-9e25-a17a4a17dcc9",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "NGUYỄN DUY KHÁNH",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMq5DSnkxUEzXT4KFamMgkekkULjLWAgibL4dGbTaQbPQ5j0U540JPVsvVVU9qU7vg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGIAyXs0SMwJnHGrmygTmK8t5MQhpdilfrL7HFsc0A072ZFavsc1hGxXtVJLyHo25Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1627,13 +1710,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4373bafa-c89c-4be5-a774-ae9c7015f4e8",
-                            Email = "staff1@staff.com",
+                            ConcurrencyStamp = "0554bdec-abaa-48a2-86b1-4c633d448f45",
+                            Email = "creator1@creator.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "STAFF1@STAFF.COM",
+                            NormalizedEmail = "CREATOR1@CREATOR.COM",
                             NormalizedUserName = "NGUYỄN HOÀNG A",
-                            PasswordHash = "AQAAAAIAAYagAAAAELp2Ub/tDNoKKVoGg9wMX2icU6x7iumoSoj/gtZmhAstNDXqn2c9I8i5jalM75L3Sw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEONyZfgmtTLW4Evv19Be2SNzMh3uh7cqQDycwZE4wSIdPg5PeSRTOOmOIxHOsro3DA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1644,13 +1727,13 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2e01aa2a-251f-42dc-bd99-3b3431c7f9b8",
-                            Email = "lead1@lead.com",
+                            ConcurrencyStamp = "92fd44cb-4f04-495e-b2e9-dc4b5fb2d707",
+                            Email = "receiver1@receiver.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "LEAD1@LEAD.COM",
+                            NormalizedEmail = "RECEIVER1@RECEIVER.COM",
                             NormalizedUserName = "NGUYỄN VĂN HOÀNG",
-                            PasswordHash = "AQAAAAIAAYagAAAAENYm2p1ud2++ucYFiJdQkBejfXGHKng6iTWbhZiDmiEgqElK7+X40FXsTWHV848skg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECPnEH0pTCpayp/DElveZfTQ/kvgIMjEIT65yTJNJrVcyMzMvityB9E3GVpHJCV7Ow==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -1661,17 +1744,51 @@ namespace repair_management_backend.Migrations
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4aa19f9e-053c-4734-b26f-16b52fccc8d9",
+                            ConcurrencyStamp = "e75d5485-4d6e-45f3-a491-6b7032fe2b4c",
+                            Email = "receiver2@receiver.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "RECEIVER2@RECEIVER.COM",
+                            NormalizedUserName = "NGUYỄN HOÀNG KHOA",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIGi/y76/1CTr3z5JHZg4+wcO0Vgn4ds1Z8kS6d7czrhctOvgFxjGzBuC17P+Mv3Dg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "Nguyễn Hoàng Khoa",
+                            RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "5",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "5e359824-3a2e-4e7c-b220-1a547e169a5b",
                             Email = "tech1@tech.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TECH1@TECH.COM",
                             NormalizedUserName = "NGUYỄN DUY QUANG",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGqEsvHonXDrJo8I7aqTatauIB7kQg7IyiQTY/82qmcEgQA/okFOUQIuTIyac23oPA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL8q2Mz2WlbnmetAaZaDluAiinejGI+OXemtgDx1S+67L26bXjVQ5QJ8dIf8jFEKPA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UserName = "Nguyễn Duy Quang",
+                            RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "6",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a590615e-3d85-4da5-94f8-61c530783b96",
+                            Email = "tech2@tech.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "TECH2@TECH.COM",
+                            NormalizedUserName = "NGUYỄN THẾ HUY",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIebcVVn1ErGJ+qW6syhmswMW7bU9fvSaGbfc1j7hAOCX/xrTdIzqmXONavHlZT++Q==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "Nguyễn Thế Huy",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });

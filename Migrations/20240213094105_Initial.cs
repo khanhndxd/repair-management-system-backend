@@ -273,6 +273,26 @@ namespace repair_management_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WarrantyPolicies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarrantyPolicies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WarrantyPolicies_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CustomerProducts",
                 columns: table => new
                 {
@@ -384,6 +404,30 @@ namespace repair_management_backend.Migrations
                         name: "FK_RepairOrders_Tasks_TaskId",
                         column: x => x.TaskId,
                         principalTable: "Tasks",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WarrantyPolicyTasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WarrantyPolicyId = table.Column<int>(type: "int", nullable: false),
+                    TaskId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarrantyPolicyTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WarrantyPolicyTasks_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_WarrantyPolicyTasks_WarrantyPolicies_WarrantyPolicyId",
+                        column: x => x.WarrantyPolicyId,
+                        principalTable: "WarrantyPolicies",
                         principalColumn: "Id");
                 });
 
@@ -586,10 +630,10 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4035ce5c-4731-4fb2-af49-ff433db651aa", null, "Technician", null },
-                    { "57e5fe0c-273b-4920-a9c7-67a5acf08c40", null, "Admin", null },
-                    { "e0202692-4be9-4182-a2fd-3034055d0447", null, "Staff", null },
-                    { "f4d30968-d935-4128-985c-83642a5cc959", null, "Techlead", null }
+                    { "009bcfb0-bcab-40c9-a759-bbb55562519e", null, "Creator", "CREATOR" },
+                    { "a7d13cf3-9de4-4736-8bf2-d9fafcc1a232", null, "Receiver", "RECEIVER" },
+                    { "c896a667-3ea4-4b98-af9d-2545ea4b188c", null, "Technician", "TECHNICIAN" },
+                    { "dd1bcdad-35e4-486e-ad63-19aca5e80e35", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -597,10 +641,12 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "b0578801-243c-4b7b-837f-aaa065ee54af", "User", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "NGUYỄN DUY KHÁNH", "AQAAAAIAAYagAAAAEK3wP8iKQR+xlAIaXoVb+M83Tv/fkUoaNGdzM9HDcUB3chCrKsiwho5SGik5nC0jfg==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Duy Khánh" },
-                    { "2", 0, "415dd5b1-2c3a-4f39-acd7-698ad9fb760f", "User", "staff1@staff.com", true, false, null, "STAFF1@STAFF.COM", "NGUYỄN HOÀNG A", "AQAAAAIAAYagAAAAEC4oWLf2CdkOOKOTz1+GyOcKyDTD4h6AJSkGbZL461qeNcRb+AgVsbUFmmAP18L1ug==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Hoàng A" },
-                    { "3", 0, "9c608353-aaa0-4281-957a-e8b23488da59", "User", "lead1@lead.com", true, false, null, "LEAD1@LEAD.COM", "NGUYỄN VĂN HOÀNG", "AQAAAAIAAYagAAAAEJCp+k7Bf/OinBjYS70wyE+HKTr3VqozTQQAOhPxLTYl5mSJkSJpLF1anOGN3ymEDw==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Văn Hoàng" },
-                    { "4", 0, "495163f0-4ed8-475a-812e-21a61ba13e13", "User", "tech1@tech.com", true, false, null, "TECH1@TECH.COM", "NGUYỄN DUY QUANG", "AQAAAAIAAYagAAAAEGx/TEY4OHLe7NKp/Z4giTkZ2CLAjgzLUUYVVpIf33DnbaFzL+VvjlaIo3qi4fyLeA==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Duy Quang" }
+                    { "1", 0, "06030b66-424c-4f7d-9e25-a17a4a17dcc9", "User", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "NGUYỄN DUY KHÁNH", "AQAAAAIAAYagAAAAEGIAyXs0SMwJnHGrmygTmK8t5MQhpdilfrL7HFsc0A072ZFavsc1hGxXtVJLyHo25Q==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Duy Khánh" },
+                    { "2", 0, "0554bdec-abaa-48a2-86b1-4c633d448f45", "User", "creator1@creator.com", true, false, null, "CREATOR1@CREATOR.COM", "NGUYỄN HOÀNG A", "AQAAAAIAAYagAAAAEONyZfgmtTLW4Evv19Be2SNzMh3uh7cqQDycwZE4wSIdPg5PeSRTOOmOIxHOsro3DA==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Hoàng A" },
+                    { "3", 0, "92fd44cb-4f04-495e-b2e9-dc4b5fb2d707", "User", "receiver1@receiver.com", true, false, null, "RECEIVER1@RECEIVER.COM", "NGUYỄN VĂN HOÀNG", "AQAAAAIAAYagAAAAECPnEH0pTCpayp/DElveZfTQ/kvgIMjEIT65yTJNJrVcyMzMvityB9E3GVpHJCV7Ow==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Văn Hoàng" },
+                    { "4", 0, "e75d5485-4d6e-45f3-a491-6b7032fe2b4c", "User", "receiver2@receiver.com", true, false, null, "RECEIVER2@RECEIVER.COM", "NGUYỄN HOÀNG KHOA", "AQAAAAIAAYagAAAAEIGi/y76/1CTr3z5JHZg4+wcO0Vgn4ds1Z8kS6d7czrhctOvgFxjGzBuC17P+Mv3Dg==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Hoàng Khoa" },
+                    { "5", 0, "5e359824-3a2e-4e7c-b220-1a547e169a5b", "User", "tech1@tech.com", true, false, null, "TECH1@TECH.COM", "NGUYỄN DUY QUANG", "AQAAAAIAAYagAAAAEL8q2Mz2WlbnmetAaZaDluAiinejGI+OXemtgDx1S+67L26bXjVQ5QJ8dIf8jFEKPA==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Duy Quang" },
+                    { "6", 0, "a590615e-3d85-4da5-94f8-61c530783b96", "User", "tech2@tech.com", true, false, null, "TECH2@TECH.COM", "NGUYỄN THẾ HUY", "AQAAAAIAAYagAAAAEIebcVVn1ErGJ+qW6syhmswMW7bU9fvSaGbfc1j7hAOCX/xrTdIzqmXONavHlZT++Q==", null, false, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", false, "Nguyễn Thế Huy" }
                 });
 
             migrationBuilder.InsertData(
@@ -618,7 +664,7 @@ namespace repair_management_backend.Migrations
                     { 8, "CPU" },
                     { 9, "VGA" },
                     { 10, "Tản nhiệt" },
-                    { 11, "Ergonomic" },
+                    { 11, "Card màn hình" },
                     { 12, "Webcam" },
                     { 13, "PC" },
                     { 14, "Thiết bị ngoại vi" }
@@ -650,7 +696,8 @@ namespace repair_management_backend.Migrations
                     { 6, "Logitech" },
                     { 7, "Razer" },
                     { 8, "Intel" },
-                    { 9, "AMD" }
+                    { 9, "AMD" },
+                    { 10, "LG" }
                 });
 
             migrationBuilder.InsertData(
@@ -658,9 +705,11 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "Id", "Reason" },
                 values: new object[,]
                 {
-                    { 1, "Sản phẩm lỗi" },
+                    { 1, "Lỗi phần mềm" },
                     { 2, "Đổi mới" },
-                    { 3, "Giao nhầm sản phẩm cho khách" }
+                    { 3, "Lỗi phần cứng" },
+                    { 4, "Hỏng hóc, va đập" },
+                    { 5, "Khác" }
                 });
 
             migrationBuilder.InsertData(
@@ -694,11 +743,12 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "Id", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 1, "Vệ sinh máy tính", 100000.0 },
-                    { 2, "Cài lại win", 200000.0 },
-                    { 3, "Cài đặt phần mềm", 50000.0 },
-                    { 4, "Sửa chữa phần mềm", 100000.0 },
-                    { 5, "Bảo dưỡng định kỳ", 100000.0 }
+                    { 1, "Vệ sinh sản phẩm", 100000.0 },
+                    { 2, "Cài đặt phần mềm", 50000.0 },
+                    { 3, "Sửa chữa phần mềm", 100000.0 },
+                    { 4, "Thay thế linh kiện", 100000.0 },
+                    { 5, "Đổi mới", 0.0 },
+                    { 6, "Sửa chữa phần cứng", 200000.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -706,10 +756,12 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "57e5fe0c-273b-4920-a9c7-67a5acf08c40", "1" },
-                    { "e0202692-4be9-4182-a2fd-3034055d0447", "2" },
-                    { "f4d30968-d935-4128-985c-83642a5cc959", "3" },
-                    { "4035ce5c-4731-4fb2-af49-ff433db651aa", "4" }
+                    { "dd1bcdad-35e4-486e-ad63-19aca5e80e35", "1" },
+                    { "009bcfb0-bcab-40c9-a759-bbb55562519e", "2" },
+                    { "a7d13cf3-9de4-4736-8bf2-d9fafcc1a232", "3" },
+                    { "a7d13cf3-9de4-4736-8bf2-d9fafcc1a232", "4" },
+                    { "c896a667-3ea4-4b98-af9d-2545ea4b188c", "5" },
+                    { "c896a667-3ea4-4b98-af9d-2545ea4b188c", "6" }
                 });
 
             migrationBuilder.InsertData(
@@ -717,9 +769,30 @@ namespace repair_management_backend.Migrations
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "Total" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7885), 1, 1200000.0 },
-                    { 2, new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7897), 2, 1600000.0 },
-                    { 3, new DateTime(2023, 12, 3, 17, 25, 16, 620, DateTimeKind.Local).AddTicks(7897), 3, 2400000.0 }
+                    { 1, new DateTime(2024, 2, 13, 16, 41, 4, 850, DateTimeKind.Local).AddTicks(4887), 1, 1200000.0 },
+                    { 2, new DateTime(2024, 2, 13, 16, 41, 4, 850, DateTimeKind.Local).AddTicks(4907), 2, 1600000.0 },
+                    { 3, new DateTime(2024, 2, 13, 16, 41, 4, 850, DateTimeKind.Local).AddTicks(4909), 3, 2400000.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "WarrantyPolicies",
+                columns: new[] { "Id", "CategoryId", "Description" },
+                values: new object[,]
+                {
+                    { 1, 1, "Chính sách bảo hành của Màn hình" },
+                    { 2, 2, "Chính sách bảo hành của Nguồn máy tính" },
+                    { 3, 3, "Chính sách bảo hành của Mainboard" },
+                    { 4, 4, "Chính sách bảo hành của Chuột" },
+                    { 5, 5, "Chính sách bảo hành của Bàn phím" },
+                    { 6, 6, "Chính sách bảo hành của Thiết bị lưu trữ, bộ nhớ" },
+                    { 7, 7, "Chính sách bảo hành của Tai nghe" },
+                    { 8, 8, "Chính sách bảo hành của CPU" },
+                    { 9, 9, "Chính sách bảo hành của VGA" },
+                    { 10, 10, "Chính sách bảo hành của Tản nhiệt" },
+                    { 11, 11, "Chính sách bảo hành của Card màn hình" },
+                    { 12, 12, "Chính sách bảo hành của Webcam" },
+                    { 13, 13, "Chính sách bảo hành của PC" },
+                    { 14, 14, "Chính sách bảo hành của Thiết bị ngoại vi" }
                 });
 
             migrationBuilder.InsertData(
@@ -729,7 +802,49 @@ namespace repair_management_backend.Migrations
                 {
                     { 1, 2, 1, 1500000.0, "Nguồn Corsair CX450M", "8887", 1, new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) },
                     { 2, 1, 2, 6000000.0, "Màn hình Dell S2722DGM", "8888", 2, new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, 12, 6, 4500000.0, "Logitech C920 HD Pro", "8889", 3, new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 3, 12, 6, 4500000.0, "Logitech C920 HD Pro", "8889", 3, new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, 6, 5, 3000000.0, "Ổ cứng HDD 500GB", "8890", 1, new DateTime(2023, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, 1, 10, 8000000.0, "Màn hình LG UltraGear 27GN600-B", "8891", 1, new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, 6, 5, 5000000.0, "RAM DDR4 32GB", "8892", 2, new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, 12, 7, 12000000.0, "Razer Kiyo Pro", "8893", 3, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 8, 1, 2, 6000000.0, "Màn hình Dell S2722DGM", "8894", 3, new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "WarrantyPolicyTasks",
+                columns: new[] { "Id", "TaskId", "WarrantyPolicyId" },
+                values: new object[,]
+                {
+                    { 1, 4, 1 },
+                    { 2, 6, 1 },
+                    { 3, 4, 2 },
+                    { 4, 6, 2 },
+                    { 5, 4, 3 },
+                    { 6, 6, 3 },
+                    { 7, 4, 4 },
+                    { 8, 5, 4 },
+                    { 9, 6, 4 },
+                    { 10, 4, 5 },
+                    { 11, 5, 5 },
+                    { 12, 6, 5 },
+                    { 13, 4, 6 },
+                    { 14, 5, 6 },
+                    { 15, 4, 7 },
+                    { 16, 5, 7 },
+                    { 17, 5, 8 },
+                    { 18, 4, 9 },
+                    { 19, 5, 9 },
+                    { 20, 4, 10 },
+                    { 21, 6, 10 },
+                    { 22, 4, 11 },
+                    { 23, 5, 11 },
+                    { 24, 6, 11 },
+                    { 25, 5, 12 },
+                    { 26, 6, 12 },
+                    { 27, 4, 13 },
+                    { 28, 6, 13 },
+                    { 29, 4, 14 },
+                    { 30, 5, 11 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -885,6 +1000,22 @@ namespace repair_management_backend.Migrations
                 name: "IX_RepairTasks_TaskId",
                 table: "RepairTasks",
                 column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WarrantyPolicies_CategoryId",
+                table: "WarrantyPolicies",
+                column: "CategoryId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WarrantyPolicyTasks_TaskId",
+                table: "WarrantyPolicyTasks",
+                column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WarrantyPolicyTasks_WarrantyPolicyId",
+                table: "WarrantyPolicyTasks",
+                column: "WarrantyPolicyId");
         }
 
         /// <inheritdoc />
@@ -921,6 +1052,9 @@ namespace repair_management_backend.Migrations
                 name: "RepairTasks");
 
             migrationBuilder.DropTable(
+                name: "WarrantyPolicyTasks");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -936,7 +1070,7 @@ namespace repair_management_backend.Migrations
                 name: "RepairOrders");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "WarrantyPolicies");
 
             migrationBuilder.DropTable(
                 name: "Manufacturers");
@@ -958,6 +1092,9 @@ namespace repair_management_backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tasks");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Customers");
